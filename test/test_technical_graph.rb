@@ -35,13 +35,14 @@ class TestTechnicalGraph < Test::Unit::TestCase
   context 'basic layer operation' do
     setup do
       @tg = TechnicalGraph.new
+      @data_size = 100
 
       # sample data
       @data = Array.new
       @second_data = Array.new
-      (0..100).each do |i|
+      (0...@data_size).each do |i|
         @data << { :x => Time.now.to_i - 3600 + i, :y => Math.sin(i.to_f / 10.0) }
-        @second_data << { :x => Time.now.to_i - 3600 + i*2, :y => Math.cos(i.to_f / 10.0) }
+        @second_data << { :x => Time.now.to_i - 1800 + i*2, :y => Math.cos(i.to_f / 10.0) }
       end
     end
 
@@ -49,6 +50,9 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layers = @tg.layers.size
       @tg.add_layer(@data)
       @tg.layers.size.should == layers + 1
+
+      layer = @tg.layers.last
+      layer.data.size.should == @data_size
     end
 
     should 'has ability to manipulate layers, add more data' do
@@ -56,8 +60,28 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer = @tg.layers.last
       layer.class.should == DataLayer
 
-      layer.data
-      @second_data
+      layer.data.size.should == @data_size
+
+      # adding second data
+      layer.append_data(@second_data)
+      layer.data.size.should == 2 * @data_size
+    end
+
+    should 'has ability to filter records with similar x\'es' do
+      @tg.add_layer
+      layer = @tg.layers.last
+      layer.data.size.should == 0
+      layer.append_data([
+                          { :x => 0, :y => 1 }
+                        ])
+      layer.data.size.should == 1
+
+      # uniq check
+      layer.append_data([{ :x => 0, :y => 1 }])
+      layer.append_data([{ :x => 0, :y => 1 }])
+      layer.data.size.should == 1
+      layer.append_data([{ :x => 2, :y => 1 }])
+      layer.data.size.should == 2
     end
   end
 
