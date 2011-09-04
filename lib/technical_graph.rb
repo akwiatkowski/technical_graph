@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'technical_graph/graph_image'
+require 'technical_graph/data_layer'
 
 # Universal class for creating graphs/charts.
 
@@ -18,8 +19,15 @@ class TechnicalGraph
   def initialize(options = { })
     @options = options
     @image = GraphImage.new(@options)
+    @layers = []
   end
   attr_reader :options
   attr_reader :image
+  attr_reader :layers
+
+  # Add new data layer to layer array
+  def add_layer(data = [], options = {})
+    @layers << DataLayer.new(data, options)
+  end
 
 end
