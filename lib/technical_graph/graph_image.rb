@@ -24,13 +24,6 @@ class GraphImage
     @options = options
     @options[:width] ||= DEFAULT_WIDTH
     @options[:height] ||= DEFAULT_HEIGHT
-    @options[:x_min] ||= (Time.now - 24 * 3600).to_f
-    @options[:x_max] ||= Time.now.to_f
-    @options[:y_min] ||= 0.0
-    @options[:y_max] ||= 1.0
-    # :default - coords are default
-    # :zoom or whatever else - min/max coords are fixed
-    @options[:xy_behaviour] ||= :default
 
     # colors
     @options[:background_color] ||= 'white'

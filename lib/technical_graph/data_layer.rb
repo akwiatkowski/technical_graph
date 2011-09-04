@@ -3,11 +3,12 @@
 class DataLayer
 
   def initialize(d = [], options = { })
+    @options = options
+    @data_params = Hash.new
+    
     # set data and append initial data
     clear_data
     append_data(d)
-
-    @options = options
   end
 
   # Accessor for setting chart data for layer to draw
@@ -21,7 +22,7 @@ class DataLayer
     end
   end
 
-  attr_reader :data
+  attr_reader :data, :data_params
 
   # Clear data
   def clear_data
@@ -31,8 +32,7 @@ class DataLayer
   # Clean and process data used for drawing current data layer
   def process_data
     # delete duplicates
-    # TODO: check how it works
-    @data = @data.inject([]) { |result,d| result << d unless result.select{|r| r[:x] == d[:x] }.size > 0; result }
+    @data = @data.inject([]) { |result, d| result << d unless result.select { |r| r[:x] == d[:x] }.size > 0; result }
 
     @data.delete_if { |d| d[:x].nil? or d[:y].nil? }
     @data.sort! { |d, e| d[:x] <=> e[:x] }
@@ -48,7 +48,28 @@ class DataLayer
       @data_params[:y_min] = y_sort.first[:y] || @options[:default_y_min]
       @data_params[:y_max] = y_sort.last[:y] || @options[:@default_y_max]
     end
-    
+
+  end
+
+  def x_min
+    @data_params[:x_min]
+  end
+
+  def x_max
+    @data_params[:x_max]
+  end
+
+  def y_min
+    @data_params[:y_min]
+  end
+
+  def y_max
+    @data_params[:y_max]
+  end
+
+  # Render data on image
+  def render(image)
+
   end
 
 end
