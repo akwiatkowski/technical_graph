@@ -24,54 +24,54 @@ class AxisLayer
   end
 
   # Ranges without zoom
-  def x_min
+  def raw_x_min
     @options[:x_min]
   end
 
-  def x_max
+  def raw_x_max
     @options[:x_max]
   end
 
-  def y_min
+  def raw_y_min
     @options[:y_min]
   end
 
-  def y_max
+  def raw_y_max
     @options[:y_max]
   end
 
   # Ranges with zoom
-  def zoomed_x_min
-    calc_x_zoomed([self.x_min]).first
+  def x_min
+    calc_x_zoomed([self.raw_x_min]).first
   end
 
-  def zoomed_x_max
-    calc_x_zoomed([self.x_max]).first
+  def x_max
+    calc_x_zoomed([self.raw_x_max]).first
   end
 
-  def zoomed_y_min
-    calc_y_zoomed([self.y_min]).first
+  def y_min
+    calc_y_zoomed([self.raw_y_min]).first
   end
 
-  def zoomed_y_max
-    calc_y_zoomed([self.y_max]).first
+  def y_max
+    calc_y_zoomed([self.raw_y_max]).first
   end
 
   # Accessors
   private
-  def x_min=(x)
+  def raw_x_min=(x)
     @options[:x_min] = x
   end
 
-  def x_max=(x)
+  def raw_x_max=(x)
     @options[:x_max] = x
   end
 
-  def y_min=(y)
+  def raw_y_min=(y)
     @options[:y_min] = y
   end
 
-  def y_max=(y)
+  def raw_y_max=(y)
     @options[:y_max] = y
   end
 
@@ -83,11 +83,11 @@ class AxisLayer
     return if fixed?
 
     # updating ranges
-    self.y_max = data_layer.y_max if not data_layer.y_max.nil? and data_layer.y_max > y_max
-    self.x_max = data_layer.x_max if not data_layer.x_max.nil? and data_layer.x_max > x_max
+    self.raw_y_max = data_layer.y_max if not data_layer.y_max.nil? and data_layer.y_max > self.raw_y_max
+    self.raw_x_max = data_layer.x_max if not data_layer.x_max.nil? and data_layer.x_max > self.raw_x_max
 
-    self.y_min = data_layer.y_min if not data_layer.y_min.nil? and data_layer.y_min < y_min
-    self.x_min = data_layer.x_min if not data_layer.x_min.nil? and data_layer.x_min < x_min
+    self.raw_y_min = data_layer.y_min if not data_layer.y_min.nil? and data_layer.y_min < self.raw_y_min
+    self.raw_x_min = data_layer.x_min if not data_layer.x_min.nil? and data_layer.x_min < self.raw_x_min
   end
 
   # Change overall image zoom
@@ -110,7 +110,7 @@ class AxisLayer
 
   # Calculate zoomed X position for Array of X'es
   def calc_x_zoomed(old_xes)
-    a = (x_max.to_f + x_min.to_f) / 2.0
+    a = (raw_x_max.to_f + raw_x_min.to_f) / 2.0
     new_xes = Array.new
 
     old_xes.each do |x|
@@ -123,7 +123,7 @@ class AxisLayer
 
   # Calculate zoomed Y position for Array of Y'es
   def calc_y_zoomed(old_yes)
-    a = (y_max.to_f + y_min.to_f) / 2.0
+    a = (raw_y_max.to_f + raw_y_min.to_f) / 2.0
     new_yes = Array.new
 
     old_yes.each do |y|

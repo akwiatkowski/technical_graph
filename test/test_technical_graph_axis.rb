@@ -163,10 +163,20 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
 
       @tg.axis.zoom = 2.0
 
-      @tg.axis.zoomed_x_min.should == -10.0
-      @tg.axis.zoomed_x_max.should == 10.0
-      @tg.axis.zoomed_y_min.should == -10.0
-      @tg.axis.zoomed_y_max.should == 10.0
+      @tg.axis.x_min.should == -10.0
+      @tg.axis.x_max.should == 10.0
+      @tg.axis.y_min.should == -10.0
+      @tg.axis.y_max.should == 10.0
+
+      @tg.axis.x_min.should_not == -5
+      @tg.axis.x_max.should_not == 5
+      @tg.axis.y_min.should_not == -5.0
+      @tg.axis.y_max.should_not == 5.0
+
+      @tg.axis.raw_x_min.should == -5
+      @tg.axis.raw_x_max.should == 5
+      @tg.axis.raw_y_min.should == -5.0
+      @tg.axis.raw_y_max.should == 5.0
 
 
     end
