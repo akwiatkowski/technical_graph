@@ -261,6 +261,8 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
 
       @tg.axis.parameter_axises.should == [-8.0, -6.0, -4.0, -2.0, 0.0, 2.0, 4.0, 6.0]
       @tg.axis.value_axises.should == [-4.0, -2.0, 0.0, 2.0]
+
+      @tg.image.save_to_file('test1.png')
     end
 
 

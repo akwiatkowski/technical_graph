@@ -40,9 +40,58 @@ module AxisLayerDrawModule
     end
   end
 
+
+  def calc_bitmap_position(array)
+    # TODO move calculatio of lenght here
+  end
+
+  def calc_bitmap_x(_x)
+    l = self.x_max - self.x_min
+    offset = _x - self.x_min
+    return (offset.to_f * @image.width.to_f) / l.to_f
+  end
+
+  def calc_bitmap_y(_y)
+    l = self.y_max - self.y_min
+    offset = _y - self.y_min
+    return (offset.to_f * @image.width.to_f) / l.to_f
+  end
+
   # Render axis on image
   def render_on_image(image)
     @image = image
-    # TODO
+
+    plot_axis_y_line = Magick::Draw.new
+    plot_axis_y_text = Magick::Draw.new
+
+    plot_axis_y_line.fill_opacity(0)
+    plot_axis_y_line.stroke(image.options[:axis_color])
+    plot_axis_y_line.stroke_opacity(1.0)
+    plot_axis_y_line.stroke_width(1.0)
+    plot_axis_y_line.stroke_linecap('square')
+    plot_axis_y_line.stroke_linejoin('miter')
+
+    plot_axis_y_text.font_family('helvetica')
+    plot_axis_y_text.font_style(Magick::NormalStyle)
+    plot_axis_y_text.text_align(Magick::LeftAlign)
+    plot_axis_y_text.text_undercolor(image.options[:background_color])
+
+    value_axises.each do |y|
+      by = calc_bitmap_y(y)
+      plot_axis_y_line.line(
+        0, by.round,
+        @image.image.columns-1, by.round
+      )
+
+      plot_axis_y_text.text(
+        5,
+        by.round + 15,
+        "'#{y}'"
+      )
+    end
+
+    plot_axis_y_line.draw(@image.image)
+    plot_axis_y_text.draw(@image.image)
   end
+  
 end

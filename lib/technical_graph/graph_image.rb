@@ -28,7 +28,10 @@ class GraphImage
     # colors
     @options[:background_color] ||= 'white'
     @options[:background_hatch_color] ||= 'lightcyan2'
+    @options[:axis_color] ||= '#aaaaaa'
   end
+
+  attr_reader :options
 
   def width
     @options[:width].to_i
@@ -46,18 +49,6 @@ class GraphImage
     @options[:height] = h.to_i if h.to_i > 0
   end
 
-  def calc_bitmap_position( array )
-    
-  end
-
-  def calc_bitmap_x( _x )
-
-  end
-
-  def calc_bitmap_y( _y )
-    
-  end
-
   # Create background image
   def render_image
     @image = Magick::ImageList.new
@@ -71,6 +62,12 @@ class GraphImage
     )
 
     return @image
+  end
+  attr_reader :image
+
+  # Save output to file
+  def save_to_file(file)
+    @image.write(file)
   end
 
 
