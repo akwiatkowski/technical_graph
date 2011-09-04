@@ -40,6 +40,13 @@ class TechnicalGraph
     @layers.each do |l|
       @axis.process_data_layer(l)
     end
+    # draw axis
+    @axis.render_on_image(@image)
+    # draw layers
+    @layers.each do |l|
+      # @xis used for calculation purpose
+      l.render_on_image(@image, @axis)
+    end
   end
 
 end

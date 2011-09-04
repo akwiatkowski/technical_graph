@@ -46,6 +46,18 @@ class GraphImage
     @options[:height] = h.to_i if h.to_i > 0
   end
 
+  def calc_bitmap_position( array )
+    
+  end
+
+  def calc_bitmap_x( _x )
+
+  end
+
+  def calc_bitmap_y( _y )
+    
+  end
+
   # Create background image
   def render_image
     @image = Magick::ImageList.new

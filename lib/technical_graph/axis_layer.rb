@@ -1,6 +1,6 @@
 #encoding: utf-8
 
-# Decide min/max values and draw axises
+# Decide min/max values, recalculate all points and draw axises
 
 class AxisLayer
 
@@ -132,6 +132,12 @@ class AxisLayer
     end
 
     return new_yes
+  end
+
+  # Render axis on image
+  def render_on_image(image)
+    @image = image
+    # TODO
   end
 
 end

@@ -67,9 +67,11 @@ class DataLayer
     @data_params[:y_max]
   end
 
-  # Render data on image
-  def render(image)
-
+  # Render axis on image
+  def render_on_image(image, axis)
+    @image = image
+    @axis = axis
+    # TODO
   end
 
 end
