@@ -73,9 +73,6 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.layers.last.data.size > 0
       # checking ranger for layer
 
-      #@tg.layers.last.process_data
-      #puts @tg.layers.last.data.inspect
-
       @tg.render
 
 
@@ -88,6 +85,41 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.axis.x_max.should == 10
       @tg.axis.y_min.should == -8.0
       @tg.axis.y_max.should == 10.0
+
+
+
+      # adding another layer
+
+      # adding simple layer
+      layer_data = [
+        { :x => -21, :y => -93.0 },
+        { :x => -5, :y => 3.0 },
+        { :x => 39, :y => -8.0 },
+        { :x => 0, :y => 333.0 },
+        { :x => 10, :y => 50.0 }
+      ]
+      @tg.add_layer(layer_data)
+      # should be added
+      @tg.layers.last.data.size > 1
+
+      @tg.render
+
+      @tg.axis.x_min.should_not == x_min
+      @tg.axis.x_max.should_not == x_max
+      @tg.axis.y_min.should_not == y_min
+      @tg.axis.y_max.should_not == y_max
+
+      @tg.axis.x_min.should_not == -1
+      @tg.axis.x_max.should_not == 10
+      @tg.axis.y_min.should_not == -8.0
+      @tg.axis.y_max.should_not == 10.0
+
+      @tg.axis.x_min.should == -21
+      @tg.axis.x_max.should == 39
+      @tg.axis.y_min.should == -93.0
+      @tg.axis.y_max.should == 333.0
+
+
     end
 
 
