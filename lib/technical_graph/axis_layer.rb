@@ -1,8 +1,11 @@
 #encoding: utf-8
 
+require 'technical_graph/axis_layer_draw_module'
+
 # Decide min/max values, recalculate all points and draw axises
 
 class AxisLayer
+  include AxisLayerDrawModule
 
   def initialize(options = { })
     @options = options
@@ -13,6 +16,16 @@ class AxisLayer
     # :default - coords are default
     # :fixed or whatever else - min/max coords are fixed
     @options[:xy_behaviour] ||= :default
+
+    # number of axises
+    @options[:y_axises_count] ||= 10
+    @options[:x_axises_count] ||= 10
+    # interval
+    @options[:y_axises_every] ||= 1.0
+    @options[:x_axises_every] ||= 1.0
+    # when true then axises are generated to meet 'count'
+    @options[:x_axises_fixed_count] ||= true
+    @options[:y_axises_fixed_count] ||= true
 
     @zoom_x = 1.0
     @zoom_y = 1.0
@@ -132,12 +145,6 @@ class AxisLayer
     end
 
     return new_yes
-  end
-
-  # Render axis on image
-  def render_on_image(image)
-    @image = image
-    # TODO
   end
 
 end

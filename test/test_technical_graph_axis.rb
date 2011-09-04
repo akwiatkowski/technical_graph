@@ -179,6 +179,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.axis.raw_y_max.should == 5.0
 
 
+
     end
 
   end
