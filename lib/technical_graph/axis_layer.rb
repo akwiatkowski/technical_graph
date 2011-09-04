@@ -13,6 +13,9 @@ class AxisLayer
     # :default - coords are default
     # :fixed or whatever else - min/max coords are fixed
     @options[:xy_behaviour] ||= :default
+
+    @zoom_x = 1.0
+    @zoom_y = 1.0
   end
 
   # Ranges are fixed
@@ -20,6 +23,7 @@ class AxisLayer
     @options[:xy_behaviour] == :fixed
   end
 
+  # Ranges without zoom
   def x_min
     @options[:x_min]
   end
@@ -36,6 +40,24 @@ class AxisLayer
     @options[:y_max]
   end
 
+  # Ranges with zoom
+  def zoomed_x_min
+    calc_x_zoomed([self.x_min]).first
+  end
+
+  def zoomed_x_max
+    calc_x_zoomed([self.x_max]).first
+  end
+
+  def zoomed_y_min
+    calc_y_zoomed([self.y_min]).first
+  end
+
+  def zoomed_y_max
+    calc_y_zoomed([self.y_max]).first
+  end
+
+  # Accessors
   private
   def x_min=(x)
     @options[:x_min] = x
@@ -66,6 +88,50 @@ class AxisLayer
 
     self.y_min = data_layer.y_min if not data_layer.y_min.nil? and data_layer.y_min < y_min
     self.x_min = data_layer.x_min if not data_layer.x_min.nil? and data_layer.x_min < x_min
+  end
+
+  # Change overall image zoom
+  def zoom=(z = 1.0)
+    self.x_zoom = z
+    self.y_zoom = z
+  end
+
+  # Change X axis zoom
+  def x_zoom=(z = 1.0)
+    @zoom_x = z
+  end
+
+  # Change X axis zoom
+  def y_zoom=(z = 1.0)
+    @zoom_y = z
+  end
+
+  attr_reader :zoom_x, :zoom_y
+
+  # Calculate zoomed X position for Array of X'es
+  def calc_x_zoomed(old_xes)
+    a = (x_max.to_f + x_min.to_f) / 2.0
+    new_xes = Array.new
+
+    old_xes.each do |x|
+      d = x - a
+      new_xes << (a + d * self.zoom_x)
+    end
+
+    return new_xes
+  end
+
+  # Calculate zoomed Y position for Array of Y'es
+  def calc_y_zoomed(old_yes)
+    a = (y_max.to_f + y_min.to_f) / 2.0
+    new_yes = Array.new
+
+    old_yes.each do |y|
+      d = y - a
+      new_yes << (a + d * self.zoom_y)
+    end
+
+    return new_yes
   end
 
 end
