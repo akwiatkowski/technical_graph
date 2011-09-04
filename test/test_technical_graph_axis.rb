@@ -177,13 +177,94 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.axis.raw_x_max.should == 5
       @tg.axis.raw_y_min.should == -5.0
       @tg.axis.raw_y_max.should == 5.0
-
-
-
     end
 
-  end
 
+    should 'calculate axis with fixed interval' do
+      x_min = -5.0
+      x_max = 5.0
+      y_min = -5.0
+      y_max = 5.0
+
+      @tg = TechnicalGraph.new(
+        {
+          :x_min => x_min,
+          :x_max => x_max,
+          :y_min => y_min,
+          :y_max => y_max,
+          :xy_behaviour => :fixed,
+
+          :y_axises_count => 10,
+          :x_axises_count => 10,
+          :y_axises_interval => 1.0,
+          :x_axises_interval => 4.0,
+          :x_axises_fixed_interval => true,
+          :y_axises_fixed_interval => true
+        }
+      )
+
+      # adding simple layer
+      layer_data = [
+        { :x => -1, :y => 2.0 },
+        { :x => 1, :y => -2.0 },
+        { :x => 0, :y => 2.0 },
+        { :x => 1, :y => 2.0 }
+      ]
+      @tg.add_layer(layer_data)
+      # should be added
+      @tg.layers.last.data.size > 0
+      # checking ranger for layer
+
+      @tg.render
+
+      @tg.axis.value_axises.should == [-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0]
+      @tg.axis.parameter_axises.should == [-5.0, -1.0, 3.0]
+    end
+
+
+    should 'calculate axis with fixed count' do
+      x_min = -8.0
+      x_max = 8.0
+      y_min = -4.0
+      y_max = 4.0
+
+      @tg = TechnicalGraph.new(
+        {
+          :x_min => x_min,
+          :x_max => x_max,
+          :y_min => y_min,
+          :y_max => y_max,
+          :xy_behaviour => :fixed,
+
+          :x_axises_count => 8,
+          :y_axises_count => 4,
+          :x_axises_interval => 2.0,
+          :y_axises_interval => 1.0,
+          :x_axises_fixed_interval => false,
+          :y_axises_fixed_interval => false
+        }
+      )
+
+      # adding simple layer
+      layer_data = [
+        { :x => -1, :y => 2.0 },
+        { :x => 1, :y => -2.0 },
+        { :x => 0, :y => 2.0 },
+        { :x => 1, :y => 2.0 }
+      ]
+      @tg.add_layer(layer_data)
+      # should be added
+      @tg.layers.last.data.size > 0
+      # checking ranger for layer
+
+      @tg.render
+
+      @tg.axis.parameter_axises.should == [-8.0, -6.0, -4.0, -2.0, 0.0, 2.0, 4.0, 6.0]
+      @tg.axis.value_axises.should == [-4.0, -2.0, 0.0, 2.0]
+    end
+
+
+  end
 
 end
 

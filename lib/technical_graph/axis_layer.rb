@@ -21,11 +21,12 @@ class AxisLayer
     @options[:y_axises_count] ||= 10
     @options[:x_axises_count] ||= 10
     # interval
-    @options[:y_axises_every] ||= 1.0
-    @options[:x_axises_every] ||= 1.0
-    # when true then axises are generated to meet 'count'
-    @options[:x_axises_fixed_count] ||= true
-    @options[:y_axises_fixed_count] ||= true
+    @options[:y_axises_interval] ||= 1.0
+    @options[:x_axises_interval] ||= 1.0
+    # when false then axises are generated to meet 'count'
+    # when true then axises are generated every X from lowest
+    @options[:x_axises_fixed_interval] = true if @options[:x_axises_fixed_interval].nil?
+    @options[:y_axises_fixed_interval] = true if @options[:y_axises_fixed_interval].nil?
 
     @zoom_x = 1.0
     @zoom_y = 1.0
