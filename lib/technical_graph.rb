@@ -30,4 +30,9 @@ class TechnicalGraph
     @layers << DataLayer.new(data, options)
   end
 
+  # Create graph
+  def render
+    @image.render_image
+  end
+
 end

@@ -31,6 +31,10 @@ class GraphImage
     # :default - coords are default
     # :zoom or whatever else - min/max coords are fixed
     @options[:xy_behaviour] ||= :default
+
+    # colors
+    @options[:background_color] ||= 'white'
+    @options[:background_hatch_color] ||= 'lightcyan2'
   end
 
   def width
@@ -47,6 +51,21 @@ class GraphImage
 
   def height=(h)
     @options[:height] = h.to_i if h.to_i > 0
+  end
+
+  # Create background image
+  def render_image
+    @image = Magick::ImageList.new
+    @image.new_image(
+      width,
+      height,
+      Magick::HatchFill.new(
+        @options[:background_color],
+        @options[:background_hatch_color]
+      )
+    )
+
+    return @image
   end
 
 

@@ -71,9 +71,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
       @tg.add_layer
       layer = @tg.layers.last
       layer.data.size.should == 0
-      layer.append_data([
-                          { :x => 0, :y => 1 }
-                        ])
+      layer.append_data([{ :x => 0, :y => 1 }])
       layer.data.size.should == 1
 
       # uniq check
@@ -83,6 +81,20 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer.append_data([{ :x => 2, :y => 1 }])
       layer.data.size.should == 2
     end
+
+    should 'has ability to filter bad records' do
+      @tg.add_layer
+      layer = @tg.layers.last
+      layer.data.size.should == 0
+      layer.append_data([{ :x => 0, :y => 1 }])
+      layer.data.size.should == 1
+
+      # uniq check
+      layer.append_data([{ :z => 0, :y => 1 }])
+      layer.append_data([{}])
+      layer.data.size.should == 1
+    end
+
   end
 
 
