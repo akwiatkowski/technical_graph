@@ -32,7 +32,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
     end
   end
 
-  context 'basic layer operation' do
+  context 'basic layer operation and saving file' do
     setup do
       @tg = TechnicalGraph.new
       @data_size = 100
@@ -65,6 +65,9 @@ class TestTechnicalGraph < Test::Unit::TestCase
       # adding second data
       layer.append_data(@second_data)
       layer.data.size.should == 2 * @data_size
+
+      # @tg.render
+      # @tg.image.save_to_file('test0.png')
     end
 
     should 'has ability to filter records with similar x\'es' do
