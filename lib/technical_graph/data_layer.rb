@@ -94,6 +94,8 @@ class DataLayer
 
 
     (0...(@data.size - 1)).each do |i|
+      puts "Plotting #{i}/#{@data.size}"
+
       ax = @data[i][:x]
       ax = @axis.calc_bitmap_x(ax).round
       ay = @data[i][:y]
@@ -109,14 +111,17 @@ class DataLayer
         bx, by
       )
 
-      layer_text.text(
-        ax, ay,
-        "(#{@data[i][:x]},#{@data[i][:y]})"
-      )
+      #layer_text.text(
+      #  ax, ay,
+      #  "(#{@data[i][:x]},#{@data[i][:y]})"
+      #)
     end
 
+    t = Time.now
     layer_line.draw(@image.image)
+    puts "#{Time.now - t} drawing lines"
     layer_text.draw(@image.image)
+    puts "#{Time.now - t} drawing text"
 
   end
 

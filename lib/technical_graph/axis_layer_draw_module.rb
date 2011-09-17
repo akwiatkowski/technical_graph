@@ -66,7 +66,6 @@ module AxisLayerDrawModule
   end
 
   def render_values_axis
-
     plot_axis_y_line = Magick::Draw.new
     plot_axis_y_text = Magick::Draw.new
 
@@ -96,8 +95,11 @@ module AxisLayerDrawModule
       )
     end
 
+    t = Time.now
     plot_axis_y_line.draw(@image.image)
+    puts "#{Time.now - t} drawing lines"
     plot_axis_y_text.draw(@image.image)
+    puts "#{Time.now - t} drawing text"
 
   end
 
@@ -132,8 +134,11 @@ module AxisLayerDrawModule
       )
     end
 
+    t = Time.now
     plot_axis_x_line.draw(@image.image)
+    puts "#{Time.now - t} drawing lines"
     plot_axis_x_text.draw(@image.image)
+    puts "#{Time.now - t} drawing text"
 
   end
 
