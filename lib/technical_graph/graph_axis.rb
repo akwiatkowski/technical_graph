@@ -79,9 +79,16 @@ class GraphAxis
     render_parameters_axis
   end
 
+  def axis_antialias
+    options[:axis_antialias] == true
+  end
+
   def render_values_axis
     plot_axis_y_line = Magick::Draw.new
     plot_axis_y_text = Magick::Draw.new
+
+    plot_axis_y_line.stroke_antialias(axis_antialias)
+    plot_axis_y_text.text_antialias(image_drawer.font_antialias)
 
     plot_axis_y_line.fill_opacity(0)
     plot_axis_y_line.stroke(options[:axis_color])
@@ -121,6 +128,9 @@ class GraphAxis
 
     plot_axis_x_line = Magick::Draw.new
     plot_axis_x_text = Magick::Draw.new
+
+    plot_axis_x_line.stroke_antialias(axis_antialias)
+    plot_axis_x_text.text_antialias(axis_antialias)
 
     plot_axis_x_line.fill_opacity(0)
     plot_axis_x_line.stroke(options[:axis_color])

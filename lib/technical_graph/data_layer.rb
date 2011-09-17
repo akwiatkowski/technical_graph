@@ -37,6 +37,10 @@ class DataLayer
     return @data_params[:color] || 'blue'
   end
 
+  def antialias
+    return @data_params[:antialias] == false
+  end
+
   # Clear data
   def clear_data
     @data = Array.new

@@ -65,6 +65,10 @@ class GraphImageDrawer
     options[:height] = h.to_i if h.to_i > 0
   end
 
+  def font_antialias
+    options[:font_antialias] == true
+  end
+
   # Calculate image X position
   def calc_bitmap_x(_x)
     l = data_processor.x_max - data_processor.x_min
@@ -75,8 +79,9 @@ class GraphImageDrawer
   # Calculate image Y position
   def calc_bitmap_y(_y)
     l = data_processor.y_max - data_processor.y_min
-    offset = _y - data_processor.y_min
-    return (offset.to_f * width.to_f) / l.to_f
+    #offset = _y - data_processor.y_min
+    offset = data_processor.y_max - _y
+    return (offset.to_f * height.to_f) / l.to_f
   end
 
   # Create background image
@@ -101,6 +106,7 @@ class GraphImageDrawer
     layer_line = Magick::Draw.new
     layer_text = Magick::Draw.new
 
+    layer_line.stroke_antialias(l.antialias)
     layer_line.fill_opacity(0)
     layer_line.stroke(l.color)
     layer_line.stroke_opacity(1.0)
@@ -108,6 +114,8 @@ class GraphImageDrawer
     layer_line.stroke_linecap('square')
     layer_line.stroke_linejoin('miter')
 
+    layer_text.text_antialias(font_antialias)
+    layer_text.pointsize(10)
     layer_text.font_family('helvetica')
     layer_text.font_style(Magick::NormalStyle)
     layer_text.text_align(Magick::LeftAlign)
