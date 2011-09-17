@@ -14,39 +14,50 @@ require 'date'
 # * :default - use them as default ranges
 # * :fixed - ranges will not be changed during addition of layers
 
-class GraphImage
+class GraphImageDrawer
+
+  attr_reader :technical_graph
+
+  # Accessor for options Hash
+  def options
+    @technical_graph.options
+  end
+
+  # Accessor for DataLayer Array
+  def layers
+    @technical_graph.layers
+  end
 
   # default sizes
   DEFAULT_WIDTH = 1600
   DEFAULT_HEIGHT = 1200
 
-  def initialize(options = { })
-    @options = options
-    @options[:width] ||= DEFAULT_WIDTH
-    @options[:height] ||= DEFAULT_HEIGHT
+  def initialize(technical_graph)
+    @technical_graph = technical_graph
+
+    options[:width] ||= DEFAULT_WIDTH
+    options[:height] ||= DEFAULT_HEIGHT
 
     # colors
-    @options[:background_color] ||= 'white'
-    @options[:background_hatch_color] ||= 'lightcyan2'
-    @options[:axis_color] ||= '#aaaaaa'
+    options[:background_color] ||= 'white'
+    options[:background_hatch_color] ||= 'lightcyan2'
+    options[:axis_color] ||= '#aaaaaa'
   end
 
-  attr_reader :options
-
   def width
-    @options[:width].to_i
+    options[:width].to_i
   end
 
   def height
-    @options[:height].to_i
+    options[:height].to_i
   end
 
   def width=(w)
-    @options[:width] = w.to_i if w.to_i > 0
+    options[:width] = w.to_i if w.to_i > 0
   end
 
   def height=(h)
-    @options[:height] = h.to_i if h.to_i > 0
+    options[:height] = h.to_i if h.to_i > 0
   end
 
   # Create background image
