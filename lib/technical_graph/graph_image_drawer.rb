@@ -33,6 +33,11 @@ class GraphImageDrawer
     @technical_graph.data_processor
   end
 
+  def truncate_string
+    options[:truncate_string]
+  end
+
+
   # default sizes
   DEFAULT_WIDTH = 1600
   DEFAULT_HEIGHT = 1200
@@ -107,7 +112,8 @@ class GraphImageDrawer
     layer_text = Magick::Draw.new
 
     layer_line.stroke_antialias(l.antialias)
-    layer_line.fill_opacity(0)
+    layer_line.fill(l.color)
+    layer_line.fill_opacity(1)
     layer_line.stroke(l.color)
     layer_line.stroke_opacity(1.0)
     layer_line.stroke_width(1.0)
@@ -121,6 +127,8 @@ class GraphImageDrawer
     layer_text.text_align(Magick::LeftAlign)
     layer_text.text_undercolor(options[:background_color])
 
+    # calculate coords, draw text, and then lines and circles
+    coords = Array.new
 
     (0...(l.data.size - 1)).each do |i|
       ax = l.data[i][:x]
@@ -133,20 +141,42 @@ class GraphImageDrawer
       by = l.data[i+1][:y]
       by = calc_bitmap_y(by).round
 
-      layer_line.line(
-        ax, ay,
-        bx, by
-      )
-
-      layer_text.text(
-        ax, ay,
-        "(#{l.data[i][:x]},#{l.data[i][:y]})"
-      )
+      coords << {
+        :ax => ax, :ay => ay,
+        :bx => bx, :by => by,
+        :dy => l.data[i][:y]
+      }
     end
 
-    layer_line.draw(@image)
+    # labels
+    coords.each do |c|
+      string_label = "#{truncate_string % c[:dy]}"
+      layer_text.text(
+        c[:ax] + 5, c[:ay],
+        string_label
+      )
+    end
     layer_text.draw(@image)
 
+    # lines and circles
+    coords.each do |c|
+      # additional circle
+      layer_line.circle(
+        c[:ax], c[:ay],
+        c[:ax] + 3, c[:ay]
+      )
+      layer_line.circle(
+        c[:bx], c[:by],
+        c[:bx] + 3, c[:by]
+      )
+
+      # line
+      layer_line.line(
+        c[:ax], c[:ay],
+        c[:bx], c[:by]
+      )
+    end
+    layer_line.draw(@image)
 
   end
 

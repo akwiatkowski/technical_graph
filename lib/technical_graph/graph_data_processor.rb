@@ -39,6 +39,9 @@ class GraphDataProcessor
     options[:x_axises_fixed_interval] = true if options[:x_axises_fixed_interval].nil?
     options[:y_axises_fixed_interval] = true if options[:y_axises_fixed_interval].nil?
 
+    # default truncate string used for rendering numbers
+    options[:truncate_string] ||= "%.2f"
+
     @zoom_x = 1.0
     @zoom_y = 1.0
   end
