@@ -168,4 +168,5 @@ class GraphDataProcessor
 
     return new_yes
   end
+
 end

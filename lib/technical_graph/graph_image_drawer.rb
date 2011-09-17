@@ -60,20 +60,35 @@ class GraphImageDrawer
     options[:height] = h.to_i if h.to_i > 0
   end
 
+  # Calculate image X position
+  def calc_bitmap_x(_x)
+    l = self.x_max - self.x_min
+    offset = _x - self.x_min
+    return (offset.to_f * @image.width.to_f) / l.to_f
+  end
+
+  # Calculate image Y position
+  def calc_bitmap_y(_y)
+    l = self.y_max - self.y_min
+    offset = _y - self.y_min
+    return (offset.to_f * @image.width.to_f) / l.to_f
+  end
+
   # Create background image
-  def render_image
+  def crate_blank_graph_image
     @image = Magick::ImageList.new
     @image.new_image(
       width,
       height,
       Magick::HatchFill.new(
-        @options[:background_color],
-        @options[:background_hatch_color]
+        options[:background_color],
+        options[:background_hatch_color]
       )
     )
 
     return @image
   end
+
   attr_reader :image
 
   # Save output to file
