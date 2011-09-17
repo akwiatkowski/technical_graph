@@ -1,7 +1,8 @@
 #encoding: utf-8
 
-# Store only data used for one layer
+# Stores only data used for one layer
 # Instances of this class are used elsewhere
+# Stores also drawing parameters for one layer
 
 class DataLayer
 
@@ -25,7 +26,16 @@ class DataLayer
     end
   end
 
-  attr_reader :data, :data_params
+  # Array of {:x =>, :y =>}
+  attr_reader :data
+
+  # Additional parameters
+  attr_reader :data_params
+
+  # Color of
+  def color
+    return @data_params[:color] || 'blue'
+  end
 
   # Clear data
   def clear_data

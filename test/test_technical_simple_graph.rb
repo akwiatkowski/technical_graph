@@ -5,8 +5,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
     should 'draw simple graph' do
       @tg = TechnicalGraph.new(
         {
-          :x_axises_count => 10,
-          :y_axises_count => 10,
+          :x_axises_count => 20,
+          :y_axises_count => 20,
           :x_axises_interval => 1.0,
           :y_axises_interval => 1.0,
           :x_axises_fixed_interval => false,
@@ -19,11 +19,12 @@ class TestTechnicalGraph < Test::Unit::TestCase
         }
       )
 
+      max = 50
 
       # adding simple layer
       layer_data = Array.new
-      (0..20).each do |i|
-        layer_data << { :x => Math.sin(i.to_f/10.0) * 10.0, :y => Math.cos(i.to_f/10.0) * 10.0 }
+      (0..max).each do |i|
+        layer_data << { :x => -10.0 + i.to_f, :y => 10.0 * Math.cos(i.to_f * (4.0 * 3.14 / max.to_f)) }
       end
       @tg.add_layer(layer_data)
       # should be added
@@ -32,7 +33,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file('test2.png')
+      @tg.image_drawer.save_to_file('test_simple.png')
     end
   end
 

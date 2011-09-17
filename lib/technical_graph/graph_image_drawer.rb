@@ -96,6 +96,52 @@ class GraphImageDrawer
 
   attr_reader :image
 
+  # Render data layer
+  def render_data_layer(l)
+    layer_line = Magick::Draw.new
+    layer_text = Magick::Draw.new
+
+    layer_line.fill_opacity(0)
+    layer_line.stroke(l.color)
+    layer_line.stroke_opacity(1.0)
+    layer_line.stroke_width(1.0)
+    layer_line.stroke_linecap('square')
+    layer_line.stroke_linejoin('miter')
+
+    layer_text.font_family('helvetica')
+    layer_text.font_style(Magick::NormalStyle)
+    layer_text.text_align(Magick::LeftAlign)
+    layer_text.text_undercolor(options[:background_color])
+
+
+    (0...(l.data.size - 1)).each do |i|
+      ax = l.data[i][:x]
+      ax = calc_bitmap_x(ax).round
+      ay = l.data[i][:y]
+      ay = calc_bitmap_y(ay).round
+
+      bx = l.data[i+1][:x]
+      bx = calc_bitmap_x(bx).round
+      by = l.data[i+1][:y]
+      by = calc_bitmap_y(by).round
+
+      layer_line.line(
+        ax, ay,
+        bx, by
+      )
+
+      layer_text.text(
+        ax, ay,
+        "(#{l.data[i][:x]},#{l.data[i][:y]})"
+      )
+    end
+
+    layer_line.draw(@image)
+    layer_text.draw(@image)
+
+
+  end
+
   # Save output to file
   def save_to_file(file)
     @image.write(file)

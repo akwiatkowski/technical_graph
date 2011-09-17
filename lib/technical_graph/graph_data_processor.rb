@@ -2,7 +2,7 @@
 
 require 'technical_graph/data_layer'
 
-# Calculate every aspect of graph
+# Calculate every aspect of graph, but not directly image oriented variables
 
 class GraphDataProcessor
   attr_reader :technical_graph

@@ -1,6 +1,6 @@
 #encoding: utf-8
 
-# Draw axis
+# Calculate axis (only) and draw them
 
 class GraphAxis
 
