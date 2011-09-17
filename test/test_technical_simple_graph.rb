@@ -32,7 +32,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image.save_to_file('test2.png')
+      @tg.image_drawer.save_to_file('test2.png')
     end
   end
 

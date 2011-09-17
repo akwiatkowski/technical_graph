@@ -16,6 +16,15 @@ class GraphAxis
     @technical_graph.layers
   end
 
+  # Calculate everything
+  def data_processor
+    @technical_graph.data_processor
+  end
+
+  def image_drawer
+    @technical_graph.image_drawer
+  end
+
   def initialize(technical_graph)
     @technical_graph = technical_graph
   end
@@ -31,12 +40,12 @@ class GraphAxis
 
   # Where to put axis values
   def value_axises
-    return calc_axis(self.y_min, self.y_max, options[:y_axises_interval], options[:y_axises_count], y_axis_fixed?)
+    return calc_axis(data_processor.y_min, data_processor.y_max, options[:y_axises_interval], options[:y_axises_count], y_axis_fixed?)
   end
 
   # Where to put axis values
   def parameter_axises
-    return calc_axis(self.x_min, self.x_max, options[:x_axises_interval], options[:x_axises_count], x_axis_fixed?)
+    return calc_axis(data_processor.x_min, data_processor.x_max, options[:x_axises_interval], options[:x_axises_count], x_axis_fixed?)
   end
 
   # Calculate axis using 2 methods
@@ -75,7 +84,7 @@ class GraphAxis
     plot_axis_y_text = Magick::Draw.new
 
     plot_axis_y_line.fill_opacity(0)
-    plot_axis_y_line.stroke(@image.options[:axis_color])
+    plot_axis_y_line.stroke(options[:axis_color])
     plot_axis_y_line.stroke_opacity(1.0)
     plot_axis_y_line.stroke_width(1.0)
     plot_axis_y_line.stroke_linecap('square')
@@ -84,13 +93,13 @@ class GraphAxis
     plot_axis_y_text.font_family('helvetica')
     plot_axis_y_text.font_style(Magick::NormalStyle)
     plot_axis_y_text.text_align(Magick::LeftAlign)
-    plot_axis_y_text.text_undercolor(@image.options[:background_color])
+    plot_axis_y_text.text_undercolor(options[:background_color])
 
     value_axises.each do |y|
-      by = calc_bitmap_y(y)
+      by = image_drawer.calc_bitmap_y(y)
       plot_axis_y_line.line(
         0, by.round,
-        @image.image.columns-1, by.round
+        @image.columns-1, by.round
       )
 
       plot_axis_y_text.text(
@@ -101,9 +110,9 @@ class GraphAxis
     end
 
     t = Time.now
-    plot_axis_y_line.draw(@image.image)
+    plot_axis_y_line.draw(@image)
     puts "#{Time.now - t} drawing lines"
-    plot_axis_y_text.draw(@image.image)
+    plot_axis_y_text.draw(@image)
     puts "#{Time.now - t} drawing text"
 
   end
@@ -114,7 +123,7 @@ class GraphAxis
     plot_axis_x_text = Magick::Draw.new
 
     plot_axis_x_line.fill_opacity(0)
-    plot_axis_x_line.stroke(@image.options[:axis_color])
+    plot_axis_x_line.stroke(options[:axis_color])
     plot_axis_x_line.stroke_opacity(1.0)
     plot_axis_x_line.stroke_width(1.0)
     plot_axis_x_line.stroke_linecap('square')
@@ -123,26 +132,26 @@ class GraphAxis
     plot_axis_x_text.font_family('helvetica')
     plot_axis_x_text.font_style(Magick::NormalStyle)
     plot_axis_x_text.text_align(Magick::LeftAlign)
-    plot_axis_x_text.text_undercolor(@image.options[:background_color])
+    plot_axis_x_text.text_undercolor(options[:background_color])
 
     parameter_axises.each do |x|
-      bx = calc_bitmap_x(x)
+      bx = image_drawer.calc_bitmap_x(x)
       plot_axis_x_line.line(
         bx.round, 0,
-        bx.round, @image.image.rows-1
+        bx.round, @image.rows-1
       )
 
       plot_axis_x_text.text(
         bx.round + 15,
-        @image.image.rows - 15,
+        @image.rows - 15,
         "#{x}"
       )
     end
 
     t = Time.now
-    plot_axis_x_line.draw(@image.image)
+    plot_axis_x_line.draw(@image)
     puts "#{Time.now - t} drawing lines"
-    plot_axis_x_text.draw(@image.image)
+    plot_axis_x_text.draw(@image)
     puts "#{Time.now - t} drawing text"
 
   end

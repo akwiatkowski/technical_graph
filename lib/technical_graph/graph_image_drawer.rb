@@ -28,6 +28,11 @@ class GraphImageDrawer
     @technical_graph.layers
   end
 
+  # Calculate everything
+  def data_processor
+    @technical_graph.data_processor
+  end
+
   # default sizes
   DEFAULT_WIDTH = 1600
   DEFAULT_HEIGHT = 1200
@@ -62,16 +67,16 @@ class GraphImageDrawer
 
   # Calculate image X position
   def calc_bitmap_x(_x)
-    l = self.x_max - self.x_min
-    offset = _x - self.x_min
-    return (offset.to_f * @image.width.to_f) / l.to_f
+    l = data_processor.x_max - data_processor.x_min
+    offset = _x - data_processor.x_min
+    return (offset.to_f * width.to_f) / l.to_f
   end
 
   # Calculate image Y position
   def calc_bitmap_y(_y)
-    l = self.y_max - self.y_min
-    offset = _y - self.y_min
-    return (offset.to_f * @image.width.to_f) / l.to_f
+    l = data_processor.y_max - data_processor.y_min
+    offset = _y - data_processor.y_min
+    return (offset.to_f * width.to_f) / l.to_f
   end
 
   # Create background image

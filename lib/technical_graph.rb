@@ -50,7 +50,7 @@ class TechnicalGraph
     # draw layers
     @layers.each do |l|
       # @xis used for calculation purpose
-      l.render_on_image(@image, @axis)
+      #l.render_on_image(@image, @axis)
     end
   end
 end
