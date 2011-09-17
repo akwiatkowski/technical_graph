@@ -1,9 +1,10 @@
 #encoding: utf-8
 
 require 'rubygems'
-require 'technical_graph/graph_image'
-require 'technical_graph/data_layer'
-require 'technical_graph/axis_layer'
+require 'technical_graph/graph_data_processor'
+#require 'technical_graph/graph_image'
+#require 'technical_graph/data_layer'
+#require 'technical_graph/axis_layer'
 
 # Universal class for creating graphs/charts.
 
@@ -19,34 +20,11 @@ class TechnicalGraph
 
   def initialize(options = { })
     @options = options
-    @image = GraphImage.new(@options)
-    @axis = AxisLayer.new(@options)
-    @layers = []
+    @data_processor = GraphDataProcessor.new(@options)
+    @layers = Array.new
   end
   attr_reader :options
-  attr_reader :image
+  attr_reader :data_processor
   attr_reader :layers
-  attr_reader :axis
-
-  # Add new data layer to layer array
-  def add_layer(data = [], options = {})
-    @layers << DataLayer.new(data, options)
-  end
-
-  # Create graph
-  def render
-    @image.render_image
-    # recalculate ranges
-    @layers.each do |l|
-      @axis.process_data_layer(l)
-    end
-    # draw axis
-    @axis.render_on_image(@image)
-    # draw layers
-    @layers.each do |l|
-      # @xis used for calculation purpose
-      l.render_on_image(@image, @axis)
-    end
-  end
 
 end
