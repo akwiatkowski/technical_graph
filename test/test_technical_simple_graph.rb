@@ -15,7 +15,10 @@ class TestTechnicalGraph < Test::Unit::TestCase
           :x_min => -10.0,
           :x_max => 10.0,
           :y_min => -10.0,
-          :y_max => 10.0
+          :y_max => 10.0,
+
+          :width => 4000,
+          :height => 3000
         }
       )
 

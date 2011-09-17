@@ -77,11 +77,15 @@ class GraphAxis
 
     render_values_axis
     render_parameters_axis
+
+    render_values_zero_axis
+    render_parameters_zero_axis
   end
 
   def axis_antialias
     options[:axis_antialias] == true
   end
+
 
   def render_values_axis
     plot_axis_y_line = Magick::Draw.new
@@ -121,7 +125,6 @@ class GraphAxis
     puts "#{Time.now - t} drawing lines"
     plot_axis_y_text.draw(@image)
     puts "#{Time.now - t} drawing text"
-
   end
 
   def render_parameters_axis
@@ -164,6 +167,82 @@ class GraphAxis
     plot_axis_x_text.draw(@image)
     puts "#{Time.now - t} drawing text"
 
+  end
+
+  # TODO: make it DRY
+  def render_values_zero_axis
+    plot_axis_y_line = Magick::Draw.new
+    plot_axis_y_text = Magick::Draw.new
+
+    plot_axis_y_line.stroke_antialias(axis_antialias)
+    plot_axis_y_text.text_antialias(image_drawer.font_antialias)
+
+    plot_axis_y_line.fill_opacity(0)
+    plot_axis_y_line.stroke(options[:axis_color])
+    plot_axis_y_line.stroke_opacity(1.0)
+    plot_axis_y_line.stroke_width(2.0)
+    plot_axis_y_line.stroke_linecap('square')
+    plot_axis_y_line.stroke_linejoin('miter')
+
+    plot_axis_y_text.font_family('helvetica')
+    plot_axis_y_text.font_style(Magick::NormalStyle)
+    plot_axis_y_text.text_align(Magick::LeftAlign)
+    plot_axis_y_text.text_undercolor(options[:background_color])
+
+    y = 0.0
+    by = image_drawer.calc_bitmap_y(y)
+    plot_axis_y_line.line(
+      0, by.round,
+      @image.columns-1, by.round
+    )
+
+    plot_axis_y_text.text(
+      5,
+      by.round + 15,
+      "#{y}"
+    )
+
+    # TODO: why normal axis does not need it?
+    plot_axis_y_line.draw(@image)
+    plot_axis_y_text.draw(@image)
+  end
+
+  def render_parameters_zero_axis
+
+    plot_axis_x_line = Magick::Draw.new
+    plot_axis_x_text = Magick::Draw.new
+
+    plot_axis_x_line.stroke_antialias(axis_antialias)
+    plot_axis_x_text.text_antialias(axis_antialias)
+
+    plot_axis_x_line.fill_opacity(0)
+    plot_axis_x_line.stroke(options[:axis_color])
+    plot_axis_x_line.stroke_opacity(1.0)
+    plot_axis_x_line.stroke_width(2.0)
+    plot_axis_x_line.stroke_linecap('square')
+    plot_axis_x_line.stroke_linejoin('miter')
+
+    plot_axis_x_text.font_family('helvetica')
+    plot_axis_x_text.font_style(Magick::NormalStyle)
+    plot_axis_x_text.text_align(Magick::LeftAlign)
+    plot_axis_x_text.text_undercolor(options[:background_color])
+
+    x = 0.0
+    bx = image_drawer.calc_bitmap_x(x)
+    plot_axis_x_line.line(
+      bx.round, 0,
+      bx.round, @image.rows-1
+    )
+
+    plot_axis_x_text.text(
+      bx.round + 15,
+      @image.rows - 15,
+      "#{x}"
+    )
+
+    # TODO: why normal axis does not need it?
+    plot_axis_x_line.draw(@image)
+    plot_axis_x_text.draw(@image)
   end
 
 end
