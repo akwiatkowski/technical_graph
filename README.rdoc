@@ -2,6 +2,12 @@
 
 Create neat graphs.
 
+= Usage
+
+Check currents test when documentation is not enough :)
+
+1. Create@tg = TechnicalGraph.new(
+
 == Contributing to technical-graph
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
