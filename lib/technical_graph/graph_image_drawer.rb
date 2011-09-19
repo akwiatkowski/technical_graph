@@ -185,6 +185,17 @@ class GraphImageDrawer
     @image.write(file)
   end
 
+  # Export image
+  def to_format(format)
+    i = @image.flatten_images
+    i.format = format
+    return i.to_blob
+  end
+
+  # Return binary PNG
+  def to_png
+    to_format('png')
+  end
+
 
 end
-

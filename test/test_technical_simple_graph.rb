@@ -34,12 +34,14 @@ class TestTechnicalGraph < Test::Unit::TestCase
       end
       @tg.add_layer(layer_data, layer_params)
       # should be added
-      #@tg.layers.last.data.size > 0
+      @tg.layers.last.data.size.should > 0
       # checking ranger for layer
 
       @tg.render
 
       @tg.image_drawer.save_to_file('test_simple.png')
+      @tg.image_drawer.to_png.class.should == String
+
     end
   end
 

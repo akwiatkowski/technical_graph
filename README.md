@@ -18,7 +18,7 @@ or
 > tg = TechnicalGraph.new( options )
 
 where:
- *   options - Hash of parameters, all parameters are described below.
+* options - Hash of parameters, all parameters are described below.
 
 2. Add layer
 
@@ -29,8 +29,8 @@ or
 > tg.add_layer(layer_data, layer_params)
 
 where:
- *   layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
- *   layer_params - Hash of other parameters, all parameters will be described later.
+* layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
+* layer_params - Hash of other parameters, all parameters will be described later.
 
 3. Render graph
 
@@ -42,41 +42,63 @@ where:
 
 or get image binary content.
 
-> ...
+> tg.image_drawer.to_format(format)
+
+where format is image format, ex. 'png', 'jpeg', ...
 
 
 Option's Hash
------
+-------------
 
 Default ranges:
 
- *   options[:x_min]
- *   options[:x_max]
- *   options[:y_min]
- *   options[:y_max]
+* options[:x_min]
+* options[:x_max]
+* options[:y_min]
+* options[:y_max]
 
-Ranges calculation mode.
- *   options[:xy_behaviour] = :default - ranges can be enlarged
- *   options[:xy_behaviour] = :fixed - fixed ranges
+Ranges calculation mode:
+
+* options[:xy_behaviour] = :default - ranges can be enlarged
+* options[:xy_behaviour] = :fixed - fixed ranges
 
 Axis can be calculated using fixed interval or fixed count per graph.
- *   options[:x_axis_fixed_interval] = true
- *   options[:y_axis_fixed_interval] = true
+
+* options[:x_axis_fixed_interval] = true
+* options[:y_axis_fixed_interval] = true
 
 If fixed interval is set you should specify interval:
- *   options[:y_axis_interval] = 1.0
- *   options[:x_axis_interval] = 1.0
+
+* options[:y_axis_interval] = 1.0
+* options[:x_axis_interval] = 1.0
 
 ...else, count of axis:
- *   options[:y_axis_count] = 10
- *   options[:x_axis_count] = 10
+
+* options[:y_axis_count] = 10
+* options[:x_axis_count] = 10
 
 Labels has truncate string to define precision. Default it is "%.2f".
- *   options[:truncate_string] = "%.2f"
+
+* options[:truncate_string] = "%.2f"
+
+Graph image size:
+
+* options[:width]
+* options[:height]
+
+Colors:
+
+Possible #RRGGBB or color names (ex. 'white').
+
+* options[:background_color] - background color of image
+* options[:background_hatch_color] - background hatch color
+* options[:axis_color] - color of axis
 
 
 Contributing to technical-graph
 -------------------------------
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=bobik314&url=https://github.com/akwiatkowski/technical_graph&title=technical_graph&language=en_GB&tags=github&category=software)
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
@@ -86,7 +108,6 @@ Contributing to technical-graph
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=bobik314&url=https://github.com/akwiatkowski/technical_graph&title=technical_graph&language=en_GB&tags=github&category=software) 
 
 Copyright
 ---------
