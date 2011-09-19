@@ -16,11 +16,13 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "technical_graph"
   gem.homepage = "http://github.com/akwiatkowski/technical_graph"
-  gem.license = "MIT"
+  gem.license = "LGPLv3"
   gem.summary = %Q{Create simple and neat graphs}
   gem.description = %Q{Create simple and neat graphs}
   gem.email = "bobikx@poczta.fm"
   gem.authors = ["Aleksander Kwiatkowski"]
+
+  #gem.files =  FileList["[A-Z]*", "{bin,generators,lib,test}/**/*", 'lib/jeweler/templates/.gitignore']
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
