@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{technical_graph}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.email = %q{bobikx@poczta.fm}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "lib/technical_graph.rb",
@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
     "lib/technical_graph/refactoring_backup/test/test_technical_graph.rb",
     "lib/technical_graph/refactoring_backup/test/test_technical_graph_axis.rb",
     "samples/1.png",
+    "technical_graph.gemspec",
     "test/helper.rb",
     "test/test_technical_graph.rb",
     "test/test_technical_graph_axis.rb",
