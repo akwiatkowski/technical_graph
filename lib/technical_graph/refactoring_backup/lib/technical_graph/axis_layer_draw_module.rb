@@ -1,41 +1,41 @@
 module AxisLayerDrawModule
   def x_axis_fixed?
-     @options[:x_axises_fixed_interval] == true
+     @options[:x_axis_fixed_interval] == true
    end
 
   # Value axis has fixed count
   def y_axis_fixed?
-     @options[:y_axises_fixed_interval] == true
+     @options[:y_axis_fixed_interval] == true
    end
 
   # Where to put axis values
-  def value_axises
-    return calc_axis(self.y_min, self.y_max, @options[:y_axises_interval], @options[:y_axises_count], y_axis_fixed?)
+  def value_axis
+    return calc_axis(self.y_min, self.y_max, @options[:y_axis_interval], @options[:y_axis_count], y_axis_fixed?)
   end
 
   # Where to put axis values
-  def parameter_axises
-    return calc_axis(self.x_min, self.x_max, @options[:x_axises_interval], @options[:x_axises_count], x_axis_fixed?)
+  def parameter_axis
+    return calc_axis(self.x_min, self.x_max, @options[:x_axis_interval], @options[:x_axis_count], x_axis_fixed?)
   end
 
   # Calculate axis using 2 methods
   def calc_axis(from, to, interval, count, fixed_interval)
-    axises = Array.new
+    axis = Array.new
     l = to - from
     current = from
     
     if fixed_interval
       while current < to
-        axises << current
+        axis << current
         current += interval
       end
-      return axises
+      return axis
 
     else
       (0...count).each do |i|
-        axises << from + (l.to_f * i.to_f) / count.to_f
+        axis << from + (l.to_f * i.to_f) / count.to_f
       end
-      return axises
+      return axis
 
     end
   end
@@ -81,7 +81,7 @@ module AxisLayerDrawModule
     plot_axis_y_text.text_align(Magick::LeftAlign)
     plot_axis_y_text.text_undercolor(@image.options[:background_color])
 
-    value_axises.each do |y|
+    value_axis.each do |y|
       by = calc_bitmap_y(y)
       plot_axis_y_line.line(
         0, by.round,
@@ -120,7 +120,7 @@ module AxisLayerDrawModule
     plot_axis_x_text.text_align(Magick::LeftAlign)
     plot_axis_x_text.text_undercolor(@image.options[:background_color])
 
-    parameter_axises.each do |x|
+    parameter_axis.each do |x|
       bx = calc_bitmap_x(x)
       plot_axis_x_line.line(
         bx.round, 0,

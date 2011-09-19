@@ -28,16 +28,16 @@ class GraphDataProcessor
     # :fixed or whatever else - min/max coords are fixed
     options[:xy_behaviour] ||= :default
 
-    # number of axises
-    options[:y_axises_count] ||= 10
-    options[:x_axises_count] ||= 10
+    # number of axis
+    options[:y_axis_count] ||= 10
+    options[:x_axis_count] ||= 10
     # interval
-    options[:y_axises_interval] ||= 1.0
-    options[:x_axises_interval] ||= 1.0
-    # when false then axises are generated to meet 'count'
-    # when true then axises are generated every X from lowest
-    options[:x_axises_fixed_interval] = true if options[:x_axises_fixed_interval].nil?
-    options[:y_axises_fixed_interval] = true if options[:y_axises_fixed_interval].nil?
+    options[:y_axis_interval] ||= 1.0
+    options[:x_axis_interval] ||= 1.0
+    # when false then axis are generated to meet 'count'
+    # when true then axis are generated every X from lowest
+    options[:x_axis_fixed_interval] = true if options[:x_axis_fixed_interval].nil?
+    options[:y_axis_fixed_interval] = true if options[:y_axis_fixed_interval].nil?
 
     # default truncate string used for rendering numbers
     options[:truncate_string] ||= "%.2f"

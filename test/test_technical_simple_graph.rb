@@ -5,20 +5,20 @@ class TestTechnicalGraph < Test::Unit::TestCase
     should 'draw simple graph' do
       @tg = TechnicalGraph.new(
         {
-          :x_axises_count => 20,
-          :y_axises_count => 20,
-          :x_axises_interval => 1.0,
-          :y_axises_interval => 1.0,
-          :x_axises_fixed_interval => false,
-          :y_axises_fixed_interval => false,
+          #:x_axis_count => 20,
+          #:y_axis_count => 20,
+          #:x_axis_interval => 1.0,
+          #:y_axis_interval => 1.0,
+          #:x_axis_fixed_interval => false,
+          #:y_axis_fixed_interval => false,
 
-          :x_min => -10.0,
-          :x_max => 10.0,
-          :y_min => -10.0,
-          :y_max => 10.0,
+          #:x_min => -10.0,
+          #:x_max => 10.0,
+          #:y_min => -10.0,
+          #:y_max => 10.0,
 
-          :width => 4000,
-          :height => 3000
+          #:width => 4000,
+          #:height => 3000
         }
       )
 
@@ -34,7 +34,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
       end
       @tg.add_layer(layer_data, layer_params)
       # should be added
-      @tg.layers.last.data.size > 0
+      #@tg.layers.last.data.size > 0
       # checking ranger for layer
 
       @tg.render
