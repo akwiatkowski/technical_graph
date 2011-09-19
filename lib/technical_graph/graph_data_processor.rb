@@ -20,8 +20,8 @@ class GraphDataProcessor
   def initialize(technical_graph)
     @technical_graph = technical_graph
 
-    options[:x_min] ||= (Time.now - 24 * 3600).to_f
-    options[:x_max] ||= Time.now.to_f
+    options[:x_min] ||= 0.0 #(Time.now - 24 * 3600).to_f
+    options[:x_max] ||= 1.0 #Time.now.to_f
     options[:y_min] ||= 0.0
     options[:y_max] ||= 1.0
     # :default - coords are default

@@ -25,6 +25,10 @@ class GraphAxis
     @technical_graph.image_drawer
   end
 
+  def truncate_string
+    options[:truncate_string]
+  end
+
   def initialize(technical_graph)
     @technical_graph = technical_graph
   end
@@ -113,10 +117,12 @@ class GraphAxis
         @image.columns-1, by.round
       )
 
+      string_label = "#{truncate_string % y}"
+
       plot_axis_y_text.text(
         5,
         by.round + 15,
-        "#{y}"
+        string_label
       )
     end
 
