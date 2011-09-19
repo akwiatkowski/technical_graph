@@ -160,10 +160,12 @@ class GraphAxis
         bx.round, @image.rows-1
       )
 
+      string_label = "#{truncate_string % x}"
+
       plot_axis_x_text.text(
         bx.round + 15,
         @image.rows - 15,
-        "#{x}"
+        string_label
       )
     end
 
