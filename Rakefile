@@ -19,7 +19,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/akwiatkowski/technical_graph"
   gem.license = "LGPLv3"
   gem.summary = %Q{Create simple and neat graphs}
-  gem.description = %Q{Create simple and neat graphs}
+  gem.description = %Q{Purpose of this gem is to create neat, simple, technical graphs. This is alternative to most new libraries which create small, candy graphs using JavaScript.}
   gem.email = "bobikx@poczta.fm"
   gem.authors = ["Aleksander Kwiatkowski"]
 
