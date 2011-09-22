@@ -84,6 +84,8 @@ class GraphAxis
 
     render_values_zero_axis
     render_parameters_zero_axis
+
+    render_axis_labels
   end
 
   def axis_antialias
@@ -251,6 +253,44 @@ class GraphAxis
     # TODO: why normal axis does not need it?
     plot_axis_x_line.draw(@image)
     plot_axis_x_text.draw(@image)
+  end
+
+  def render_axis_labels
+    if options[:x_axis_label].to_s.size > 0
+      plot_axis_text = Magick::Draw.new
+      plot_axis_text.text_antialias(axis_antialias)
+
+      plot_axis_text.font_family('helvetica')
+      plot_axis_text.font_style(Magick::NormalStyle)
+      plot_axis_text.text_align(Magick::LeftAlign)
+      plot_axis_text.text_undercolor(options[:background_color])
+
+      plot_axis_text.text(
+        (@image.columns / 2).to_i,
+        @image.rows - 40,
+        options[:x_axis_label].to_s
+      )
+      plot_axis_text.draw(@image)
+    end
+
+    if options[:y_axis_label].to_s.size > 0
+      plot_axis_text = Magick::Draw.new
+      plot_axis_text.text_antialias(axis_antialias)
+
+      plot_axis_text.font_family('helvetica')
+      plot_axis_text.font_style(Magick::NormalStyle)
+      plot_axis_text.text_align(Magick::LeftAlign)
+      plot_axis_text.text_undercolor(options[:background_color])
+
+      plot_axis_text = plot_axis_text.rotate(90)
+      plot_axis_text.text(
+        (@image.rows / 2).to_i,
+        -40,
+        options[:y_axis_label].to_s
+      )
+
+      plot_axis_text.draw(@image)
+    end
   end
 
 end

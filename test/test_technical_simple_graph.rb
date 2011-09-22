@@ -5,6 +5,11 @@ class TestTechnicalGraph < Test::Unit::TestCase
     should 'draw simple graph' do
       @tg = TechnicalGraph.new(
         {
+          :truncate_string => "%.1f",
+
+          :x_axis_label => 'x',
+          :y_axis_label => 'y',
+
           #:x_axis_count => 20,
           #:y_axis_count => 20,
           #:x_axis_interval => 1.0,
@@ -18,7 +23,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
           #:y_max => 10.0,
 
           #:width => 4000,
-          #:height => 3000
+          #:height => 3000,
         }
       )
 

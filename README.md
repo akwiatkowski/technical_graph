@@ -77,6 +77,12 @@ If fixed interval is set you should specify interval:
 * options[:y_axis_count] = 10
 * options[:x_axis_count] = 10
 
+Axis labels:
+
+* options[:x_axis_label] = 'x'
+* options[:y_axis_label] = 'y'
+
+
 Labels has truncate string to define precision. Default it is "%.2f".
 
 * options[:truncate_string] = "%.2f"

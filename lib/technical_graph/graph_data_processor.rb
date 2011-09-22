@@ -20,6 +20,10 @@ class GraphDataProcessor
   def initialize(technical_graph)
     @technical_graph = technical_graph
 
+    # axis label
+    options[:x_axis_label] ||= ''
+    options[:y_axis_label] ||= ''
+
     options[:x_min] ||= 0.0 #(Time.now - 24 * 3600).to_f
     options[:x_max] ||= 1.0 #Time.now.to_f
     options[:y_min] ||= 0.0
