@@ -1,11 +1,12 @@
 source "http://rubygems.org"
 
 gem 'rmagick'
-gem 'jeweler'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
 group :development do
+  gem 'jeweler'
+
   gem "shoulda"
   gem "bundler", "~> 1.0.0"
   gem "rspec"
