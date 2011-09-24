@@ -37,6 +37,10 @@ class GraphImageDrawer
     options[:truncate_string]
   end
 
+  def axis_font_size
+    options[:axis_font_size]
+  end
+
 
   # default sizes
   DEFAULT_WIDTH = 1600
@@ -52,6 +56,16 @@ class GraphImageDrawer
     options[:background_color] ||= 'white'
     options[:background_hatch_color] ||= 'lightcyan2'
     options[:axis_color] ||= '#aaaaaa'
+
+    # antialias
+    options[:layers_antialias] = false if options[:layers_antialias].nil?
+    options[:axis_antialias] = false if options[:axis_antialias].nil?
+    options[:font_antialias] = false if options[:font_antialias].nil?
+
+    # font sizes
+    options[:axis_font_size] ||= 10
+    options[:layers_font_size] ||= 10
+    options[:axis_label_font_size] ||= 10
   end
 
   def width
@@ -111,7 +125,11 @@ class GraphImageDrawer
     layer_line = Magick::Draw.new
     layer_text = Magick::Draw.new
 
-    layer_line.stroke_antialias(l.antialias)
+    # global layer antialias can be override using layer option
+    layer_antialias = l.antialias
+    layer_antialias = options[:layers_antialias] if layer_antialias.nil?
+
+    layer_line.stroke_antialias(layer_antialias)
     layer_line.fill(l.color)
     layer_line.fill_opacity(1)
     layer_line.stroke(l.color)
@@ -121,7 +139,7 @@ class GraphImageDrawer
     layer_line.stroke_linejoin('miter')
 
     layer_text.text_antialias(font_antialias)
-    layer_text.pointsize(10)
+    layer_text.pointsize(options[:layers_font_size])
     layer_text.font_family('helvetica')
     layer_text.font_style(Magick::NormalStyle)
     layer_text.text_align(Magick::LeftAlign)

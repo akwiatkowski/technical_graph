@@ -18,6 +18,7 @@ or
 > tg = TechnicalGraph.new( options )
 
 where:
+
 * options - Hash of parameters, all parameters are described below.
 
 2. Add layer
@@ -29,6 +30,7 @@ or
 > tg.add_layer(layer_data, layer_params)
 
 where:
+
 * layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
 * layer_params - Hash of other parameters, all parameters will be described later.
 
@@ -47,7 +49,7 @@ or get image binary content.
 where format is image format, ex. 'png', 'jpeg', ...
 
 
-Option's Hash
+Options Hash
 -------------
 
 Default ranges:
@@ -99,6 +101,26 @@ Possible #RRGGBB or color names (ex. 'white').
 * options[:background_color] - background color of image
 * options[:background_hatch_color] - background hatch color
 * options[:axis_color] - color of axis
+
+Anti-aliasing:
+
+* options[:axis_antialias] - use anti-aliasing for axis, default false
+* options[:layers_antialias] - use anti-aliasing for data layers, default false, can be override using layer option
+* options[:font_antialias] - use anti-aliasing for all fonts, default false
+
+Font size:
+
+* options[:layers_font_size] - size of font used for values in graph
+* options[:axis_font_size] - size of font used in axis
+* options[:axis_label_font_size] - size of font used in options[:x_axis_label] and options[:y_axis_label]
+
+
+
+Layer options Hash
+------------------
+
+* layer_options[:color] - color of graph layer
+* layer_options[:antialias] - use anti-aliasing for this, default false, override options[:layers_antialias]
 
 
 Contributing to technical-graph

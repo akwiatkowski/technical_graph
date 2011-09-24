@@ -7,8 +7,7 @@
 class DataLayer
 
   def initialize(d = [], options = { })
-    @options = options
-    @data_params = Hash.new
+    @data_params = options
 
     # set data and append initial data
     clear_data
@@ -38,7 +37,7 @@ class DataLayer
   end
 
   def antialias
-    return @data_params[:antialias] == false
+    return @data_params[:antialias]
   end
 
   # Clear data
@@ -54,7 +53,6 @@ class DataLayer
     @data.delete_if { |d| d[:x].nil? or d[:y].nil? }
     @data.sort! { |d, e| d[:x] <=> e[:x] }
 
-    @data_params = Hash.new
     # default X values, if data is not empty
     if @data.size > 0
       @data_params[:x_min] = @data.first[:x] || @options[:default_x_min]

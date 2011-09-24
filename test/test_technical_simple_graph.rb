@@ -10,6 +10,14 @@ class TestTechnicalGraph < Test::Unit::TestCase
           :x_axis_label => 'x',
           :y_axis_label => 'y',
 
+          :axis_antialias => true,
+          :layers_antialias => true,
+          :font_antialias => true,
+
+          :layers_font_size => 6,
+          :axis_font_size => 8,
+          :axis_label_font_size => 20,
+
           #:x_axis_count => 20,
           #:y_axis_count => 20,
           #:x_axis_interval => 1.0,
@@ -31,7 +39,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
 
       # adding simple layer
       layer_params = {
-        :antialias => true
+        :antialias => false,
+        :color => 'red'
       }
       layer_data = Array.new
       (0..max).each do |i|

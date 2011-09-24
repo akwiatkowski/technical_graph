@@ -107,6 +107,7 @@ class GraphAxis
     plot_axis_y_line.stroke_linecap('square')
     plot_axis_y_line.stroke_linejoin('miter')
 
+    plot_axis_y_text.pointsize(options[:axis_font_size])
     plot_axis_y_text.font_family('helvetica')
     plot_axis_y_text.font_style(Magick::NormalStyle)
     plot_axis_y_text.text_align(Magick::LeftAlign)
@@ -150,6 +151,7 @@ class GraphAxis
     plot_axis_x_line.stroke_linecap('square')
     plot_axis_x_line.stroke_linejoin('miter')
 
+    plot_axis_x_text.pointsize(options[:axis_font_size])
     plot_axis_x_text.font_family('helvetica')
     plot_axis_x_text.font_style(Magick::NormalStyle)
     plot_axis_x_text.text_align(Magick::LeftAlign)
@@ -165,7 +167,7 @@ class GraphAxis
       string_label = "#{truncate_string % x}"
 
       plot_axis_x_text.text(
-        bx.round + 15,
+        bx.round + 5,
         @image.rows - 15,
         string_label
       )
@@ -194,6 +196,7 @@ class GraphAxis
     plot_axis_y_line.stroke_linecap('square')
     plot_axis_y_line.stroke_linejoin('miter')
 
+    plot_axis_y_text.pointsize(options[:axis_font_size])
     plot_axis_y_text.font_family('helvetica')
     plot_axis_y_text.font_style(Magick::NormalStyle)
     plot_axis_y_text.text_align(Magick::LeftAlign)
@@ -232,6 +235,7 @@ class GraphAxis
     plot_axis_x_line.stroke_linecap('square')
     plot_axis_x_line.stroke_linejoin('miter')
 
+    plot_axis_x_text.pointsize(options[:axis_font_size])
     plot_axis_x_text.font_family('helvetica')
     plot_axis_x_text.font_style(Magick::NormalStyle)
     plot_axis_x_text.text_align(Magick::LeftAlign)
@@ -260,6 +264,7 @@ class GraphAxis
       plot_axis_text = Magick::Draw.new
       plot_axis_text.text_antialias(axis_antialias)
 
+      plot_axis_text.pointsize(options[:axis_label_font_size])
       plot_axis_text.font_family('helvetica')
       plot_axis_text.font_style(Magick::NormalStyle)
       plot_axis_text.text_align(Magick::LeftAlign)
@@ -277,6 +282,7 @@ class GraphAxis
       plot_axis_text = Magick::Draw.new
       plot_axis_text.text_antialias(axis_antialias)
 
+      plot_axis_text.pointsize(options[:axis_label_font_size])
       plot_axis_text.font_family('helvetica')
       plot_axis_text.font_style(Magick::NormalStyle)
       plot_axis_text.text_align(Magick::LeftAlign)
