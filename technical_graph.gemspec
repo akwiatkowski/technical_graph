@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{technical_graph}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = %q{2011-09-22}
-  s.description = %q{Create simple and neat graphs}
+  s.date = %q{2011-09-24}
+  s.description = %q{Purpose of this gem is to create neat, simple, technical graphs. This is alternative to most new libraries which create small, candy graphs using JavaScript.}
   s.email = %q{bobikx@poczta.fm}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
     "lib/technical_graph/refactoring_backup/test/test_technical_graph.rb",
     "lib/technical_graph/refactoring_backup/test/test_technical_graph_axis.rb",
     "samples/1.png",
+    "samples/home_io_batt_voltage.png",
     "technical_graph.gemspec",
     "test/helper.rb",
     "test/test_technical_graph.rb",
@@ -54,7 +55,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rmagick>, [">= 0"])
-      s.add_runtime_dependency(%q<jeweler>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
