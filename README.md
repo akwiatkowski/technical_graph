@@ -119,7 +119,7 @@ Font size:
 Layer options Hash
 ------------------
 
-* layer_options[:color] - color of graph layer
+* layer_options[:color] - color of graph layer, ex.: 'red', 'green', '#FFFF00'
 * layer_options[:antialias] - use anti-aliasing for this, default false, override options[:layers_antialias]
 
 

@@ -40,7 +40,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
       # adding simple layer
       layer_params = {
         :antialias => false,
-        :color => 'red'
+        #:color => 'red'
+        :color => '#FFFF00'
       }
       layer_data = Array.new
       (0..max).each do |i|
