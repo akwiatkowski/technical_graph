@@ -226,7 +226,7 @@ class GraphAxis
     plot_axis_x_text = Magick::Draw.new
 
     plot_axis_x_line.stroke_antialias(axis_antialias)
-    plot_axis_x_text.text_antialias(axis_antialias)
+    plot_axis_x_text.text_antialias(image_drawer.font_antialias)
 
     plot_axis_x_line.fill_opacity(0)
     plot_axis_x_line.stroke(options[:axis_color])
@@ -262,7 +262,7 @@ class GraphAxis
   def render_axis_labels
     if options[:x_axis_label].to_s.size > 0
       plot_axis_text = Magick::Draw.new
-      plot_axis_text.text_antialias(axis_antialias)
+      plot_axis_text.text_antialias(image_drawer.font_antialias)
 
       plot_axis_text.pointsize(options[:axis_label_font_size])
       plot_axis_text.font_family('helvetica')
@@ -280,7 +280,7 @@ class GraphAxis
 
     if options[:y_axis_label].to_s.size > 0
       plot_axis_text = Magick::Draw.new
-      plot_axis_text.text_antialias(axis_antialias)
+      plot_axis_text.text_antialias(image_drawer.font_antialias)
 
       plot_axis_text.pointsize(options[:axis_label_font_size])
       plot_axis_text.font_family('helvetica')
