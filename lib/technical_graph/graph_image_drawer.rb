@@ -73,9 +73,13 @@ class GraphImageDrawer
     options[:axis_label_font_size] ||= 10
 
     # legend
-    options[:legend] = false if options[:font_antialias].nil?
+    options[:legend] = false if options[:legend].nil?
+    options[:legend_auto] = true if options[:legend_auto].nil?
     options[:legend_x] ||= 50
     options[:legend_y] ||= 50
+
+    # array of all points drawn on graph, used for auto positioning of legend
+    @drawn_points = Array.new
   end
 
   def width
@@ -104,6 +108,10 @@ class GraphImageDrawer
 
   def legend_y
     options[:legend_y]
+  end
+
+  def legend_auto_position
+    options[:legend_auto]
   end
 
   # Calculate image X position
@@ -219,12 +227,62 @@ class GraphImageDrawer
         c[:ax], c[:ay],
         c[:bx], c[:by]
       )
+
+      # used for auto positioning of legend
+      if legend_auto_position
+        @drawn_points << {:x => c[:ax], :y => c[:ay]}
+        @drawn_points << {:x => c[:bx], :y => c[:by]}
+      end
     end
     layer_line.draw(@image)
 
   end
 
+  # Choose best location
+  def recalculate_legend_position
+    return unless legend_auto_position
+    puts "Auto position calculation, drawn points #{@drawn_points.size}"
+
+    border_distance = 50
+
+    # check 8 places:
+    positions = [
+      {:x => border_distance, :y => 0 + border_distance}, # top-left
+      {:x => width/2, :y => 0 + border_distance}, # top-center
+      {:x => width - border_distance, :y => 0 + border_distance}, # top-right
+      {:x => border_distance, :y => height/2}, # middle-left
+      {:x => width - border_distance, :y => height/2}, # middle-right
+      {:x => border_distance, :y => height - border_distance}, # bottom-left
+      {:x => width/2, :y => height - border_distance}, # bottom-center
+      {:x => width - border_distance, :y => height - border_distance}, # bottom-right
+    ]
+
+    # calculate nearest distance of all drawn points
+    positions.each do |p|
+      p[:distance] = (width ** 2 + height ** 2) ** 0.5 # max distance, diagonal of graph
+      @drawn_points.each do |dp|
+        # calculate drawn point distance to being checked now legend position
+        two_points_distance = ( (p[:x] - dp[:x]) ** 2 + (p[:y] - dp[:y]) ** 2 ) ** 0.5
+        # modify only if distance is closer
+        if p[:distance] > two_points_distance
+          p[:distance] = two_points_distance
+        end
+      end
+    end
+
+    # chose position with hihest distance
+    positions.sort!{|a,b| a[:distance] <=> b[:distance]}
+    best_position = positions.last
+    options[:legend_x] = best_position[:x]
+    options[:legend_y] = best_position[:y]
+
+    puts "Best position x #{options[:legend_x]}, y #{options[:legend_y]}, distance #{best_position[:distance]}"
+  end
+
+  # Render legend on graph
   def render_data_legend
+    recalculate_legend_position
+
     legend_text = Magick::Draw.new
     legend_text_antialias = options[:layers_font_size]
     legend_text.stroke_antialias(legend_text_antialias)

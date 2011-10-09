@@ -124,6 +124,7 @@ size will be enlarged to maintain set distanced between axis.
 Legend options:
 
 * options[:legend] - draw legend, default false
+* options[:legend_auto] - let legend position to be chosen by algorithm, default true
 * options[:legend_x] - legend X position, default 50
 * options[:legend_y] - legend Y position, default 50
 
