@@ -40,6 +40,10 @@ class DataLayer
     return @data_params[:antialias]
   end
 
+  def label
+    return @data_params[:label] || '' #'data'
+  end
+
   # Clear data
   def clear_data
     @data = Array.new

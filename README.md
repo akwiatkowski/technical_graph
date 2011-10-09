@@ -121,6 +121,12 @@ size will be enlarged to maintain set distanced between axis.
 * options[:x_axis_min_distance] - minimum distance between X axis, default 30 pixels
 * options[:y_axis_min_distance] - minimum distance between X axis, default 50 pixels
 
+Legend options:
+
+* options[:legend] - draw legend, default false
+* options[:legend_x] - legend X position, default 50
+* options[:legend_y] - legend Y position, default 50
+
 
 Layer options Hash
 ------------------

@@ -51,5 +51,7 @@ class TechnicalGraph
     @layers.each do |l|
       @image_drawer.render_data_layer(l)
     end
+    # draw legend
+    @image_drawer.render_data_legend
   end
 end

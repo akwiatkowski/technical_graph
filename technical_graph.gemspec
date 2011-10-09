@@ -29,10 +29,7 @@ Gem::Specification.new do |s|
     "lib/technical_graph/graph_data_processor.rb",
     "lib/technical_graph/graph_image_drawer.rb",
     "test/helper.rb",
-    "test/test_technical_axis_enlarge.rb",
-    "test/test_technical_graph.rb",
-    "test/test_technical_graph_axis.rb",
-    "test/test_technical_simple_graph.rb"
+    "test/test_technical_multilayer.rb"
   ]
   s.homepage = %q{http://github.com/akwiatkowski/technical_graph}
   s.licenses = ["LGPLv3"]

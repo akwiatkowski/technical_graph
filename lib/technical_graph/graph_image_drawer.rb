@@ -71,6 +71,11 @@ class GraphImageDrawer
     options[:axis_font_size] ||= 10
     options[:layers_font_size] ||= 10
     options[:axis_label_font_size] ||= 10
+
+    # legend
+    options[:legend] = false if options[:font_antialias].nil?
+    options[:legend_x] ||= 50
+    options[:legend_y] ||= 50
   end
 
   def width
@@ -91,6 +96,14 @@ class GraphImageDrawer
 
   def font_antialias
     options[:font_antialias] == true
+  end
+
+  def legend_x
+    options[:legend_x]
+  end
+
+  def legend_y
+    options[:legend_y]
   end
 
   # Calculate image X position
@@ -209,6 +222,40 @@ class GraphImageDrawer
     end
     layer_line.draw(@image)
 
+  end
+
+  def render_data_legend
+    legend_text = Magick::Draw.new
+    legend_text_antialias = options[:layers_font_size]
+    legend_text.stroke_antialias(legend_text_antialias)
+    legend_text.text_antialias(legend_text_antialias)
+    legend_text.pointsize(options[:axis_font_size])
+    legend_text.font_family('helvetica')
+    legend_text.font_style(Magick::NormalStyle)
+    legend_text.text_align(Magick::LeftAlign)
+    legend_text.text_undercolor(options[:background_color])
+
+    y = legend_x
+    x = legend_y
+
+    layers.each do |l|
+      legend_text.fill(l.color)
+      
+      string_label = l.label
+      legend_text.text(
+        x, y,
+        string_label
+      )
+
+      # little dot
+      legend_text.circle(
+        x - 10, y,
+        x - 10 + 3, y
+      )
+
+      y += 15
+    end
+    legend_text.draw(@image)
   end
 
   # Save output to file
