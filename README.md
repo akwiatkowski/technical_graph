@@ -123,17 +123,18 @@ size will be enlarged to maintain set distanced between axis.
 
 Legend options:
 
-* options[:legend] - draw legend, default false
+* options[:legend] - do you want to draw legend?, default false
 * options[:legend_auto] - let legend position to be chosen by algorithm, default true
 * options[:legend_width] - width used for setting proper distance while drawing on right, default 100, legend height is calculated
 * options[:legend_margin] - graph margin used not to draw legend on border, default 50
-* options[:legend_x] - legend X position, default 50
-* options[:legend_y] - legend Y position, default 50
+* options[:legend_x] - legend X position, used when options[:legend_auto] is false, default 50
+* options[:legend_y] - legend Y position, used when options[:legend_auto] is false, default 50
 
 
 Layer options Hash
 ------------------
 
+* layer_options[:label] - label used in legend
 * layer_options[:color] - color of graph layer, ex.: 'red', 'green', '#FFFF00'
 * layer_options[:antialias] - use anti-aliasing for this, default false, override options[:layers_antialias]
 
