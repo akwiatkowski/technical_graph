@@ -17,9 +17,6 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    ".document",
-    ".idea/dictionaries/olek.xml",
-    ".rvmrc",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
@@ -31,14 +28,6 @@ Gem::Specification.new do |s|
     "lib/technical_graph/graph_axis.rb",
     "lib/technical_graph/graph_data_processor.rb",
     "lib/technical_graph/graph_image_drawer.rb",
-    "lib/technical_graph/refactoring_backup/lib/technical_graph.rb",
-    "lib/technical_graph/refactoring_backup/lib/technical_graph/axis_layer.rb",
-    "lib/technical_graph/refactoring_backup/lib/technical_graph/axis_layer_draw_module.rb",
-    "lib/technical_graph/refactoring_backup/test/test_technical_graph.rb",
-    "lib/technical_graph/refactoring_backup/test/test_technical_graph_axis.rb",
-    "samples/1.png",
-    "samples/home_io_batt_voltage.png",
-    "technical_graph.gemspec",
     "test/helper.rb",
     "test/test_technical_axis_enlarge.rb",
     "test/test_technical_graph.rb",
@@ -56,7 +45,6 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rmagick>, [">= 0"])
-      s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
@@ -64,7 +52,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<rmagick>, [">= 0"])
-      s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<rspec>, [">= 0"])
@@ -73,7 +60,6 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rmagick>, [">= 0"])
-    s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<rspec>, [">= 0"])

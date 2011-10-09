@@ -24,6 +24,9 @@ Jeweler::Tasks.new do |gem|
   gem.authors = ["Aleksander Kwiatkowski"]
 
   #gem.files =  FileList["[A-Z]*", "{bin,generators,lib,test}/**/*", 'lib/jeweler/templates/.gitignore']
+  gem.files =  FileList[
+    "[A-Z]*", "{bin,generators,lib,test}/**/*"
+  ]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
