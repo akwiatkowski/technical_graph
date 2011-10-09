@@ -114,6 +114,12 @@ Font size:
 * options[:axis_font_size] - size of font used in axis
 * options[:axis_label_font_size] - size of font used in options[:x_axis_label] and options[:y_axis_label]
 
+Sometime because of axis options and large amount of data, axis can be put densely on graph. Turning this option graph
+size will be enlarged to maintain set distanced between axis.
+
+* options[:axis_density_enlarge_image] - turn this options on
+* options[:x_axis_min_distance] - minimum distance between X axis, default 30 pixels
+* options[:y_axis_min_distance] - minimum distance between X axis, default 50 pixels
 
 
 Layer options Hash

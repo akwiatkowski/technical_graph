@@ -33,6 +33,11 @@ class GraphImageDrawer
     @technical_graph.data_processor
   end
 
+  # Axis processing
+  def graph_axis
+    @technical_graph.axis
+  end
+
   def truncate_string
     options[:truncate_string]
   end
@@ -103,8 +108,16 @@ class GraphImageDrawer
     return (offset.to_f * height.to_f) / l.to_f
   end
 
+  # Everything that must be done before creating image
+  def pre_image_create_calculations
+    # check axis density and enlarge if this option is on
+    graph_axis.axis_distance_image_enlarge
+  end
+
   # Create background image
   def crate_blank_graph_image
+    pre_image_create_calculations
+
     @image = Magick::ImageList.new
     @image.new_image(
       width,

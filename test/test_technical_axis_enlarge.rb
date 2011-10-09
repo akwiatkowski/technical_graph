@@ -1,8 +1,8 @@
 require 'helper'
 
-class TestTechnicalSimpleGraph < Test::Unit::TestCase
+class TestTechnicalAxisEnlarge < Test::Unit::TestCase
   context 'initial options' do
-    should 'draw simple graph' do
+    should 'enlarge image' do
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.1f",
@@ -14,24 +14,28 @@ class TestTechnicalSimpleGraph < Test::Unit::TestCase
           :layers_antialias => true,
           :font_antialias => true,
 
-          :layers_font_size => 6,
+          :layers_font_size => 8,
           :axis_font_size => 8,
           :axis_label_font_size => 20,
 
-          #:x_axis_count => 20,
-          #:y_axis_count => 20,
+          :x_axis_count => 50,
+          :y_axis_count => 50,
           #:x_axis_interval => 1.0,
           #:y_axis_interval => 1.0,
-          #:x_axis_fixed_interval => false,
-          #:y_axis_fixed_interval => false,
+          :x_axis_fixed_interval => false,
+          :y_axis_fixed_interval => false,
 
           #:x_min => -10.0,
           #:x_max => 10.0,
           #:y_min => -10.0,
           #:y_max => 10.0,
 
-          #:width => 4000,
-          #:height => 3000,
+          :width => 800,
+          :height => 600,
+
+          :axis_density_enlarge_image => true,
+          :x_axis_min_distance => 50,
+          :y_axis_min_distance => 50,
         }
       )
 
@@ -54,7 +58,8 @@ class TestTechnicalSimpleGraph < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file('test_simple.png')
+      @tg.image_drawer.save_to_file('test_axis_enlarge.png')
+      @tg.image_drawer.save_to_file('test_axis_enlarge.svg')
       @tg.image_drawer.to_png.class.should == String
 
     end

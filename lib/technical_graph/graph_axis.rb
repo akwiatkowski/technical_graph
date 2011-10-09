@@ -74,6 +74,53 @@ class GraphAxis
     end
   end
 
+  # Enlarge image to maintain proper axis density
+  def axis_distance_image_enlarge
+    if options[:axis_density_enlarge_image]
+      x_axis_distance_image_enlarge
+      y_axis_distance_image_enlarge
+    end
+  end
+
+  # Enlarge image to maintain proper axis density
+  def x_axis_distance_image_enlarge
+    a = parameter_axis
+    # must be at least 2 axis
+    return if a.size < 2
+
+    ax = a[0]
+    ax = image_drawer.calc_bitmap_y(ax).round
+    bx = a[1]
+    bx = image_drawer.calc_bitmap_y(bx).round
+
+    axis_distance = (bx - ax).abs
+
+    if axis_distance < options[:x_axis_min_distance]
+      # enlarging image
+      options[:old_width] = options[:width]
+      options[:width] *= (options[:x_axis_min_distance] / axis_distance).ceil
+    end
+  end
+
+  # Enlarge image to maintain proper axis density
+  def y_axis_distance_image_enlarge
+    a = value_axis
+    # must be at least 2 axis
+    return if a.size < 2
+
+    ay = a[0]
+    ay = image_drawer.calc_bitmap_y(ay).round
+    by = a[1]
+    by = image_drawer.calc_bitmap_y(by).round
+
+    axis_distance = (by - ay).abs
+
+    if axis_distance < options[:y_axis_min_distance]
+      # enlarging image
+      options[:old_height] = options[:height]
+      options[:height] *= (options[:y_axis_min_distance] / axis_distance).ceil
+    end
+  end
 
   # Render axis on image
   def render_on_image(image)
