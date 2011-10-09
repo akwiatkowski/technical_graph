@@ -24,12 +24,22 @@ Jeweler::Tasks.new do |gem|
   gem.authors = ["Aleksander Kwiatkowski"]
 
   #gem.files =  FileList["[A-Z]*", "{bin,generators,lib,test}/**/*", 'lib/jeweler/templates/.gitignore']
-  gem.files =  FileList[
+  gem.files = FileList[
     "[A-Z]*", "{bin,generators,lib,test}/**/*"
   ]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
+
+desc "Remove all images created during tests"
+task :clean do
+  `rm *.svg`
+  `rm *.png`
+end
+
+desc "Clean and release"
+task :clean_and_release => [:clean, :release] do
+end
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
