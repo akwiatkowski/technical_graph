@@ -48,8 +48,8 @@ pkg
 #*.rbc
 
 # sample images
-*.png
-*.svg
+./*.png
+./*.svg
 
 # my garbage
 lib/technical_graph/del/

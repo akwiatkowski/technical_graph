@@ -77,6 +77,8 @@ class GraphImageDrawer
     options[:legend_auto] = true if options[:legend_auto].nil?
     options[:legend_x] ||= 50
     options[:legend_y] ||= 50
+    options[:legend_width] ||= 100
+    options[:legend_margin] ||= 50
 
     # array of all points drawn on graph, used for auto positioning of legend
     @drawn_points = Array.new
@@ -102,6 +104,10 @@ class GraphImageDrawer
     options[:font_antialias] == true
   end
 
+  def draw_legend?
+    options[:legend]
+  end
+
   def legend_x
     options[:legend_x]
   end
@@ -112,6 +118,14 @@ class GraphImageDrawer
 
   def legend_auto_position
     options[:legend_auto]
+  end
+
+  def legend_width
+    options[:legend_width]
+  end
+
+  def legend_margin
+    options[:legend_margin]
   end
 
   # Calculate image X position
@@ -238,23 +252,26 @@ class GraphImageDrawer
 
   end
 
+  # height of 1 layer
+  ONE_LAYER_LEGEND_HEIGHT = 15
+
   # Choose best location
   def recalculate_legend_position
     return unless legend_auto_position
     puts "Auto position calculation, drawn points #{@drawn_points.size}"
 
-    border_distance = 50
+    legend_height = layers.size * ONE_LAYER_LEGEND_HEIGHT
 
     # check 8 places:
     positions = [
-      {:x => border_distance, :y => 0 + border_distance}, # top-left
-      {:x => width/2, :y => 0 + border_distance}, # top-center
-      {:x => width - border_distance, :y => 0 + border_distance}, # top-right
-      {:x => border_distance, :y => height/2}, # middle-left
-      {:x => width - border_distance, :y => height/2}, # middle-right
-      {:x => border_distance, :y => height - border_distance}, # bottom-left
-      {:x => width/2, :y => height - border_distance}, # bottom-center
-      {:x => width - border_distance, :y => height - border_distance}, # bottom-right
+      {:x => legend_margin, :y => 0 + legend_margin}, # top-left
+      {:x => width/2, :y => 0 + legend_margin}, # top-center
+      {:x => width - legend_margin - legend_width, :y => 0 + legend_margin}, # top-right
+      {:x => legend_margin, :y => height/2}, # middle-left
+      {:x => width - legend_margin - legend_width, :y => height/2}, # middle-right
+      {:x => legend_margin, :y => height - legend_margin - legend_height}, # bottom-left
+      {:x => width/2, :y => height - legend_margin - legend_height}, # bottom-center
+      {:x => width - legend_margin - legend_width, :y => height - legend_margin - legend_height}, # bottom-right
     ]
 
     # calculate nearest distance of all drawn points
@@ -277,10 +294,13 @@ class GraphImageDrawer
     options[:legend_y] = best_position[:y]
 
     puts "Best position x #{options[:legend_x]}, y #{options[:legend_y]}, distance #{best_position[:distance]}"
+    # puts positions.to_yaml
   end
 
   # Render legend on graph
   def render_data_legend
+    return unless draw_legend?
+
     recalculate_legend_position
 
     legend_text = Magick::Draw.new
@@ -293,8 +313,8 @@ class GraphImageDrawer
     legend_text.text_align(Magick::LeftAlign)
     legend_text.text_undercolor(options[:background_color])
 
-    y = legend_x
-    x = legend_y
+    x = legend_x
+    y = legend_y
 
     layers.each do |l|
       legend_text.fill(l.color)
@@ -311,7 +331,7 @@ class GraphImageDrawer
         x - 10 + 3, y
       )
 
-      y += 15
+      y += ONE_LAYER_LEGEND_HEIGHT
     end
     legend_text.draw(@image)
   end

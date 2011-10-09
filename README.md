@@ -125,6 +125,8 @@ Legend options:
 
 * options[:legend] - draw legend, default false
 * options[:legend_auto] - let legend position to be chosen by algorithm, default true
+* options[:legend_width] - width used for setting proper distance while drawing on right, default 100, legend height is calculated
+* options[:legend_margin] - graph margin used not to draw legend on border, default 50
 * options[:legend_x] - legend X position, default 50
 * options[:legend_y] - legend Y position, default 50
 
