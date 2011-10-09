@@ -1,5 +1,7 @@
 #encoding: utf-8
 
+require 'technical_graph/graph_color_library'
+
 # Stores only data used for one layer
 # Instances of this class are used elsewhere
 # Stores also drawing parameters for one layer
@@ -8,6 +10,9 @@ class DataLayer
 
   def initialize(d = [], options = { })
     @data_params = options
+
+    @data_params[:color] ||= GraphColorLibrary.instance.get_color
+    @data_params[:label] ||= ''
 
     # set data and append initial data
     clear_data
@@ -33,7 +38,7 @@ class DataLayer
 
   # Color of
   def color
-    return @data_params[:color] || 'blue'
+    return @data_params[:color]
   end
 
   def antialias
@@ -41,7 +46,7 @@ class DataLayer
   end
 
   def label
-    return @data_params[:label] || '' #'data'
+    return @data_params[:label]
   end
 
   # Clear data
