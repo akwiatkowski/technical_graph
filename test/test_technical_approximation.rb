@@ -51,6 +51,8 @@ class TestTechnicalApproximation < Test::Unit::TestCase
             s += t
           end
           s.should be_within(0.01).of(1.0)
+
+          puts @approximator.vector.inspect
         end
       end
 

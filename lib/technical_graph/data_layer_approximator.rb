@@ -61,14 +61,25 @@ class DataLayerApproximator
   # This vector will be used to process values (Y'es), linear algorithm
   def generate_vector_gauss
     # http://www.techotopia.com/index.php/Ruby_Math_Functions_and_Methods#Ruby_Math_Constants
+    # http://pl.wikipedia.org/wiki/Okno_czasowe
 
     d = 0.4
 
-    @vector = Array.new
+    # calculation
+    count = (level.to_f / 2.0).floor + 1
+
+    v = Array.new
     # calculated
-    (1..level).each do |i|
-      @vector << Math::E ** ((-0.5) * d ** 2)
+    (1..count).each do |i|
+      v << Math::E ** ((-0.5) * (i*d) ** 2)
     end
+
+    # TODO
+    @vector = Array.new(level, 0.2)
+
+    # 1 part
+
+    puts v.inspect
 
     normalize_vector
 
