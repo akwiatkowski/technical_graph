@@ -48,6 +48,52 @@ class DataLayerApproximator
     return self.send(method)
   end
 
+  # Process values
+  def process
+    old_data = @data_layer.data
+    new_data = Array.new
+
+    (0...old_data.size).each do |i|
+      new_data << {
+        :x => old_data[i][:x],
+        :y => process_part(old_data, i)
+      }
+    end
+
+    return new_data
+  end
+
+  # Process part (size depends on level)
+  def process_part(old_data, position)
+    # neutral data, used where position is near edge to calculate new value
+    neutral_data = {
+      :x => old_data[position][:x],
+      :y => old_data[position][:y]
+    }
+    part_array = Array.new(level, neutral_data)
+
+    # add data from old_data to part_array
+    offset = (level/2.0).floor
+    # copying data
+    (0...level).each do |l|
+      copy_pos = position + l - offset
+      # if copy_pos is inside data
+      if copy_pos >= 0 and old_data.size > copy_pos
+        part_array[l] = old_data[copy_pos]
+      end
+    end
+    # here we should have part_array and vector
+    # and now do some magic :]
+
+    y_sum = 0.0
+    (0...level).each do |l|
+      y_sum = part_array[l][:y] * vector[l]
+    end
+    return y_sum
+
+  end
+
+
   # This vector will be used to process values (Y'es), linear algorithm
   def generate_vector_rectangular
     @vector = Array.new
@@ -88,7 +134,7 @@ class DataLayerApproximator
     #end
 
     @vector = make_mirror(v, level)
-    
+
     normalize_vector
 
     return @vector
