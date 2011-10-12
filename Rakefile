@@ -33,8 +33,8 @@ Jeweler::RubygemsDotOrgTasks.new
 
 desc "Remove all images created during tests"
 task :clean do
-  `rm *.svg`
-  `rm *.png`
+  `rm samples/tests/*.svg`
+  `rm samples/tests/*.png`
 end
 
 desc "Clean and release"
