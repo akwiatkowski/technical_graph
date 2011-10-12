@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 require 'technical_graph/graph_color_library'
-require 'technical_graph/data_layer_approximator'
+require 'technical_graph/data_layer_processor'
 
 # Stores only data used for one layer
 # Instances of this class are used elsewhere
@@ -14,18 +14,26 @@ class DataLayer
 
     @data_params[:color] ||= GraphColorLibrary.instance.get_color
     @data_params[:label] ||= ''
-    # default true
+    # default true, write values near dots
     @data_params[:value_labels] = false if options[:value_labels] == false
+
+    # smoothing parameters
+    # by default it is false
+    @data_params[:simple_smoother] = true if options[:simple_smoother] == true
+    @data_params[:simple_smoother_level] ||= 3
+    @data_params[:simple_smoother_strategy] ||= DataLayerProcessor::DEFAULT_STRATEGY
+    # was already done
+    @data_params[:processor_finished] = false
+
+    @processor = DataLayerProcessor.new(self)
 
     # set data and append initial data
     clear_data
     append_data(d)
-
-    @approximator = DataLayerApproximator.new(self)
   end
 
   # can be used to approximation and other data processing
-  attr_reader :approximator
+  attr_reader :processor
 
   # Accessor for setting chart data for layer to draw
   def append_data(d)
@@ -40,6 +48,18 @@ class DataLayer
 
   # Array of {:x =>, :y =>}
   attr_reader :data
+
+  # Run external processor (smoothing, ...)
+  def process
+    if simple_smoother and not processor_finished?
+      @processor.strategy = simple_smoother_strategy
+      @processor.level = simple_smoother_level
+      @processor.generate_vector
+      @data = @processor.process
+
+      processor_finished!
+    end
+  end
 
   # Additional parameters
   attr_reader :data_params
@@ -60,6 +80,31 @@ class DataLayer
   # Write values near dots
   def value_labels
     return @data_params[:value_labels]
+  end
+
+  # Turn on smoothing processor
+  def simple_smoother
+    return @data_params[:simple_smoother]
+  end
+
+  # Smoother level
+  def simple_smoother_level
+    return @data_params[:simple_smoother_level]
+  end
+
+  # Smoother strategy
+  def simple_smoother_strategy
+    return @data_params[:simple_smoother_strategy]
+  end
+
+  # Was already processed?
+  def processor_finished?
+    @data_params[:processor_finished]
+  end
+
+  # Mark as processed
+  def processor_finished!
+    @data_params[:processor_finished] = true
   end
 
   # Clear data
@@ -102,10 +147,6 @@ class DataLayer
 
   def y_max
     @data_params[:y_max]
-  end
-
-  def approximate(level)
-
   end
 
 end

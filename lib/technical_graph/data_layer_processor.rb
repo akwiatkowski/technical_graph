@@ -2,7 +2,7 @@
 
 # Approximate data layer
 
-class DataLayerApproximator
+class DataLayerProcessor
   STRATEGIES = {
     :rectangular => 'generate_vector_rectangular',
     :gauss => 'generate_vector_gauss'
@@ -10,7 +10,7 @@ class DataLayerApproximator
   DEFAULT_STRATEGY = :rectangular
 
   MIN_LEVEL = 1
-  MAX_LEVEL = 50
+  MAX_LEVEL = 200
 
   # use 'x' axis for processing also
   PROCESS_WITH_PARAMETER_DISTANCE = false
@@ -33,7 +33,6 @@ class DataLayerApproximator
 
   # Choose other strategy from STRATEGIES
   def strategy=(s)
-    puts s
     method = STRATEGIES[s]
     @strategy = s unless method.nil?
   end
@@ -53,6 +52,7 @@ class DataLayerApproximator
 
   # Process values
   def process
+    t = Time.now
     old_data = @data_layer.data
     new_data = Array.new
 
@@ -62,6 +62,8 @@ class DataLayerApproximator
         :y => process_part(old_data, i)
       }
     end
+
+    puts "Smoothing completed, level #{level}, data size #{old_data.size}, time #{Time.now - t}"
 
     return new_data
   end
