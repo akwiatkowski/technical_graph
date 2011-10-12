@@ -32,9 +32,23 @@ class TestTechnicalApproximation < Test::Unit::TestCase
       @approximator.should.kind_of? DataLayerApproximator
     end
 
-    should 'calculate vector' do
+    should 'calculated vector has proper size and sum eq. 1.0' do
       @approximator.generate_vector.should.kind_of? Array
       @approximator.generate_vector.size.should == @approximator.level
+
+      (1...10).each do |i|
+        @approximator.level = i
+        @approximator.level.should == i
+
+        @approximator.generate_vector.size.should == @approximator.level
+
+        s = 0.0
+        @approximator.generate_vector.each do |t|
+          s += t
+        end
+        s.should be_within(0.01).of(1.0)
+      end
+
     end
   end
 
