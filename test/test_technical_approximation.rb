@@ -36,17 +36,22 @@ class TestTechnicalApproximation < Test::Unit::TestCase
       @approximator.generate_vector.should.kind_of? Array
       @approximator.generate_vector.size.should == @approximator.level
 
-      (1...10).each do |i|
-        @approximator.level = i
-        @approximator.level.should == i
+      DataLayerApproximator::STRATEGIES.keys.each do |s|
+        @approximator.strategy = s
+        @approximator.strategy.should == s
 
-        @approximator.generate_vector.size.should == @approximator.level
+        (1...10).each do |i|
+          @approximator.level = i
+          @approximator.level.should == i
 
-        s = 0.0
-        @approximator.generate_vector.each do |t|
-          s += t
+          @approximator.generate_vector.size.should == @approximator.level
+
+          s = 0.0
+          @approximator.generate_vector.each do |t|
+            s += t
+          end
+          s.should be_within(0.01).of(1.0)
         end
-        s.should be_within(0.01).of(1.0)
       end
 
     end
