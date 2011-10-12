@@ -75,12 +75,20 @@ class DataLayerApproximator
     end
 
     # TODO
-    @vector = Array.new(level, 0.2)
+    @vector = Array.new(level, 0.1)
 
-    # 1 part
+    # adding from begin
+    #(0...v.size).each do |i|
+    #  @vector[i] = v[v.size - 1 - i]
+    #end
 
-    puts v.inspect
+    #(0...v.size).each do |i|
+    #  j = @vector.size - 1 - i
+    #  @vector[j] = v[v.size - 1 - i]
+    #end
 
+    @vector = make_mirror(v, level)
+    
     normalize_vector
 
     return @vector
@@ -102,6 +110,41 @@ class DataLayerApproximator
     @vector = new_vector
 
     return @vector
+  end
+
+  # Make mirror array
+  # size = 7 => [ i[3], i[2], i[1], i[0], i[1], i[2], i[3] ]
+  # size = 8 => [ i[3], i[2], i[1], i[0], i[0], i[1], i[2], i[3] ]
+  def make_mirror(input, size)
+    a = Array.new(size, 0.1)
+    if size.even?
+      # two 'first' in central
+      c_left = size/2 - 1
+      c_right = size/2
+
+      a[c_left] = input[0]
+      a[c_right] = input[0]
+    else
+      # there is one 'first'
+      c_left = (size/2.0).floor
+      c_right = (size/2.0).floor
+
+      a[c_left] = input[0]
+      # a[c_right] = input[0]
+    end
+
+    # the rest
+    i = 0
+    while c_left > 0
+      i += 1
+      c_left -= 1
+      c_right += 1
+
+      a[c_left] = input[i]
+      a[c_right] = input[i]
+    end
+
+    return a
   end
 
 end
