@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 require 'technical_graph/graph_color_library'
+require 'technical_graph/data_layer_approximator'
 
 # Stores only data used for one layer
 # Instances of this class are used elsewhere
@@ -19,7 +20,12 @@ class DataLayer
     # set data and append initial data
     clear_data
     append_data(d)
+
+    @approximator = DataLayerApproximator.new(self)
   end
+
+  # can be used to approximation and other data processing
+  attr_reader :approximator
 
   # Accessor for setting chart data for layer to draw
   def append_data(d)
@@ -96,6 +102,10 @@ class DataLayer
 
   def y_max
     @data_params[:y_max]
+  end
+
+  def approximate(level)
+
   end
 
 end
