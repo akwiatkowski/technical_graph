@@ -47,6 +47,10 @@ pkg
 # For rubinius:
 #*.rbc
 
+# sample images
+./*.png
+./*.svg
+
 # my garbage
 lib/technical_graph/del/
 .idea/*
