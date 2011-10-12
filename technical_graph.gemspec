@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{technical_graph}
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = %q{2011-10-09}
+  s.date = %q{2011-10-12}
   s.description = %q{Purpose of this gem is to create neat, simple, technical graphs. This is alternative to most new libraries which create small, candy graphs using JavaScript.}
   s.email = %q{bobikx@poczta.fm}
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/technical_graph.rb",
     "lib/technical_graph/data_layer.rb",
+    "lib/technical_graph/data_layer_processor.rb",
     "lib/technical_graph/graph_axis.rb",
     "lib/technical_graph/graph_color_library.rb",
     "lib/technical_graph/graph_data_processor.rb",
@@ -35,7 +36,8 @@ Gem::Specification.new do |s|
     "test/test_technical_graph.rb",
     "test/test_technical_graph_axis.rb",
     "test/test_technical_multilayer.rb",
-    "test/test_technical_simple_graph.rb"
+    "test/test_technical_simple_graph.rb",
+    "test/test_technical_smoother.rb"
   ]
   s.homepage = %q{http://github.com/akwiatkowski/technical_graph}
   s.licenses = ["LGPLv3"]
