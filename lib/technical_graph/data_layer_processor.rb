@@ -15,14 +15,19 @@ class DataLayerProcessor
   # use 'x' axis for processing also
   PROCESS_WITH_PARAMETER_DISTANCE = false
 
+  # default Gauss coefficient
+  DEFAULT_GAUSS_COEFF = 0.2
+
   def initialize(data_layer)
     @data_layer = data_layer
     @strategy = DEFAULT_STRATEGY
     @level = MIN_LEVEL
     @vector = Array.new
+    @gauss_coeff = DEFAULT_GAUSS_COEFF
   end
 
   attr_reader :vector
+  attr_accessor :gauss_coeff
 
   # Level of approximation
   def level=(l)
@@ -135,29 +140,14 @@ class DataLayerProcessor
     # http://www.techotopia.com/index.php/Ruby_Math_Functions_and_Methods#Ruby_Math_Constants
     # http://pl.wikipedia.org/wiki/Okno_czasowe
 
-    d = 0.4
-
     # calculation
     count = (level.to_f / 2.0).floor + 1
 
     v = Array.new
     # calculated
     (1..count).each do |i|
-      v << Math::E ** ((-0.5) * (i*d) ** 2)
+      v << Math::E ** ((-0.5) * (i*gauss_coeff) ** 2)
     end
-
-    # TODO
-    @vector = Array.new(level, 0.1)
-
-    # adding from begin
-    #(0...v.size).each do |i|
-    #  @vector[i] = v[v.size - 1 - i]
-    #end
-
-    #(0...v.size).each do |i|
-    #  j = @vector.size - 1 - i
-    #  @vector[j] = v[v.size - 1 - i]
-    #end
 
     @vector = make_mirror(v, level)
 

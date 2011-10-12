@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestTechnicalApproximation < Test::Unit::TestCase
+class TestTechnicalSmoother < Test::Unit::TestCase
   context 'calculations' do
     setup do
       max = 500
@@ -33,8 +33,6 @@ class TestTechnicalApproximation < Test::Unit::TestCase
     end
 
     should 'calculated vector has proper size and sum eq. 1.0' do
-      return # TODO !!
-      
       @processor.generate_vector.should.kind_of? Array
       @processor.generate_vector.size.should == @processor.level
 
@@ -61,8 +59,6 @@ class TestTechnicalApproximation < Test::Unit::TestCase
     end
 
     should 'processed data has the same size that old one' do
-      return # TODO !!
-      
       DataLayerProcessor::STRATEGIES.keys.each do |s|
         @processor.strategy = s
         @processor.strategy.should == s
@@ -83,8 +79,6 @@ class TestTechnicalApproximation < Test::Unit::TestCase
     end
 
     should 'create simple graph with unprocessed and processed layer (gauss)' do
-      return # TODO !!
-
       tg = TechnicalGraph.new(
         {
           :width => 2000,
@@ -138,7 +132,7 @@ class TestTechnicalApproximation < Test::Unit::TestCase
     should 'create simple graph using only layer params' do
       tg = TechnicalGraph.new(
         {
-          :width => 4000,
+          :width => 5000,
           :height => 3000,
 
           :legend => true,
@@ -149,7 +143,7 @@ class TestTechnicalApproximation < Test::Unit::TestCase
           :legend_y => 50,
         }
       )
-      max = 1000
+      max = 2000
 
       layer_data = Array.new
       (0..max).each do |i|
@@ -179,11 +173,11 @@ class TestTechnicalApproximation < Test::Unit::TestCase
       #  :simple_smoother_level => 3,
       #  :simple_smoother => true
       #})
-      tg.add_layer(layer_data.clone, layer_params)
+      #tg.add_layer(layer_data.clone, layer_params)
       layer_params_c = layer_params.clone.merge({
         :color => 'green',
-        :label => 'processed - level 10',
-        :simple_smoother_level => 10,
+        :label => 'processed - level 100',
+        :simple_smoother_level => 100,
         :simple_smoother => true
       })
       #tg.add_layer(layer_data.clone, layer_params)
@@ -199,6 +193,16 @@ class TestTechnicalApproximation < Test::Unit::TestCase
       #tg.add_layer(layer_data.clone, layer_params_d)
 
 
+      layer_params_e = layer_params.clone.merge({
+        :color => 'blue',
+        :label => 'processed (rectangular) - level 100',
+        :simple_smoother_level => 100,
+        :simple_smoother => true,
+        :simple_smoother_strategy => :rectangular
+      })
+      tg.add_layer(layer_data.clone, layer_params_e)
+
+
       tg.render
       tg.image_drawer.save_to_file('samples/tests/test_smoothing_multiple.png')
     end
@@ -206,42 +210,5 @@ class TestTechnicalApproximation < Test::Unit::TestCase
 
   end
 
-  context 'simple approximation' do
-    should 'draw nice graph' do
-      return # turned off
-
-      max = 500
-
-      # adding simple layer
-      layer_params = {
-        :antialias => true,
-        :label => 'first',
-        :value_labels => false,
-        :simple_smother => 4
-      }
-      layer_data = Array.new
-      (0..max).each do |i|
-        x = -10.0 + (20.0 * i.to_f / max.to_f)
-        y = 10.0 * Math.cos(i.to_f * (0.5 * 3.14 / max.to_f))
-
-        y += rand
-        x += rand / 500.to_f
-
-        layer_data << { :x => x, :y => y }
-      end
-
-
-      @tg = TechnicalGraph.new(
-        {
-          :width => 2000,
-          :height => 1500,
-        }
-      )
-      @tg.add_layer(layer_data, layer_params)
-
-      @tg.render
-      @tg.image_drawer.save_to_file('samples/test_approximation.png')
-    end
-  end
 
 end

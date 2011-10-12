@@ -82,7 +82,7 @@ class TestTechnicalAutocolor < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file('samples/test_autocolor.png')
+      @tg.image_drawer.save_to_file('samples/tests/test_autocolor.png')
       @tg.image_drawer.to_png.class.should == String
 
     end
