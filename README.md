@@ -138,6 +138,9 @@ Layer options Hash
 * layer_options[:color] - color of graph layer, ex.: 'red', 'green', '#FFFF00'
 * layer_options[:antialias] - use anti-aliasing for this, default false, override options[:layers_antialias]
 * layer_options[:value_labels] - write values near 'dots', default true
+* layer_options[:simple_smoother] - 'smooth' data, default false
+* layer_options[:simple_smoother_level] - strength of smoothing, this is level of window used for processing, default 3
+* layer_options[:simple_smoother_strategy] - strategy used for smoothing data, you can choose between :rectangular or :gauss, default :rectangular
 
 
 Contributing to technical-graph
