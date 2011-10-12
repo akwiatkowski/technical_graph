@@ -137,6 +137,7 @@ Layer options Hash
 * layer_options[:label] - label used in legend
 * layer_options[:color] - color of graph layer, ex.: 'red', 'green', '#FFFF00'
 * layer_options[:antialias] - use anti-aliasing for this, default false, override options[:layers_antialias]
+* layer_options[:value_labels] - write values near 'dots', default true
 
 
 Contributing to technical-graph

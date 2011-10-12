@@ -13,6 +13,8 @@ class DataLayer
 
     @data_params[:color] ||= GraphColorLibrary.instance.get_color
     @data_params[:label] ||= ''
+    # default true
+    @data_params[:value_labels] = false if options[:value_labels] == false
 
     # set data and append initial data
     clear_data
@@ -47,6 +49,11 @@ class DataLayer
 
   def label
     return @data_params[:label]
+  end
+
+  # Write values near dots
+  def value_labels
+    return @data_params[:value_labels]
   end
 
   # Clear data

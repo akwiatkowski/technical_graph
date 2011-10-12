@@ -215,14 +215,16 @@ class GraphImageDrawer
     end
 
     # labels
-    coords.each do |c|
-      string_label = "#{truncate_string % c[:dy]}"
-      layer_text.text(
-        c[:ax] + 5, c[:ay],
-        string_label
-      )
+    if l.value_labels
+      coords.each do |c|
+        string_label = "#{truncate_string % c[:dy]}"
+        layer_text.text(
+          c[:ax] + 5, c[:ay],
+          string_label
+        )
+      end
+      layer_text.draw(@image)
     end
-    layer_text.draw(@image)
 
     # lines and circles
     coords.each do |c|
@@ -244,8 +246,8 @@ class GraphImageDrawer
 
       # used for auto positioning of legend
       if legend_auto_position
-        @drawn_points << {:x => c[:ax], :y => c[:ay]}
-        @drawn_points << {:x => c[:bx], :y => c[:by]}
+        @drawn_points << { :x => c[:ax], :y => c[:ay] }
+        @drawn_points << { :x => c[:bx], :y => c[:by] }
       end
     end
     layer_line.draw(@image)
@@ -264,14 +266,14 @@ class GraphImageDrawer
 
     # check 8 places:
     positions = [
-      {:x => legend_margin, :y => 0 + legend_margin}, # top-left
-      {:x => width/2, :y => 0 + legend_margin}, # top-center
-      {:x => width - legend_margin - legend_width, :y => 0 + legend_margin}, # top-right
-      {:x => legend_margin, :y => height/2}, # middle-left
-      {:x => width - legend_margin - legend_width, :y => height/2}, # middle-right
-      {:x => legend_margin, :y => height - legend_margin - legend_height}, # bottom-left
-      {:x => width/2, :y => height - legend_margin - legend_height}, # bottom-center
-      {:x => width - legend_margin - legend_width, :y => height - legend_margin - legend_height}, # bottom-right
+      { :x => legend_margin, :y => 0 + legend_margin }, # top-left
+      { :x => width/2, :y => 0 + legend_margin }, # top-center
+      { :x => width - legend_margin - legend_width, :y => 0 + legend_margin }, # top-right
+      { :x => legend_margin, :y => height/2 }, # middle-left
+      { :x => width - legend_margin - legend_width, :y => height/2 }, # middle-right
+      { :x => legend_margin, :y => height - legend_margin - legend_height }, # bottom-left
+      { :x => width/2, :y => height - legend_margin - legend_height }, # bottom-center
+      { :x => width - legend_margin - legend_width, :y => height - legend_margin - legend_height }, # bottom-right
     ]
 
     # calculate nearest distance of all drawn points
@@ -279,7 +281,7 @@ class GraphImageDrawer
       p[:distance] = (width ** 2 + height ** 2) ** 0.5 # max distance, diagonal of graph
       @drawn_points.each do |dp|
         # calculate drawn point distance to being checked now legend position
-        two_points_distance = ( (p[:x] - dp[:x]) ** 2 + (p[:y] - dp[:y]) ** 2 ) ** 0.5
+        two_points_distance = ((p[:x] - dp[:x]) ** 2 + (p[:y] - dp[:y]) ** 2) ** 0.5
         # modify only if distance is closer
         if p[:distance] > two_points_distance
           p[:distance] = two_points_distance
@@ -288,7 +290,7 @@ class GraphImageDrawer
     end
 
     # chose position with hihest distance
-    positions.sort!{|a,b| a[:distance] <=> b[:distance]}
+    positions.sort! { |a, b| a[:distance] <=> b[:distance] }
     best_position = positions.last
     options[:legend_x] = best_position[:x]
     options[:legend_y] = best_position[:y]
@@ -318,7 +320,7 @@ class GraphImageDrawer
 
     layers.each do |l|
       legend_text.fill(l.color)
-      
+
       string_label = l.label
       legend_text.text(
         x, y,

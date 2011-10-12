@@ -3,12 +3,13 @@ require 'helper'
 class TestTechnicalApproximation < Test::Unit::TestCase
   context 'simple approximation' do
     should 'draw nice graph' do
-      max = 5_000
+      max = 100
 
       # adding simple layer
       layer_params = {
         :antialias => true,
-        :label => 'first'
+        :label => 'first',
+        :value_labels => false
       }
       layer_data = Array.new
       (0..max).each do |i|
@@ -24,8 +25,8 @@ class TestTechnicalApproximation < Test::Unit::TestCase
 
       @tg = TechnicalGraph.new(
         {
-          :width => 4000,
-          :height => 3000,
+          :width => 2000,
+          :height => 1500,
         }
       )
       @tg.add_layer(layer_data, layer_params)
