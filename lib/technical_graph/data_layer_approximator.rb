@@ -10,7 +10,10 @@ class DataLayerApproximator
   DEFAULT_STRATEGY = :rectangular
 
   MIN_LEVEL = 1
-  MAX_LEVEL = 10
+  MAX_LEVEL = 50
+
+  # use 'x' axis for processing also
+  PROCESS_WITH_PARAMETER_DISTANCE = false
 
   def initialize(data_layer)
     @data_layer = data_layer
@@ -85,11 +88,32 @@ class DataLayerApproximator
     # here we should have part_array and vector
     # and now do some magic :]
 
-    y_sum = 0.0
-    (0...level).each do |l|
-      y_sum = part_array[l][:y] * vector[l]
+    if PROCESS_WITH_PARAMETER_DISTANCE == false
+      y_sum = 0.0
+      (0...level).each do |l|
+        y_sum += part_array[l][:y] * vector[l]
+      end
+      return y_sum
+    else
+      # TODO bugs!, issues with NaN
+      # waged average using inverted distance
+      _sum = 0.0
+      _wages = 0.0
+      _x_position = old_data[position][:x]
+
+      (0...level).each do |l|
+        _x_distance = (part_array[l][:x] - _x_position).abs
+        _wage = (1.0 / _x_distance)
+
+        unless _wage.nan?
+          _wages += _wage
+          _sum += (part_array[l][:y] * vector[l]) / _x_distance
+        end
+      end
+      y = _sum.to_f / _wages.to_f
+      puts y
+      return y
     end
-    return y_sum
 
   end
 

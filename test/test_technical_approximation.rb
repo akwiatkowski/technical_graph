@@ -91,7 +91,7 @@ class TestTechnicalApproximation < Test::Unit::TestCase
       layer_params = {
         :antialias => true,
         :color => 'red',
-        :label => 'first',
+        :label => 'raw',
         :value_labels => false,
         :simple_approximate => 8
       }
@@ -112,16 +112,16 @@ class TestTechnicalApproximation < Test::Unit::TestCase
       # process and add
       approx = layer_data_b = tg.layers[0].approximator
       approx.strategy = :gauss
-      approx.level = 2
+      approx.level = 9
       approx.generate_vector
       
       layer_data_b = approx.process
       layer_params_b = {
         :antialias => true,
         :color => 'blue',
-        :label => 'first',
+        :label => 'processed',
         :value_labels => false,
-        :simple_approximate => 8
+        :simple_approximate => 9
       }
       tg.add_layer(layer_data_b, layer_params_b)
 
