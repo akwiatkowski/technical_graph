@@ -86,7 +86,7 @@ class TestTechnicalMultilayer < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file('test_multilayer.png')
+      @tg.image_drawer.save_to_file('samples/tests/test_multilayer.png')
       @tg.image_drawer.to_png.class.should == String
 
     end

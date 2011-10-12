@@ -67,7 +67,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer.data.size.should == 2 * @data_size
 
       # @tg.render
-      # @tg.image.save_to_file('test1.png')
+      # @tg.image.save_to_file('samples/tests/test1.png')
     end
 
     should 'has ability to filter records with similar x\'es' do
