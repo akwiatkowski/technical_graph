@@ -70,7 +70,8 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       ]
       @tg.add_layer(layer_data)
       # should be added
-      @tg.layers.last.data.size > 0
+      @tg.layers.last.raw_data.size > 0
+      @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
       @tg.render
@@ -145,7 +146,8 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       ]
       @tg.add_layer(layer_data)
       # should be added
-      @tg.layers.last.data.size > 0
+      @tg.layers.last.raw_data.size > 0
+      @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
       @tg.render
@@ -212,7 +214,8 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       ]
       @tg.add_layer(layer_data)
       # should be added
-      @tg.layers.last.data.size > 0
+      @tg.layers.last.raw_data.size > 0
+      @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
       @tg.render
@@ -254,7 +257,8 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       ]
       @tg.add_layer(layer_data)
       # should be added
-      @tg.layers.last.data.size > 0
+      @tg.layers.last.raw_data.size > 0
+      @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
       @tg.render
@@ -292,7 +296,8 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       end
       @tg.add_layer(layer_data)
       # should be added
-      @tg.layers.last.data.size > 0
+      @tg.layers.last.raw_data.size > 0
+      @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
       @tg.render

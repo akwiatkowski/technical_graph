@@ -69,9 +69,11 @@ class DataLayer
 
   # Run external processor (smoothing, ...)
   def process!
+    @processed_data = @data.clone
+    
     if simple_smoother
       @processor.simple_smoother_strategy = simple_smoother_strategy
-      @processor.level = simple_smoother_level
+      @processor.simple_smoother_level = simple_smoother_level
       @processor.simple_smoother_x = simple_smoother_x
       @processed_data = @processor.process
     end

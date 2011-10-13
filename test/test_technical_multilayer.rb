@@ -81,7 +81,8 @@ class TestTechnicalMultilayer < Test::Unit::TestCase
       @tg.add_layer(layer_data_d, layer_params_d)
 
 
-      @tg.layers.last.data.size.should > 0
+      @tg.layers.last.raw_data.size.should > 0
+      @tg.layers.last.processed_data.size.should > 0
       @tg.layers.size.should == 4
 
       @tg.render

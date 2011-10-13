@@ -17,9 +17,7 @@ module DataLayerProcessorSimpleSmoother
   # default Gauss coefficient
   DEFAULT_GAUSS_COEFF = 0.2
 
-  def initialize(data_layer)
-    @data_layer = data_layer
-
+  def simple_smoother_initialize
     @simple_smoother_strategy = DEFAULT_SIMPLE_SMOOTHER_STRATEGY
     @simple_smoother_level = MIN_SIMPLE_SMOOTHER_LEVEL
     @vector = Array.new
@@ -65,7 +63,7 @@ module DataLayerProcessorSimpleSmoother
     generate_vector
 
     t = Time.now
-    old_data = @data_layer.data
+    old_data = @data
     new_data = Array.new
 
     # pre-processing, distance
@@ -88,6 +86,7 @@ module DataLayerProcessorSimpleSmoother
 
     puts "Smoothing completed, simple_smoother_level #{simple_smoother_level}, data size #{old_data.size}, time #{Time.now - t}"
 
+    @data = new_data
     return new_data
   end
 

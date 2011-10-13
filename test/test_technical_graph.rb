@@ -52,7 +52,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
       @tg.layers.size.should == layers + 1
 
       layer = @tg.layers.last
-      layer.data.size.should == @data_size
+      layer.raw_data.size.should == @data_size
+      layer.processed_data.size.should == @data_size
     end
 
     should 'has ability to manipulate layers, add more data' do
@@ -60,7 +61,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer = @tg.layers.last
       layer.class.should == DataLayer
 
-      layer.data.size.should == @data_size
+      layer.raw_data.size.should == @data_size
+      layer.processed_data.size.should == @data_size
 
       # adding second data
       layer.append_data(@second_data)
@@ -73,7 +75,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
     should 'has ability to filter records with similar x\'es' do
       @tg.add_layer
       layer = @tg.layers.last
-      layer.data.size.should == 0
+      layer.raw_data.size.should == 0
+      layer.processed_data.size.should == 0
       layer.append_data([{ :x => 0, :y => 1 }])
       layer.data.size.should == 1
 
@@ -88,7 +91,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
     should 'has ability to filter bad records' do
       @tg.add_layer
       layer = @tg.layers.last
-      layer.data.size.should == 0
+      layer.raw_data.size.should == 0
+      layer.processed_data.size.should == 0
       layer.append_data([{ :x => 0, :y => 1 }])
       layer.data.size.should == 1
 
