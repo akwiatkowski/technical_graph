@@ -37,7 +37,7 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
       current_position = (test_array.size / 2.0).floor
       current_position_point = test_array[current_position]
 
-      processed_yx = dlp.process_part_y_and_x(test_array, current_position_point)
+      processed_yx = dlp.process_part_only_x(test_array, current_position_point)
       processed_x = dlp.process_part_only_y(test_array)
 
       puts processed_x.inspect

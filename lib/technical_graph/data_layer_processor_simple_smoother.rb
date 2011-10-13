@@ -59,8 +59,8 @@ module DataLayerProcessorSimpleSmoother
     return self.send(method)
   end
 
-  # Process values
-  def process
+  # Smooth values
+  def simple_smoother_process
     # vector used for smoothing
     generate_vector
 
@@ -68,7 +68,19 @@ module DataLayerProcessorSimpleSmoother
     old_data = @data_layer.data
     new_data = Array.new
 
-    puts "X axis distance smoothing enabled" if simple_smoother_x
+    # pre-processing, distance
+    if simple_smoother_x == true
+      puts "X axis distance smoothing enabled"
+
+      (0...old_data.size).each do |i|
+        new_data << DataPoint.xy(old_data[i].x, process_part(old_data, i, false))
+      end
+
+      old_data = new_data
+      new_data = Array.new
+    end
+
+    puts "Y axis distance smoothing"
 
     (0...old_data.size).each do |i|
       new_data << DataPoint.xy(old_data[i].x, process_part(old_data, i))
@@ -80,7 +92,7 @@ module DataLayerProcessorSimpleSmoother
   end
 
   # Process part (size depends on simple_smoother_level)
-  def process_part(old_data, position)
+  def process_part(old_data, position, y_based = true)
     # neutral data, used where position is near edge to calculate new value
     neutral_data = DataPoint.xy(old_data[position].x, old_data[position].y)
     part_array = Array.new(simple_smoother_level, neutral_data)
@@ -98,12 +110,12 @@ module DataLayerProcessorSimpleSmoother
     # here we should have part_array and vector
     # and now do some magic :]
 
-    if simple_smoother_x == false
+
+    if y_based
       return process_part_only_y(part_array)
     else
-      return process_part_y_and_x(part_array, neutral_data)
+      return process_part_only_x(part_array, neutral_data)
     end
-
   end
 
   # Process part (size depends on simple_smoother_level), only Y data
@@ -116,7 +128,7 @@ module DataLayerProcessorSimpleSmoother
   end
 
   # Process part (size depends on simple_smoother_level), Y and X data
-  def process_part_y_and_x(part_array, neutral_data)
+  def process_part_only_x(part_array, neutral_data)
     weights = Array.new
     w_sum = 0.0
     (0...simple_smoother_level).each do |l|
@@ -132,7 +144,7 @@ module DataLayerProcessorSimpleSmoother
     return w_prod.to_f / w_sum.to_f
   end
 
-# This vector will be used to process values (Y'es), linear algorithm
+  # This vector will be used to process values (Y'es), linear algorithm
   def generate_vector_rectangular
     @vector = Array.new
     # calculated
@@ -142,7 +154,7 @@ module DataLayerProcessorSimpleSmoother
     return @vector
   end
 
-# This vector will be used to process values (Y'es), linear algorithm
+  # This vector will be used to process values (Y'es), linear algorithm
   def generate_vector_gauss
     # http://www.techotopia.com/index.php/Ruby_Math_Functions_and_Methods#Ruby_Math_Constants
     # http://pl.wikipedia.org/wiki/Okno_czasowe
@@ -163,7 +175,7 @@ module DataLayerProcessorSimpleSmoother
     return @vector
   end
 
-# Multiply vector to have sum eq. 1.0
+  # Multiply vector to have sum eq. 1.0
   def normalize_vector
     s = 0.0
     @vector.each do |v|
@@ -181,9 +193,9 @@ module DataLayerProcessorSimpleSmoother
     return @vector
   end
 
-# Make mirror array
-# size = 7 => [ i[3], i[2], i[1], i[0], i[1], i[2], i[3] ]
-# size = 8 => [ i[3], i[2], i[1], i[0], i[0], i[1], i[2], i[3] ]
+  # Make mirror array
+  # size = 7 => [ i[3], i[2], i[1], i[0], i[1], i[2], i[3] ]
+  # size = 8 => [ i[3], i[2], i[1], i[0], i[0], i[1], i[2], i[3] ]
   def make_mirror(input, size)
     a = Array.new(size, 0.1)
     if size.even?
@@ -215,4 +227,5 @@ module DataLayerProcessorSimpleSmoother
 
     return a
   end
+
 end

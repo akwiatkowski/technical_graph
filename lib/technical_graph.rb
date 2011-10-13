@@ -49,8 +49,6 @@ class TechnicalGraph
     @axis.render_on_image(@image)
     # draw layers
     @layers.each do |l|
-      # external processing
-      l.process
       # drawing
       @image_drawer.render_data_layer(l)
     end

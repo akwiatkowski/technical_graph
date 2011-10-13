@@ -7,4 +7,7 @@ require 'technical_graph/data_layer_processor_simple_smoother'
 class DataLayerProcessor
   include DataLayerProcessorSimpleSmoother
 
+  def process
+    return simple_smoother_process
+  end
 end

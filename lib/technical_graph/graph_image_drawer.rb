@@ -170,6 +170,8 @@ class GraphImageDrawer
 
   # Render data layer
   def render_data_layer(l)
+    layer_data = l.processed_data
+
     layer_line = Magick::Draw.new
     layer_text = Magick::Draw.new
 
@@ -196,21 +198,21 @@ class GraphImageDrawer
     # calculate coords, draw text, and then lines and circles
     coords = Array.new
 
-    (0...(l.data.size - 1)).each do |i|
-      ax = l.data[i].x
+    (0...(layer_data.size - 1)).each do |i|
+      ax = layer_data[i].x
       ax = calc_bitmap_x(ax).round
-      ay = l.data[i].y
+      ay = layer_data[i].y
       ay = calc_bitmap_y(ay).round
 
-      bx = l.data[i+1].x
+      bx = layer_data[i+1].x
       bx = calc_bitmap_x(bx).round
-      by = l.data[i+1].y
+      by = layer_data[i+1].y
       by = calc_bitmap_y(by).round
 
       coords << {
         :ax => ax, :ay => ay,
         :bx => bx, :by => by,
-        :dy => l.data[i].y
+        :dy => layer_data[i].y
       }
     end
 
