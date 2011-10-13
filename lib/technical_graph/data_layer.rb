@@ -23,7 +23,7 @@ class DataLayer
     @data_params[:simple_smoother] = true if options[:simple_smoother] == true
     @data_params[:simple_smoother_x] = true if options[:simple_smoother_x] == true
     @data_params[:simple_smoother_level] ||= 3
-    @data_params[:simple_smoother_strategy] ||= DataLayerProcessor::DEFAULT_STRATEGY
+    @data_params[:simple_smoother_strategy] ||= DataLayerProcessor::DEFAULT_SIMPLE_SMOOTHER_STRATEGY
     # was already done
     @data_params[:processor_finished] = false
 
@@ -53,19 +53,27 @@ class DataLayer
     end
   end
 
-  # Array of {:x =>, :y =>}
-  attr_reader :data
+  # Array of DataPoints, not processed
+  def raw_data
+    @data
+  end
+
+  # Array of DataPoints, after external processing
+  def processed_data
+    if @processed_data.nil?
+      process!
+    end
+
+    @processed_data
+  end
 
   # Run external processor (smoothing, ...)
-  def process
-    if simple_smoother and not processor_finished?
-      @processor.strategy = simple_smoother_strategy
+  def process!
+    if simple_smoother
+      @processor.simple_smoother_strategy = simple_smoother_strategy
       @processor.level = simple_smoother_level
-      @processor.generate_vector
       @processor.simple_smoother_x = simple_smoother_x
-      @data = @processor.process
-
-      processor_finished!
+      @processed_data = @processor.process
     end
   end
 
@@ -107,16 +115,6 @@ class DataLayer
 
   def simple_smoother_x
     return @data_params[:simple_smoother_x]
-  end
-
-  # Was already processed?
-  def processor_finished?
-    @data_params[:processor_finished]
-  end
-
-  # Mark as processed
-  def processor_finished!
-    @data_params[:processor_finished] = true
   end
 
   # Clear data
