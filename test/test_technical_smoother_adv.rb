@@ -6,8 +6,8 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
     should 'create simple X smoothing' do
       tg = TechnicalGraph.new(
         {
-          :width => 5000,
-          :height => 3000,
+          :width => 8000,
+          :height => 6000,
 
           :legend => true,
           :legend_auto => true,
@@ -25,7 +25,7 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
         y = 10.0 * Math.cos(i.to_f * (2.0 * 3.14 / max.to_f))
 
         y += rand * 4.0
-        x += rand * 0.5
+        x += rand * 1.5
 
         layer_data << { :x => x, :y => y }
       end
@@ -47,8 +47,14 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
         :simple_smoother_level => 100,
         :simple_smoother => true
       })
+      layer_params_d = layer_params_c.clone.merge({
+        :color => 'blue',
+        :simple_smoother_x => false
+      })
+
       tg.add_layer(layer_data.clone, layer_params)
       tg.add_layer(layer_data.clone, layer_params_c)
+      tg.add_layer(layer_data.clone, layer_params_d)
 
       tg.render
       tg.image_drawer.save_to_file('samples/tests/test_smoothing_x_values.png')

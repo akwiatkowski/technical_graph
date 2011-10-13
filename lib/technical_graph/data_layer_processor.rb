@@ -65,6 +65,8 @@ class DataLayerProcessor
     old_data = @data_layer.data
     new_data = Array.new
 
+    puts "X axis distance smoothing enabled" if simple_smoother_x
+
     (0...old_data.size).each do |i|
       new_data << DataPoint.xy(old_data[i].x, process_part(old_data, i))
     end
@@ -94,24 +96,32 @@ class DataLayerProcessor
     # and now do some magic :]
 
     if simple_smoother_x == false
-      y_sum = 0.0
-      (0...level).each do |l|
-        y_sum += part_array[l].y * vector[l]
-      end
-      return y_sum
+      return process_part_only_y(part_array)
     else
-      puts "X axis distance smoothing enabled"
-      y_sum = 0.0
-      (0...level).each do |l|
-        y_sum += part_array[l].y * vector[l]
-      end
-      return y_sum
+      return process_part_y_and_x(part_array)
     end
 
   end
 
+  # Process part (size depends on level), only Y data
+  def process_part_only_y(part_array)
+    y_sum = 0.0
+    (0...level).each do |l|
+      y_sum += part_array[l].y * vector[l]
+    end
+    return y_sum
+  end
 
-  # This vector will be used to process values (Y'es), linear algorithm
+  # Process part (size depends on level), Y and X data
+  def process_part_y_and_x(part_array)
+    y_sum = 0.0
+    (0...level).each do |l|
+      y_sum += part_array[l].y * vector[l]
+    end
+    return y_sum
+  end
+
+# This vector will be used to process values (Y'es), linear algorithm
   def generate_vector_rectangular
     @vector = Array.new
     # calculated
@@ -121,7 +131,7 @@ class DataLayerProcessor
     return @vector
   end
 
-  # This vector will be used to process values (Y'es), linear algorithm
+# This vector will be used to process values (Y'es), linear algorithm
   def generate_vector_gauss
     # http://www.techotopia.com/index.php/Ruby_Math_Functions_and_Methods#Ruby_Math_Constants
     # http://pl.wikipedia.org/wiki/Okno_czasowe
@@ -142,7 +152,7 @@ class DataLayerProcessor
     return @vector
   end
 
-  # Multiply vector to have sum eq. 1.0
+# Multiply vector to have sum eq. 1.0
   def normalize_vector
     s = 0.0
     @vector.each do |v|
@@ -160,9 +170,9 @@ class DataLayerProcessor
     return @vector
   end
 
-  # Make mirror array
-  # size = 7 => [ i[3], i[2], i[1], i[0], i[1], i[2], i[3] ]
-  # size = 8 => [ i[3], i[2], i[1], i[0], i[0], i[1], i[2], i[3] ]
+# Make mirror array
+# size = 7 => [ i[3], i[2], i[1], i[0], i[1], i[2], i[3] ]
+# size = 8 => [ i[3], i[2], i[1], i[0], i[0], i[1], i[2], i[3] ]
   def make_mirror(input, size)
     a = Array.new(size, 0.1)
     if size.even?

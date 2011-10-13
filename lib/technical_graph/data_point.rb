@@ -9,6 +9,14 @@ class DataPoint
     DataPoint.new({ :x=>_x, :y=>_y })
   end
 
+  def x_distance(other_dp)
+    return (self.x - other_dp.x).abs
+  end
+
+  def y_distance(other_dp)
+    return (self.y - other_dp.y).abs
+  end
+
   def x
     @x
   end
