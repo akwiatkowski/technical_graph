@@ -141,6 +141,8 @@ Layer options Hash
 * layer_options[:simple_smoother] - 'smooth' data, default false
 * layer_options[:simple_smoother_level] - strength of smoothing, this is level of window used for processing, default 3
 * layer_options[:simple_smoother_strategy] - strategy used for smoothing data, you can choose between :rectangular or :gauss, default :rectangular
+* layer_options[:simple_smoother_x] - consider X axis distance when smoothing, slowest but more accurate, default false
+
 
 
 Contributing to technical-graph

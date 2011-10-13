@@ -1,5 +1,6 @@
 #encoding: utf-8
 
+require 'technical_graph/data_point'
 require 'technical_graph/graph_color_library'
 require 'technical_graph/data_layer_processor'
 
@@ -20,6 +21,7 @@ class DataLayer
     # smoothing parameters
     # by default it is false
     @data_params[:simple_smoother] = true if options[:simple_smoother] == true
+    @data_params[:simple_smoother_x] = true if options[:simple_smoother_x] == true
     @data_params[:simple_smoother_level] ||= 3
     @data_params[:simple_smoother_strategy] ||= DataLayerProcessor::DEFAULT_STRATEGY
     # was already done
@@ -36,9 +38,14 @@ class DataLayer
   attr_reader :processor
 
   # Accessor for setting chart data for layer to draw
-  def append_data(d)
-    if d.kind_of? Array
-      @data += d
+  def append_data(data_array)
+    if data_array.kind_of? Array
+      # append as DataPoint
+      # convert to DataPoints, which has more specialized methods
+      data_array.each do |d|
+        @data << DataPoint.new(d)
+      end
+      
       # sort, clean bad records
       process_data
     else
@@ -55,6 +62,7 @@ class DataLayer
       @processor.strategy = simple_smoother_strategy
       @processor.level = simple_smoother_level
       @processor.generate_vector
+      @processor.simple_smoother_x = simple_smoother_x
       @data = @processor.process
 
       processor_finished!
@@ -97,6 +105,10 @@ class DataLayer
     return @data_params[:simple_smoother_strategy]
   end
 
+  def simple_smoother_x
+    return @data_params[:simple_smoother_x]
+  end
+
   # Was already processed?
   def processor_finished?
     @data_params[:processor_finished]
@@ -115,22 +127,21 @@ class DataLayer
   # Clean and process data used for drawing current data layer
   def process_data
     # delete duplicates
-    @data = @data.inject([]) { |result, d| result << d unless result.select { |r| r[:x] == d[:x] }.size > 0; result }
+    @data = @data.inject([]) { |result, d| result << d unless result.select { |r| r.x == d.x }.size > 0; result }
 
-    @data.delete_if { |d| d[:x].nil? or d[:y].nil? }
-    @data.sort! { |d, e| d[:x] <=> e[:x] }
+    @data.delete_if { |d| d.x.nil? or d.y.nil? }
+    @data.sort! { |d, e| d.x <=> e.x }
 
     # default X values, if data is not empty
     if @data.size > 0
-      @data_params[:x_min] = @data.first[:x] || @options[:default_x_min]
-      @data_params[:x_max] = @data.last[:x] || @options[:default_x_max]
+      @data_params[:x_min] = @data.first.x || @options[:default_x_min]
+      @data_params[:x_max] = @data.last.x || @options[:default_x_max]
 
       # default Y values
-      y_sort = @data.sort { |a, b| a[:y] <=> b[:y] }
-      @data_params[:y_min] = y_sort.first[:y] || @options[:default_y_min]
-      @data_params[:y_max] = y_sort.last[:y] || @options[:@default_y_max]
+      y_sort = @data.sort { |a, b| a.y <=> b.y }
+      @data_params[:y_min] = y_sort.first.y || @options[:default_y_min]
+      @data_params[:y_max] = y_sort.last.y || @options[:@default_y_max]
     end
-
   end
 
   def x_min

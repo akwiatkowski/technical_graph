@@ -197,20 +197,20 @@ class GraphImageDrawer
     coords = Array.new
 
     (0...(l.data.size - 1)).each do |i|
-      ax = l.data[i][:x]
+      ax = l.data[i].x
       ax = calc_bitmap_x(ax).round
-      ay = l.data[i][:y]
+      ay = l.data[i].y
       ay = calc_bitmap_y(ay).round
 
-      bx = l.data[i+1][:x]
+      bx = l.data[i+1].x
       bx = calc_bitmap_x(bx).round
-      by = l.data[i+1][:y]
+      by = l.data[i+1].y
       by = calc_bitmap_y(by).round
 
       coords << {
         :ax => ax, :ay => ay,
         :bx => bx, :by => by,
-        :dy => l.data[i][:y]
+        :dy => l.data[i].y
       }
     end
 
