@@ -1,6 +1,69 @@
-How to use
-==========
+How to use it
+=============
 
+All this examples are generated in test/test_technical_readme.rb.
+
+
+First thing we need to have data to show on graph, for example something like:
+
+> simple_data_array = [
+>   { :x => 0, :y => 0 },
+>   { :x => 1, :y => 1 },
+>   { :x => 2, :y => 2 },
+>   { :x => 3, :y => 2 },
+>   { :x => 4, :y => 1 },
+>   { :x => 5, :y => 0 },
+> ]
+
+If you want to put this data on graph you need to create TechnicalGraph object
+
+> tg = TechnicalGraph.new
+
+and add a layer.
+
+> tg.add_layer(simple_data_array)
+
+We added data but we don't see anything. Now we have to render graph and save it to file.
+
+> tg.render
+> file_name = 'samples/readme/01_simplest.png'
+> @tg.image_drawer.save_to_file(file_name)
+
+And we got our first graph with one layer without any options changes, a bit raw.
+
+![(01) simple graph](https://github.com/akwiatkowski/technical_graph/blob/master/samples/readme/01_simplest.png)
+
+
+
+
+
+ Maybe example with two layers?
+
+> simple_data_array = [
+>   { :x => 0, :y => 0 },
+>   { :x => 1, :y => 1 },
+>   { :x => 2, :y => 2 },
+>   { :x => 3, :y => 2 },
+>   { :x => 4, :y => 1 },
+>   { :x => 5, :y => 0 },
+> ]
+> simple_data_array_b = [
+>   { :x => 0.5, :y => 0.5 },
+>   { :x => 1.5, :y => 0.5 },
+>   { :x => 2.5, :y => 1.5 },
+>   { :x => 3.5, :y => 1.0 },
+>   { :x => 4.5, :y => 1.5 },
+>   { :x => 5.5, :y => 1.5 },
+> ]
+
+> tg = TechnicalGraph.new
+> tg.add_layer(simple_data_array)
+> tg.add_layer(simple_data_array_b)
+> tg.render
+> file_name = 'samples/readme/02_two_layers.png'
+> @tg.image_drawer.save_to_file(file_name)
+
+![(02) simple graph](https://github.com/akwiatkowski/technical_graph/blob/master/samples/readme/02_two_layers.png)
 
 
 Options Hash

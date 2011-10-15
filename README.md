@@ -79,7 +79,7 @@ where format is image format, ex. 'png', 'jpeg', ... Of coure I prefer 'png'.
 Documentation
 -------------
 
-Documentation is moved [here](./technical_graph/DOCUMENTATION.md)
+Documentation is moved [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.md)
 
 
 Contributing to technical-graph
