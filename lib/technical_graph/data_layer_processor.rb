@@ -7,10 +7,12 @@ require 'technical_graph/data_layer_processor_noise_removal'
 
 class DataLayerProcessor
   include DataLayerProcessorSimpleSmoother
+  include DataLayerProcessorNoiseRemoval
 
   def initialize(data_layer)
     @data_layer = data_layer
     simple_smoother_initialize
+    noise_removal_initialize
   end
   
 
