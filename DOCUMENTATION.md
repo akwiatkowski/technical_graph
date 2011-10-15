@@ -31,7 +31,7 @@ We added data but we don't see anything. Now we have to render graph and save it
 
 And we got our first graph with one layer without any options changes, a bit raw.
 
-![(01) simple graph](https://github.com/akwiatkowski/technical_graph/blob/master/samples/readme/01_simplest.png)
+![(01) simple graph](https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/01_simplest.png)
 
 
 
@@ -63,7 +63,7 @@ And we got our first graph with one layer without any options changes, a bit raw
 > file_name = 'samples/readme/02_two_layers.png'
 > @tg.image_drawer.save_to_file(file_name)
 
-![(02) simple graph](https://github.com/akwiatkowski/technical_graph/blob/master/samples/readme/02_two_layers.png)
+![(02) simple graph](https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/02_two_layers.png)
 
 
 Options Hash
