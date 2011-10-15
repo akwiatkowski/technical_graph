@@ -142,6 +142,10 @@ Layer options Hash
 * layer_options[:simple_smoother_level] - strength of smoothing, this is level of window used for processing, default 3
 * layer_options[:simple_smoother_strategy] - strategy used for smoothing data, you can choose between :rectangular or :gauss, default :rectangular
 * layer_options[:simple_smoother_x] - consider X axis distance when smoothing, slowest but more accurate, default false
+* layer_options[:noise_removal] - enable removal of noises/peaks, default false
+* layer_options[:noise_removal_level] - tolerance level, higher - less points will be removes, default 3
+* layer_options[:noise_removal_window_size] - how many near values check for determining what is noise, default 10
+
 
 
 

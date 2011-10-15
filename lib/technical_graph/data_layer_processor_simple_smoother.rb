@@ -17,16 +17,17 @@ module DataLayerProcessorSimpleSmoother
   # default Gauss coefficient
   DEFAULT_GAUSS_COEFF = 0.2
 
-  def simple_smoother_initialize
-    @simple_smoother_strategy = DEFAULT_SIMPLE_SMOOTHER_STRATEGY
-    @simple_smoother_level = MIN_SIMPLE_SMOOTHER_LEVEL
+  def simple_smoother_initialize(options)
+    @simple_smoother = options[:simple_smoother] == true
+    @simple_smoother_strategy = options[:simple_smoother_strategy] || DEFAULT_SIMPLE_SMOOTHER_STRATEGY
+    @simple_smoother_level = options[:simple_smoother_level] || MIN_SIMPLE_SMOOTHER_LEVEL
+    @simple_smoother_x = options[:simple_smoother_x] == true
+
     @vector = Array.new
     @gauss_coeff = DEFAULT_GAUSS_COEFF
-
-    @simple_smoother_x = false
   end
 
-  attr_reader :vector
+  attr_reader :vector, :simple_smoother
   attr_accessor :gauss_coeff
 
   # Simple_smoother_level of approximation
@@ -59,6 +60,9 @@ module DataLayerProcessorSimpleSmoother
 
   # Smooth values
   def simple_smoother_process
+    # not turned on
+    return if simple_smoother == false
+
     # vector used for smoothing
     generate_vector
 
