@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 require 'technical_graph/data_layer_processor_simple_smoother'
+require 'technical_graph/data_layer_processor_noise_removal'
 
 # Smooth data layer, approximate, ..
 
