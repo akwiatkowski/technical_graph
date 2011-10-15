@@ -66,7 +66,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
 
       # adding second data
       layer.append_data(@second_data)
-      layer.data.size.should == 2 * @data_size
+      layer.raw_data.size.should == 2 * @data_size
+      layer.processed_data.size.should == 2 * @data_size
 
       # @tg.render
       # @tg.image.save_to_file('samples/tests/test1.png')
@@ -78,14 +79,17 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer.raw_data.size.should == 0
       layer.processed_data.size.should == 0
       layer.append_data([{ :x => 0, :y => 1 }])
-      layer.data.size.should == 1
+      layer.raw_data.size.should == 1
+      layer.processed_data.size.should == 1
 
       # uniq check
       layer.append_data([{ :x => 0, :y => 1 }])
       layer.append_data([{ :x => 0, :y => 1 }])
-      layer.data.size.should == 1
+      layer.raw_data.size.should == 1
+      layer.processed_data.size.should == 1
       layer.append_data([{ :x => 2, :y => 1 }])
-      layer.data.size.should == 2
+      layer.raw_data.size.should == 2
+      layer.processed_data.size.should == 2
     end
 
     should 'has ability to filter bad records' do
@@ -94,12 +98,14 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer.raw_data.size.should == 0
       layer.processed_data.size.should == 0
       layer.append_data([{ :x => 0, :y => 1 }])
-      layer.data.size.should == 1
+      layer.raw_data.size.should == 1
+      layer.processed_data.size.should == 1
 
       # uniq check
       layer.append_data([{ :z => 0, :y => 1 }])
       layer.append_data([{}])
-      layer.data.size.should == 1
+      layer.raw_data.size.should == 1
+      layer.processed_data.size.should == 1
     end
 
   end

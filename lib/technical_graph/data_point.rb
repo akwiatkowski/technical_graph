@@ -1,8 +1,14 @@
 class DataPoint
 
   def initialize(h={ :x => 0, :y => 0 })
-    @x = h[:x]
-    @y = h[:y]
+    if h.kind_of? Hash
+      @x = h[:x]
+      @y = h[:y]
+    end
+    if h.kind_of? DataPoint
+      @x = h.x
+      @y = h.y
+    end
   end
 
   def self.xy(_x, _y)

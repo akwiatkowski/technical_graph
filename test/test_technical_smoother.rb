@@ -34,17 +34,17 @@ class TestTechnicalSmoother < Test::Unit::TestCase
 
     should 'calculated vector has proper size and sum eq. 1.0' do
       @processor.generate_vector.should.kind_of? Array
-      @processor.generate_vector.size.should == @processor.level
+      @processor.generate_vector.size.should == @processor.simple_smoother_level
 
-      DataLayerProcessor::STRATEGIES.keys.each do |s|
-        @processor.strategy = s
-        @processor.strategy.should == s
+      DataLayerProcessor::SIMPLE_SMOOTHER_STRATEGIES.keys.each do |s|
+        @processor.simple_smoother_strategy = s
+        @processor.simple_smoother_strategy.should == s
 
         (1...10).each do |i|
-          @processor.level = i
-          @processor.level.should == i
+          @processor.simple_smoother_level = i
+          @processor.simple_smoother_level.should == i
 
-          @processor.generate_vector.size.should == @processor.level
+          @processor.generate_vector.size.should == @processor.simple_smoother_level
 
           s = 0.0
           @processor.generate_vector.each do |t|
@@ -59,17 +59,18 @@ class TestTechnicalSmoother < Test::Unit::TestCase
     end
 
     should 'processed data has the same size that old one' do
-      DataLayerProcessor::STRATEGIES.keys.each do |s|
-        @processor.strategy = s
-        @processor.strategy.should == s
+      DataLayerProcessor::SIMPLE_SMOOTHER_STRATEGIES.keys.each do |s|
+        @processor.simple_smoother_strategy = s
+        @processor.simple_smoother_strategy.should == s
         (1...9).each do |i|
-          @processor.level = i
-          @processor.level.should == i
+          @processor.simple_smoother_level = i
+          @processor.simple_smoother_level.should == i
 
-          @processor.generate_vector.size.should == @processor.level
+          @processor.generate_vector.size.should == @processor.simple_smoother_level
 
           new_data = @processor.process
-          new_data.size.should == @data_layer.data.size
+          new_data.size.should == @data_layer.raw_data.size
+          new_data.size.should == @data_layer.processed_data.size
 
           # add as new layer
           #@data_layer = DataLayer.new(@layer_data, @layer_params)
@@ -111,10 +112,9 @@ class TestTechnicalSmoother < Test::Unit::TestCase
 
       # process and add
       approx = layer_data_b = tg.layers[0].processor
-      approx.strategy = :gauss
-      approx.level = 9
-      approx.generate_vector
-      
+      approx.simple_smoother_strategy = :gauss
+      approx.simple_smoother_level = 9
+
       layer_data_b = approx.process
       layer_params_b = {
         :antialias => false,

@@ -47,7 +47,10 @@ class DataLayer
       end
       
       # sort, clean bad records
-      process_data
+      process_data_internal
+
+      # @raw_data is dirty, deleting @processed_data
+      @processed_data = nil
     else
       raise 'Data not an Array'
     end
@@ -125,7 +128,7 @@ class DataLayer
   end
 
   # Clean and process data used for drawing current data layer
-  def process_data
+  def process_data_internal
     # delete duplicates
     @data = @data.inject([]) { |result, d| result << d unless result.select { |r| r.x == d.x }.size > 0; result }
 
