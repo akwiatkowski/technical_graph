@@ -178,9 +178,10 @@ class GraphAxis
 
     t = Time.now
     plot_axis_y_line.draw(@image)
-    puts "#{Time.now - t} drawing lines"
+    puts "Y axis time #{Time.now - t}, drawing lines"
+    t = Time.now
     plot_axis_y_text.draw(@image)
-    puts "#{Time.now - t} drawing text"
+    puts "Y axis time #{Time.now - t}, drawing text"
   end
 
   def render_parameters_axis
@@ -222,9 +223,10 @@ class GraphAxis
 
     t = Time.now
     plot_axis_x_line.draw(@image)
-    puts "#{Time.now - t} drawing lines"
+    puts "X axis time #{Time.now - t}, drawing lines"
+    t = Time.now
     plot_axis_x_text.draw(@image)
-    puts "#{Time.now - t} drawing text"
+    puts "X axis time #{Time.now - t}, drawing lines"
 
   end
 
