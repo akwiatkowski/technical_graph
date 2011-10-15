@@ -3,6 +3,8 @@ How to use it
 
 All this examples are generated in test/test_technical_readme.rb.
 
+Simple graph
+------------
 
 First thing we need to have data to show on graph, for example something like:
 
@@ -44,9 +46,11 @@ And we got our first graph with one layer without any options changes, a bit raw
 
 
 
+More layers
+-----------
 
+Maybe example with two layers?
 
- Maybe example with two layers?
 
 > simple_data_array = [
 
@@ -94,6 +98,124 @@ And we got our first graph with one layer without any options changes, a bit raw
 
 ![(02) simple graph](https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/02_two_layers.png)
 
+
+Ranges
+------
+
+On default ranges are calculated automatically so all points are visible. You can override ranges setting.
+
+> # simple_data_array was defined before
+
+> tg = TechnicalGraph.new(
+
+>   {
+
+>     :x_min => -2,
+
+>     :x_max => 10,
+
+>     :y_min => -1,
+
+>     :y_max => 10,
+
+>    })
+
+> tg.add_layer(simple_data_array)
+
+> tg.render
+
+> file_name = 'samples/readme/03_changed_ranges.png'
+
+> @tg.image_drawer.save_to_file(file_name)
+
+![(03) changed ranges](https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/03_changed_ranges.png)
+
+
+Keep in mind that ranges will be changed but any point of graph can enlarge ranges that all points will be visible, unless...
+
+
+Fixed ranges
+------------
+
+
+You can turn off automatic range enlargement algorithm by using:
+
+> options[:xy_behaviour] = :fixed
+
+
+Example:
+
+> # simple_data_array was defined before
+
+> tg = TechnicalGraph.new(
+
+>   {
+
+>     :x_min => 1,
+
+>     :x_max => 2,
+
+>     :y_min => 1,
+
+>     :y_max => 2,
+
+>     :xy_behaviour => :fixed,
+
+>    })
+
+> tg.add_layer(simple_data_array)
+
+> tg.render
+
+> file_name = 'samples/readme/04_changed_ranges_fixed.png'
+
+> @tg.image_drawer.save_to_file(file_name)
+
+![(04) changed ranges](https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/04_changed_ranges_fixed.png)
+
+
+Axis interval
+-------------
+
+Axis can be calculated using two algorithms:
+
+* fixed interval - axis is every some distance
+
+* fixed count - there is fixed amount of axis on graph
+
+Keep in mind that where is X (parameter) and Y (value) axis. If you want to set fixed amount you should set
+options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false, like in the example below.
+
+
+> # simple_data_array was defined before
+
+> tg = TechnicalGraph.new(
+
+>   {
+
+>     :x_axis_fixed_interval => false,
+
+>     :y_axis_fixed_interval => false,
+
+>     :y_axis_count => 20,
+
+>     :x_axis_count => 20,
+
+>   })
+
+> tg.add_layer(simple_data_array)
+
+> tg.render
+
+> file_name = 'samples/readme/05_axis_fixed_amount.png'
+
+> @tg.image_drawer.save_to_file(file_name)
+
+
+
+
+Documentation
+=============
 
 Options Hash
 -------------

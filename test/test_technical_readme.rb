@@ -21,7 +21,9 @@ class TestTechnicalReadme < Test::Unit::TestCase
       ]
     end
 
+    #
     should 'create simplest graph' do
+      return # TODO remove it later, when all tests are done
       @tg = TechnicalGraph.new
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -33,12 +35,72 @@ class TestTechnicalReadme < Test::Unit::TestCase
       File.exist?(file_name).should == true
     end
 
+    #
     should 'create 2-layer graph' do
+      return # TODO remove it later, when all tests are done
       @tg = TechnicalGraph.new
       @tg.add_layer(@simple_data_array)
       @tg.add_layer(@simple_data_array_b)
       @tg.render
       file_name = 'samples/readme/02_two_layers.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_png.class.should == String
+      File.exist?(file_name).should == true
+    end
+
+    #
+    should 'change ranges' do
+      return # TODO remove it later, when all tests are done
+      @tg = TechnicalGraph.new(
+        {
+          :x_min => -2,
+          :x_max => 10,
+          :y_min => -1,
+          :y_max => 10,
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/03_changed_ranges.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_png.class.should == String
+      File.exist?(file_name).should == true
+    end
+
+    should 'change ranges (fixed)' do
+      return # TODO remove it later, when all tests are done
+      @tg = TechnicalGraph.new(
+        {
+          :x_min => 1,
+          :x_max => 2,
+          :y_min => 1,
+          :y_max => 2,
+          :xy_behaviour => :fixed
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/04_changed_ranges_fixed.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_png.class.should == String
+      File.exist?(file_name).should == true
+    end
+
+    should 'fixed amount of axis' do
+      @tg = TechnicalGraph.new(
+        {
+          :x_axis_fixed_interval => false,
+          :y_axis_fixed_interval => false,
+          :y_axis_count => 20,
+          :x_axis_count => 20,
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/05_axis_fixed_amount.png'
       @tg.image_drawer.save_to_file(file_name)
 
       # test
