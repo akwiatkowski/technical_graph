@@ -1,11 +1,38 @@
-technical-graph
+technical_graph
 ===============
 
-Create neat graphs.
+Purpose of this gem is to create neat, meaningful, linear graphs for large amount of data.
+
+If you want to:
+
+* create big graphs using large amount of data,
+* do it offline,
+* minimize needed code,
+* use only linear graph,
+* speed is not essential,
+* RMagick / ImageMagick is ok for you,
+* tired of forgotten gems/libraries...
+
+then you should try this gem.
+
+I created it because there were not available and maintained gems for that I needed. Now I use it to create hourly
+temperature and wind graphs for vast period of time (months, years), visualize measurements for [HomeIO](https://github.com/akwiatkowski/HomeIO).
+
+If you want to create candy, ultra fast, web graphs it maybe not the best tool. If you want other graph types than linear it
+is definitely not the right tool for you. It is also not SVG ready yet, but it should be within a few months.
+You can find my competitors [here](https://www.ruby-toolbox.com/categories/graphing).
 
 
-Usage
------
+Future
+------
+
+1. Finish data processors: smoothing (nearly done), noise removal (50%), interpolation or curved graphs (planned).
+2. Fix export to SVG.
+3. Optimization, and if needed find or write something faster for creating SVGs.
+
+
+Quick start
+-----------
 
 Check currents test when documentation is not enough :)
 
@@ -32,7 +59,7 @@ or
 where:
 
 * layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
-* layer_params - Hash of other parameters, all parameters will be described later.
+* layer_params - Hash of other parameters, all parameters are described later.
 
 3. Render graph
 
@@ -46,11 +73,13 @@ or get image binary content.
 
 > tg.image_drawer.to_format(format)
 
-where format is image format, ex. 'png', 'jpeg', ...
+where format is image format, ex. 'png', 'jpeg', ... Of coure I prefer 'png'.
 
 
 Options Hash
 -------------
+
+I plan to put there some graph examples for all options.
 
 Default ranges:
 
