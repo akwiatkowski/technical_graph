@@ -295,7 +295,7 @@ size using options[:axis_label_font_size].
 
 
 
-h2. Float numbers
+h2. Float numbers and value labels
 
 p. On default all float number are shown using 2 digits after dot. You can override it using options[:truncate_string]
 like in example below. If you want have values near graph points you can use proper layer options.
@@ -356,4 +356,19 @@ file_name = 'samples/readme/08b_truncate_string.png'
 </code>
 </pre>
 
-!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/08a_truncate_string.png((08b) displaying float numbers)!
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/08b_truncate_string.png((08b) displaying float numbers)!
+
+
+h2. TODO
+
+# Graph image size
+# Graph colors: background, hatch (option to turn it off?), axis
+# Anti-aliasing: image size comparison, layer antialiases
+# Font sizes
+# Axis density checking algorithm: sample when it us useful
+# Layer labels: used in legend
+# Layer colors, random colors
+# Legend with set position
+# Legend with auto position
+# Smoother:
+# Noise removal
