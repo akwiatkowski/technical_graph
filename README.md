@@ -73,13 +73,13 @@ or get image binary content.
 
 > tg.image_drawer.to_format(format)
 
-where format is image format, ex. 'png', 'jpeg', ... Of coure I prefer 'png'.
+where format is image format, ex. 'png', 'jpeg', ... Of course I prefer 'png'.
 
 
 Documentation
 -------------
 
-Documentation is moved [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.md)
+Documentation is moved [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile)
 
 
 Contributing to technical-graph

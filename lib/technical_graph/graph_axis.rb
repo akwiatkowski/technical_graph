@@ -42,6 +42,14 @@ class GraphAxis
     options[:y_axis_fixed_interval] == true
   end
 
+  def y_axis_interval
+    options[:y_axis_interval]
+  end
+
+  def x_axis_interval
+    options[:x_axis_interval]
+  end
+
   # Where to put axis values
   def value_axis
     return calc_axis(data_processor.y_min, data_processor.y_max, options[:y_axis_interval], options[:y_axis_count], y_axis_fixed?)
@@ -316,7 +324,8 @@ class GraphAxis
       plot_axis_text.pointsize(options[:axis_label_font_size])
       plot_axis_text.font_family('helvetica')
       plot_axis_text.font_style(Magick::NormalStyle)
-      plot_axis_text.text_align(Magick::LeftAlign)
+      #plot_axis_text.text_align(Magick::LeftAlign)
+      plot_axis_text.text_align(Magick::CenterAlign)
       plot_axis_text.text_undercolor(options[:background_color])
 
       plot_axis_text.text(
@@ -334,7 +343,8 @@ class GraphAxis
       plot_axis_text.pointsize(options[:axis_label_font_size])
       plot_axis_text.font_family('helvetica')
       plot_axis_text.font_style(Magick::NormalStyle)
-      plot_axis_text.text_align(Magick::LeftAlign)
+      #plot_axis_text.text_align(Magick::LeftAlign)
+      plot_axis_text.text_align(Magick::CenterAlign)
       plot_axis_text.text_undercolor(options[:background_color])
 
       plot_axis_text = plot_axis_text.rotate(90)

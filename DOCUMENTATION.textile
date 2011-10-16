@@ -12,7 +12,7 @@ p. First thing we need to have data to show on graph, for example something like
 
 <pre>
 <code>
-simple_data_array = [
+@simple_data_array = [
   { :x => 0, :y => 0 },
   { :x => 1, :y => 1 },
   { :x => 2, :y => 2 },
@@ -27,7 +27,7 @@ p. If you want to put this data on graph you need to create TechnicalGraph objec
 
 <pre>
 <code>
-tg = TechnicalGraph.new
+@tg = TechnicalGraph.new
 </code>
 </pre>
 
@@ -35,7 +35,7 @@ p. and add a layer.
 
 <pre>
 <code>
-tg.add_layer(simple_data_array)
+@tg.add_layer(@simple_data_array)
 </code>
 </pre>
 
@@ -43,9 +43,9 @@ p. We added data but we don't see anything. Now we have to render graph and save
 
 <pre>
 <code>
-tg.render
+@tg.render
 file_name = 'samples/readme/01_simplest.png'
-tg.image_drawer.save_to_file(file_name)
+@tg.image_drawer.save_to_file(file_name)
 </code>
 </pre>
 
@@ -58,13 +58,12 @@ p. And we got our first graph with one layer without any options changes, a bit 
 
 
 h2. More layers
------------
 
 p. Maybe example with two layers?
 
 <pre>
 <code>
-simple_data_array = [
+@simple_data_array = [
   { :x => 0, :y => 0 },
   { :x => 1, :y => 1 },
   { :x => 2, :y => 2 },
@@ -73,7 +72,7 @@ simple_data_array = [
   { :x => 5, :y => 0 },
 ]
 
-simple_data_array_b = [
+@simple_data_array_b = [
   { :x => 0.5, :y => 0.5 },
   { :x => 1.5, :y => 0.5 },
   { :x => 2.5, :y => 1.5 },
@@ -82,12 +81,12 @@ simple_data_array_b = [
   { :x => 5.5, :y => 1.5 },
 ]
 
-tg = TechnicalGraph.new
-tg.add_layer(simple_data_array)
-tg.add_layer(simple_data_array_b)
-tg.render
+@tg = TechnicalGraph.new
+@tg.add_layer(@simple_data_array)
+@tg.add_layer(@simple_data_array_b)
+@tg.render
 file_name = 'samples/readme/02_two_layers.png'
-tg.image_drawer.save_to_file(file_name)
+@tg.image_drawer.save_to_file(file_name)
 </code>
 </pre>
 
@@ -103,7 +102,7 @@ p. On default ranges are calculated automatically so all points are visible. You
 
 <pre>
 <code>
-simple_data_array = [
+@simple_data_array = [
   { :x => 0, :y => 0 },
   { :x => 1, :y => 1 },
   { :x => 2, :y => 2 },
@@ -112,7 +111,7 @@ simple_data_array = [
   { :x => 5, :y => 0 },
 ]
 
-tg = TechnicalGraph.new(
+@tg = TechnicalGraph.new(
   {
     :x_min => -2,
     :x_max => 10,
@@ -120,10 +119,10 @@ tg = TechnicalGraph.new(
     :y_max => 10,
   })
 
-tg.add_layer(simple_data_array)
-tg.render
+@tg.add_layer(@simple_data_array)
+@tg.render
 file_name = 'samples/readme/03_changed_ranges.png'
-tg.image_drawer.save_to_file(file_name)
+@tg.image_drawer.save_to_file(file_name)
 </code>
 </pre>
 
@@ -150,7 +149,7 @@ Example:
 
 <pre>
 <code>
-simple_data_array = [
+@simple_data_array = [
   { :x => 0, :y => 0 },
   { :x => 1, :y => 1 },
   { :x => 2, :y => 2 },
@@ -159,7 +158,7 @@ simple_data_array = [
   { :x => 5, :y => 0 },
 ]
 
-tg = TechnicalGraph.new(
+@tg = TechnicalGraph.new(
   {
     :x_min => 1,
     :x_max => 2,
@@ -168,10 +167,10 @@ tg = TechnicalGraph.new(
     :xy_behaviour => :fixed,
   })
 
-tg.add_layer(simple_data_array)
-tg.render
+@tg.add_layer(@simple_data_array)
+@tg.render
 file_name = 'samples/readme/04_changed_ranges_fixed.png'
-tg.image_drawer.save_to_file(file_name)
+@tg.image_drawer.save_to_file(file_name)
 </code>
 </pre>
 
@@ -192,7 +191,7 @@ options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false,
 
 <pre>
 <code>
-simple_data_array = [
+@simple_data_array = [
   { :x => 0, :y => 0 },
   { :x => 1, :y => 1 },
   { :x => 2, :y => 2 },
@@ -201,7 +200,7 @@ simple_data_array = [
   { :x => 5, :y => 0 },
 ]
 
-tg = TechnicalGraph.new(
+@tg = TechnicalGraph.new(
   {
     :x_axis_fixed_interval => false,
     :y_axis_fixed_interval => false,
@@ -209,12 +208,152 @@ tg = TechnicalGraph.new(
     :x_axis_count => 20,
   })
 
-tg.add_layer(simple_data_array)
-tg.render
+@tg.add_layer(@simple_data_array)
+@tg.render
 file_name = 'samples/readme/05_axis_fixed_amount.png'
-tg.image_drawer.save_to_file(file_name)
+@tg.image_drawer.save_to_file(file_name)
 </code>
 </pre>
 
 !https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/05_axis_fixed_amount.png((05) fixed axis count)!
 
+
+
+
+h2. Axis interval - fixed interval
+
+p. Axis can be calculated using two algorithms:
+
+# fixed interval - axis is every some distance,
+# fixed count - there is fixed amount of axis on graph.
+
+p. Keep in mind that where is X (parameter) and Y (value) axis. If you want to set fixed amount you should set
+options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false, like in the example below.
+
+<pre>
+<code>
+@simple_data_array = [
+  { :x => 0, :y => 0 },
+  { :x => 1, :y => 1 },
+  { :x => 2, :y => 2 },
+  { :x => 3, :y => 2 },
+  { :x => 4, :y => 1 },
+  { :x => 5, :y => 0 },
+]
+
+@tg = TechnicalGraph.new(
+  {
+    :x_axis_fixed_interval => true,
+    :y_axis_fixed_interval => true,
+    :y_axis_interval => 0.8,
+    :x_axis_interval => 0.6,
+  })
+  @tg.add_layer(@simple_data_array)
+  @tg.render
+  file_name = 'samples/readme/06_axis_fixed_interval.png'
+  @tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/06_axis_fixed_interval.png((06) fixed axis interval)!
+
+
+
+
+
+
+h2. Axis labels
+
+p. You can add label to X and Y axis. using options[:x_axis_label] and options[:y_axis_label], and you can choose font
+size using options[:axis_label_font_size].
+
+<pre>
+<code>
+@simple_data_array = [
+  { :x => 0, :y => 0 },
+  { :x => 1, :y => 1 },
+  { :x => 2, :y => 2 },
+  { :x => 3, :y => 2 },
+  { :x => 4, :y => 1 },
+  { :x => 5, :y => 0 },
+]
+
+@tg = TechnicalGraph.new(
+  {
+    :x_axis_label => 'parameter',
+    :y_axis_label => 'value',
+    :axis_label_font_size => 36
+  })
+  @@tg.add_layer(@simple_data_array)
+  @tg.render
+  file_name = 'samples/readme/07_axis_label.png'
+  @tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/07_axis_label.png((07) axis labels)!
+
+
+
+h2. Float numbers
+
+p. On default all float number are shown using 2 digits after dot. You can override it using options[:truncate_string]
+like in example below. If you want have values near graph points you can use proper layer options.
+
+p. Layers have also options, and it is useful for this example to turn on value labels.
+
+layer_options[:value_labels]
+
+<pre>
+<code>
+@float_data_array = [
+  { :x => 0, :y => 0 },
+  { :x => 0.111, :y => 0.123 },
+  { :x => 0.222, :y => 1.456 },
+  { :x => 0.333, :y => 2.8756 },
+  { :x => 0.555, :y => 1.042 },
+  { :x => 0.888, :y => 0.988 },
+]
+
+@tg = TechnicalGraph.new(
+  {
+    :truncate_string => "%.3f"
+  })
+@layer_params = {
+  :value_labels => true
+}
+@tg.add_layer(@float_data_array, @layer_params)
+@tg.render
+file_name = 'samples/readme/08a_truncate_string.png'
+@tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/08a_truncate_string.png((08a) displaying float numbers)!
+
+<pre>
+<code>
+@float_data_array = [
+  { :x => 0, :y => 0 },
+  { :x => 0.111, :y => 0.123 },
+  { :x => 0.222, :y => 1.456 },
+  { :x => 0.333, :y => 2.8756 },
+  { :x => 0.555, :y => 1.042 },
+  { :x => 0.888, :y => 0.988 },
+]
+
+@tg = TechnicalGraph.new(
+  {
+    :truncate_string => "%.1f"
+  })
+@layer_params = {
+  :value_labels => true
+}
+@tg.add_layer(@float_data_array, @layer_params)
+@tg.render
+file_name = 'samples/readme/08b_truncate_string.png'
+@tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/08a_truncate_string.png((08b) displaying float numbers)!
