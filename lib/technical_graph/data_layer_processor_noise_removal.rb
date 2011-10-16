@@ -73,7 +73,7 @@ module DataLayerProcessorNoiseRemoval
       part_array << data[current_i]
 
     end
-    y_mean = part_array.collect { |p| p.y }.mean
+    y_mean = part_array.collect { |p| p.y }.float_mean
 
     # another algorithm
     noise_strength = (data[i].y - y_mean).abs / y_mean

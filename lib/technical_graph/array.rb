@@ -4,11 +4,11 @@
 # http://stackoverflow.com/questions/1341271/average-from-a-ruby-array
 
 class Array
-  def sum
+  def float_sum
     inject(0.0) { |result, el| result + el }
   end
 
-  def mean
-    sum / size
+  def float_mean
+    float_sum / size
   end
 end
