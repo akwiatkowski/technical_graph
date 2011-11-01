@@ -65,7 +65,7 @@ class DataLayer
       end
       logger.debug "appending data, size #{data_array.size}"
       logger.debug " TIME COST #{Time.now - t}"
-      
+
       # sort, clean bad records
       process_data_internal
 
@@ -139,6 +139,10 @@ class DataLayer
     return @data_params[:simple_smoother_x]
   end
 
+  def perform_parameter_uniq
+    return @data_params[:perform_parameter_uniq] == true
+  end
+
   # Clear data
   def clear_data
     @data = Array.new
@@ -149,10 +153,20 @@ class DataLayer
     t = Time.now
 
     # delete duplicates
-    @data = @data.inject([]) { |result, d| result << d unless result.select { |r| r.x == d.x }.size > 0; result }
+    if perform_parameter_uniq
+      @data = @data.inject([]) { |result, d| result << d unless result.select { |r| r.x == d.x }.size > 0; result }
+    end
+
+    logger.debug "internal processor - deleting duplicates"
+    logger.debug " TIME COST #{Time.now - t}"
+    t = Time.now
 
     @data.delete_if { |d| d.x.nil? or d.y.nil? }
     @data.sort! { |d, e| d.x <=> e.x }
+
+    logger.debug "internal processor - deleting nils and sorting"
+    logger.debug " TIME COST #{Time.now - t}"
+    t = Time.now
 
     # default X values, if data is not empty
     if @data.size > 0
@@ -165,7 +179,7 @@ class DataLayer
       @data_params[:y_max] = y_sort.last.y || @options[:@default_y_max]
     end
 
-    logger.debug "data processed using internal processor"
+    logger.debug "internal processor - setting min and max"
     logger.debug " TIME COST #{Time.now - t}"
   end
 

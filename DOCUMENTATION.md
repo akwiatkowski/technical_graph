@@ -91,3 +91,4 @@ Layer options Hash
     layer_options[:noise_removal] - enable removal of noises/peaks, default false
     layer_options[:noise_removal_level] - tolerance level, higher - less points will be removes, default 3
     layer_options[:noise_removal_window_size] - how many near values check for determining what is noise, default 10
+    layer_options[:perform_parameter_uniq] - it takes some time and rarely usable, so it is turned off by default

@@ -61,6 +61,8 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
           :legend_margin => 60,
           :legend_x => 50,
           :legend_y => 50,
+
+          :log_level => Logger::DEBUG
         }
       )
       max = 2000
@@ -78,6 +80,7 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
 
       # adding simple layer
       layer_params = {
+        #:perform_parameter_uniq => true,
         :antialias => false,
         :color => 'red',
         :label => 'raw',
