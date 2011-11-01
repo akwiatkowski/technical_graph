@@ -23,7 +23,7 @@ module DataLayerProcessorNoiseRemoval
 
     @noises_removed_count = 0
 
-    puts "Noise removal started"
+    logger.debug "Noise removal started"
 
     (0...data.size).each do |i|
       if not noise?(i)
@@ -33,7 +33,8 @@ module DataLayerProcessorNoiseRemoval
       end
     end
 
-    puts "Noise removal completed, removed #{@noises_removed_count}, time #{Time.now - t}"
+    logger.debug "Noise removal completed, removed #{@noises_removed_count}"
+    logger.debug " TIME COST #{Time.now - t}"
 
     @data = new_data
     return new_data

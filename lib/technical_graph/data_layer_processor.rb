@@ -9,6 +9,10 @@ class DataLayerProcessor
   include DataLayerProcessorSimpleSmoother
   include DataLayerProcessorNoiseRemoval
 
+  def logger
+    @data_layer.logger
+  end
+
   def initialize(data_layer)
     @data_layer = data_layer
     simple_smoother_initialize(data_params)

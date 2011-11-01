@@ -72,7 +72,8 @@ module DataLayerProcessorSimpleSmoother
 
     # pre-processing, distance
     if simple_smoother_x == true
-      puts "X axis distance smoothing enabled"
+      logger.debug "X axis distance smoothing enabled"
+      t = Time.now
 
       (0...old_data.size).each do |i|
         new_data << DataPoint.xy(old_data[i].x, process_part(old_data, i, false))
@@ -80,15 +81,20 @@ module DataLayerProcessorSimpleSmoother
 
       old_data = new_data
       new_data = Array.new
+
+      logger.debug "X axis distance smoothing completed"
+      logger.debug " TIME COST #{Time.now - t}"
     end
 
-    puts "Y axis distance smoothing"
+    logger.debug "Y axis distance smoothing"
+    t = Time.now
 
     (0...old_data.size).each do |i|
       new_data << DataPoint.xy(old_data[i].x, process_part(old_data, i))
     end
 
-    puts "Smoothing completed, simple_smoother_level #{simple_smoother_level}, data size #{old_data.size}, time #{Time.now - t}"
+    logger.debug "Y axis Smoothing completed, simple_smoother_level #{simple_smoother_level}, data size #{old_data.size}"
+    logger.debug " TIME COST #{Time.now - t}"
 
     @data = new_data
     return new_data

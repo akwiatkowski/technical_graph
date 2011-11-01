@@ -25,6 +25,10 @@ class GraphAxis
     @technical_graph.image_drawer
   end
 
+  def logger
+    @technical_graph.logger
+  end
+
   def truncate_string
     options[:truncate_string]
   end
@@ -62,6 +66,8 @@ class GraphAxis
 
   # Calculate axis using 2 methods
   def calc_axis(from, to, interval, count, fixed_interval)
+    t = Time.now
+
     axis = Array.new
     l = to - from
     current = from
@@ -71,12 +77,16 @@ class GraphAxis
         axis << current
         current += interval
       end
+      logger.debug "fixed interval axis calculation from #{from} to #{to} using int. #{interval}"
+      logger.debug " TIME COST #{Time.now - t}"
       return axis
 
     else
       (0...count).each do |i|
         axis << from + (l.to_f * i.to_f) / count.to_f
       end
+      logger.debug "fixed count axis calculation from #{from} to #{to} using count #{count}"
+      logger.debug " TIME COST #{Time.now - t}"
       return axis
 
     end
@@ -85,8 +95,12 @@ class GraphAxis
   # Enlarge image to maintain proper axis density
   def axis_distance_image_enlarge
     if options[:axis_density_enlarge_image]
+      t = Time.now
       x_axis_distance_image_enlarge
       y_axis_distance_image_enlarge
+
+      logger.debug "axis enlarged"
+      logger.debug " TIME COST #{Time.now - t}"
     end
   end
 
@@ -149,6 +163,8 @@ class GraphAxis
 
 
   def render_values_axis
+    t = Time.now
+
     plot_axis_y_line = Magick::Draw.new
     plot_axis_y_text = Magick::Draw.new
 
@@ -184,15 +200,21 @@ class GraphAxis
       )
     end
 
+    logger.debug "render values axis layer"
+    logger.debug " TIME COST #{Time.now - t}"
+
     t = Time.now
     plot_axis_y_line.draw(@image)
-    puts "Y axis time #{Time.now - t}, drawing lines"
+    logger.debug "render values axis drawing lines"
+    logger.debug " TIME COST #{Time.now - t}"
     t = Time.now
     plot_axis_y_text.draw(@image)
-    puts "Y axis time #{Time.now - t}, drawing text"
+    logger.debug "render values axis drawing text"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   def render_parameters_axis
+    t = Time.now
 
     plot_axis_x_line = Magick::Draw.new
     plot_axis_x_text = Magick::Draw.new
@@ -229,17 +251,24 @@ class GraphAxis
       )
     end
 
+    logger.debug "render parameters axis layer"
+    logger.debug " TIME COST #{Time.now - t}"
+
     t = Time.now
     plot_axis_x_line.draw(@image)
-    puts "X axis time #{Time.now - t}, drawing lines"
+    logger.debug "render parameters axis drawing lines"
+    logger.debug " TIME COST #{Time.now - t}"
     t = Time.now
     plot_axis_x_text.draw(@image)
-    puts "X axis time #{Time.now - t}, drawing lines"
+    logger.debug "render parameters axis drawing text"
+    logger.debug " TIME COST #{Time.now - t}"
 
   end
 
   # TODO: make it DRY
   def render_values_zero_axis
+    t = Time.now
+
     plot_axis_y_line = Magick::Draw.new
     plot_axis_y_text = Magick::Draw.new
 
@@ -272,12 +301,23 @@ class GraphAxis
       "#{y}"
     )
 
+    logger.debug "render 0-value axis layer"
+    logger.debug " TIME COST #{Time.now - t}"
+
     # TODO: why normal axis does not need it?
+    t = Time.now
     plot_axis_y_line.draw(@image)
+    logger.debug "render 0-value axis drawing line"
+    logger.debug " TIME COST #{Time.now - t}"
+
+    t = Time.now
     plot_axis_y_text.draw(@image)
+    logger.debug "render 0-value axis drawing text"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   def render_parameters_zero_axis
+    t = Time.now
 
     plot_axis_x_line = Magick::Draw.new
     plot_axis_x_text = Magick::Draw.new
@@ -311,13 +351,25 @@ class GraphAxis
       "#{x}"
     )
 
+    logger.debug "render 0-parameter axis layer"
+    logger.debug " TIME COST #{Time.now - t}"
+
     # TODO: why normal axis does not need it?
+    t = Time.now
     plot_axis_x_line.draw(@image)
+    logger.debug "render 0-parameter axis drawing line"
+    logger.debug " TIME COST #{Time.now - t}"
+
+    t = Time.now
     plot_axis_x_text.draw(@image)
+    logger.debug "render 0-parameter axis drawing text"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   def render_axis_labels
     if options[:x_axis_label].to_s.size > 0
+      t = Time.now
+
       plot_axis_text = Magick::Draw.new
       plot_axis_text.text_antialias(image_drawer.font_antialias)
 
@@ -333,10 +385,18 @@ class GraphAxis
         @image.rows - 40,
         options[:x_axis_label].to_s
       )
+      logger.debug "render parameter axis label layer"
+      logger.debug " TIME COST #{Time.now - t}"
+
+      t = Time.now
       plot_axis_text.draw(@image)
+      logger.debug "render drawing parameter axis label"
+      logger.debug " TIME COST #{Time.now - t}"
     end
 
     if options[:y_axis_label].to_s.size > 0
+      t = Time.now
+
       plot_axis_text = Magick::Draw.new
       plot_axis_text.text_antialias(image_drawer.font_antialias)
 
@@ -353,8 +413,13 @@ class GraphAxis
         -40,
         options[:y_axis_label].to_s
       )
+      logger.debug "render value axis label layer"
+      logger.debug " TIME COST #{Time.now - t}"
 
+      t = Time.now
       plot_axis_text.draw(@image)
+      logger.debug "render drawing value axis label"
+      logger.debug " TIME COST #{Time.now - t}"
     end
   end
 

@@ -17,6 +17,10 @@ class GraphDataProcessor
     @technical_graph.layers
   end
 
+  def logger
+    @technical_graph.logger
+  end
+
   def initialize(technical_graph)
     @technical_graph = technical_graph
 
@@ -121,7 +125,7 @@ class GraphDataProcessor
     # ranges are set, can't change
     return if fixed?
 
-    # updating ranges
+    # updating ranges, enlarging
     self.raw_y_max = data_layer.y_max if not data_layer.y_max.nil? and data_layer.y_max > self.raw_y_max
     self.raw_x_max = data_layer.x_max if not data_layer.x_max.nil? and data_layer.x_max > self.raw_x_max
 
@@ -149,6 +153,8 @@ class GraphDataProcessor
 
   # Calculate zoomed X position for Array of X'es
   def calc_x_zoomed(old_xes)
+    t = Time.now
+
     # default zoom
     if self.zoom_x == 1.0
       return old_xes
@@ -162,11 +168,15 @@ class GraphDataProcessor
       new_xes << (a + d * self.zoom_x)
     end
 
+    logger.debug "calc_x_zoomed for #{old_xes.size}"
+    logger.debug " TIME COST #{Time.now - t}"
     return new_xes
   end
 
   # Calculate zoomed Y position for Array of Y'es
   def calc_y_zoomed(old_yes)
+    t = Time.now
+
     # default zoom
     if self.zoom_y == 1.0
       return old_yes
@@ -180,6 +190,8 @@ class GraphDataProcessor
       new_yes << (a + d * self.zoom_y)
     end
 
+    logger.debug "calc_y_zoomed for #{old_yes.size}"
+    logger.debug " TIME COST #{Time.now - t}"
     return new_yes
   end
 

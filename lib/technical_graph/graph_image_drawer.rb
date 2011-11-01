@@ -38,6 +38,10 @@ class GraphImageDrawer
     @technical_graph.axis
   end
 
+  def logger
+    @technical_graph.logger
+  end
+
   def truncate_string
     options[:truncate_string]
   end
@@ -54,6 +58,8 @@ class GraphImageDrawer
   def initialize(technical_graph)
     @technical_graph = technical_graph
 
+    t = Time.now
+    
     options[:width] ||= DEFAULT_WIDTH
     options[:height] ||= DEFAULT_HEIGHT
 
@@ -82,6 +88,9 @@ class GraphImageDrawer
 
     # array of all points drawn on graph, used for auto positioning of legend
     @drawn_points = Array.new
+
+    logger.debug "initializing #{self.class}"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   def width
@@ -172,6 +181,8 @@ class GraphImageDrawer
   def render_data_layer(l)
     layer_data = l.processed_data
 
+    t = Time.now
+
     layer_line = Magick::Draw.new
     layer_text = Magick::Draw.new
 
@@ -216,6 +227,10 @@ class GraphImageDrawer
       }
     end
 
+    logger.debug "rendering layer of size #{layer_data.size}, bitmap position calculation"
+    logger.debug " TIME COST #{Time.now - t}"
+    t = Time.now
+
     # labels
     if l.value_labels
       coords.each do |c|
@@ -227,6 +242,10 @@ class GraphImageDrawer
       end
       layer_text.draw(@image)
     end
+
+    logger.debug "labels"
+    logger.debug " TIME COST #{Time.now - t}"
+    t = Time.now
 
     # lines and circles
     coords.each do |c|
@@ -252,8 +271,15 @@ class GraphImageDrawer
         @drawn_points << { :x => c[:bx], :y => c[:by] }
       end
     end
+
+    logger.debug "dots and lines"
+    logger.debug " TIME COST #{Time.now - t}"
+    t = Time.now
+
     layer_line.draw(@image)
 
+    logger.debug "rmagick layer draw"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   # height of 1 layer
@@ -262,7 +288,7 @@ class GraphImageDrawer
   # Choose best location
   def recalculate_legend_position
     return unless legend_auto_position
-    puts "Auto position calculation, drawn points #{@drawn_points.size}"
+    logger.debug "Auto position calculation, drawn points #{@drawn_points.size}"
 
     legend_height = layers.size * ONE_LAYER_LEGEND_HEIGHT
 
@@ -278,6 +304,8 @@ class GraphImageDrawer
       { :x => width - legend_margin - legend_width, :y => height - legend_margin - legend_height }, # bottom-right
     ]
 
+    t = Time.now
+
     # calculate nearest distance of all drawn points
     positions.each do |p|
       p[:distance] = (width ** 2 + height ** 2) ** 0.5 # max distance, diagonal of graph
@@ -291,14 +319,18 @@ class GraphImageDrawer
       end
     end
 
+    logger.debug "auto legend best position distance calc."
+    logger.debug " TIME COST #{Time.now - t}"
+    t = Time.now
+
     # chose position with hihest distance
     positions.sort! { |a, b| a[:distance] <=> b[:distance] }
     best_position = positions.last
     options[:legend_x] = best_position[:x]
     options[:legend_y] = best_position[:y]
 
-    puts "Best position x #{options[:legend_x]}, y #{options[:legend_y]}, distance #{best_position[:distance]}"
-    # puts positions.to_yaml
+    logger.debug "Best position x #{options[:legend_x]}, y #{options[:legend_y]}, distance #{best_position[:distance]}"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   # Render legend on graph
@@ -306,6 +338,8 @@ class GraphImageDrawer
     return unless draw_legend?
 
     recalculate_legend_position
+
+    t = Time.now
 
     legend_text = Magick::Draw.new
     legend_text_antialias = options[:layers_font_size]
@@ -337,19 +371,38 @@ class GraphImageDrawer
 
       y += ONE_LAYER_LEGEND_HEIGHT
     end
+
+    logger.debug "auto legend creating image layer"
+    logger.debug " TIME COST #{Time.now - t}"
+    t = Time.now
+
     legend_text.draw(@image)
+
+    logger.debug "auto legend drawing image layer"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   # Save output to file
   def save_to_file(file)
+    t = Time.now
+
     @image.write(file)
+
+    logger.debug "saving image"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   # Export image
   def to_format(format)
+    t = Time.now
     i = @image.flatten_images
     i.format = format
-    return i.to_blob
+    blob = i.to_blob
+
+    logger.debug "exporting image as string"
+    logger.debug " TIME COST #{Time.now - t}"
+
+    return blob
   end
 
   # Return binary PNG

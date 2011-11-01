@@ -10,7 +10,23 @@ require 'technical_graph/data_layer_processor'
 
 class DataLayer
 
-  def initialize(d = [], options = { })
+  # Use global logger for technical_graph or create new
+  def logger
+    return @logger if not @logger.nil?
+
+    if not @technical_graph.nil?
+      @logger = @technical_graph.logger
+    else
+      @logger = Logger.new(STDOUT)
+    end
+
+    @logger
+  end
+
+  def initialize(d = [], options = { }, technical_graph = nil)
+    # used for accessing logger
+    @technical_graph = technical_graph
+
     @data_params = options
 
     @data_params[:color] ||= GraphColorLibrary.instance.get_color
@@ -42,9 +58,13 @@ class DataLayer
     if data_array.kind_of? Array
       # append as DataPoint
       # convert to DataPoints, which has more specialized methods
+
+      t = Time.now
       data_array.each do |d|
         @data << DataPoint.new(d)
       end
+      logger.debug "appending data, size #{data_array.size}"
+      logger.debug " TIME COST #{Time.now - t}"
       
       # sort, clean bad records
       process_data_internal
@@ -72,8 +92,11 @@ class DataLayer
 
   # Run external processor (smoothing, ...)
   def process!
+    t = Time.now
     @processed_data = @data.clone
     @processed_data = @processor.process
+    logger.debug "processed data using external processor"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   # Additional parameters
@@ -123,6 +146,8 @@ class DataLayer
 
   # Clean and process data used for drawing current data layer
   def process_data_internal
+    t = Time.now
+
     # delete duplicates
     @data = @data.inject([]) { |result, d| result << d unless result.select { |r| r.x == d.x }.size > 0; result }
 
@@ -139,6 +164,9 @@ class DataLayer
       @data_params[:y_min] = y_sort.first.y || @options[:default_y_min]
       @data_params[:y_max] = y_sort.last.y || @options[:@default_y_max]
     end
+
+    logger.debug "data processed using internal processor"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   def x_min

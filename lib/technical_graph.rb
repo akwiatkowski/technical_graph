@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 require 'rubygems'
+require 'logger'
 require 'technical_graph/data_layer'
 require 'technical_graph/graph_data_processor'
 require 'technical_graph/graph_image_drawer'
@@ -20,21 +21,24 @@ class TechnicalGraph
 
   def initialize(options = { })
     @options = options
+
+    @log_device = options[:log_device] || STDOUT
+    @logger = Logger.new(@log_device)
+    @logger.level = options[:log_level] || Logger::INFO
+
     @data_processor = GraphDataProcessor.new(self)
     @image_drawer = GraphImageDrawer.new(self)
     @axis = GraphAxis.new(self)
     @layers = Array.new
   end
-  attr_reader :options
-  attr_reader :data_processor
-  attr_reader :image_drawer
-  attr_reader :axis
-
-  attr_reader :layers
+  attr_reader :options, :data_processor, :image_drawer, :axis, :layers, :logger
 
   # Add new data layer to layer array
   def add_layer(data = [], options = {})
-    @layers << DataLayer.new(data, options)
+    t = Time.now
+    @layers << DataLayer.new(data, options, self)
+    logger.debug "layer added, size #{data.size}"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
   # Create graph
