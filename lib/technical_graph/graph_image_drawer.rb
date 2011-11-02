@@ -1,8 +1,8 @@
 #encoding: utf-8
 
-require 'rubygems'
-require 'RMagick'
 require 'date'
+require 'technical_graph/graph_image_drawer_rmagick'
+require 'technical_graph/graph_image_drawer_rasem'
 
 # Universal class for creating graphs/charts.
 
@@ -15,6 +15,10 @@ require 'date'
 # * :fixed - ranges will not be changed during addition of layers
 
 class GraphImageDrawer
+
+  def drawing_class
+    return GraphImageDrawerRmagick
+  end
 
   attr_reader :technical_graph
 
@@ -59,7 +63,7 @@ class GraphImageDrawer
     @technical_graph = technical_graph
 
     t = Time.now
-    
+
     options[:width] ||= DEFAULT_WIDTH
     options[:height] ||= DEFAULT_HEIGHT
 
@@ -161,50 +165,17 @@ class GraphImageDrawer
   # Create background image
   def crate_blank_graph_image
     pre_image_create_calculations
-
-    @image = Magick::ImageList.new
-    @image.new_image(
-      width,
-      height,
-      Magick::HatchFill.new(
-        options[:background_color],
-        options[:background_hatch_color]
-      )
-    )
-
-    return @image
+    # create drawing proxy
+    @drawer = drawing_class.new(self)
   end
 
-  attr_reader :image
+  attr_reader :drawer
 
-  # Render data layer
+  # Render data layer, calculate coords and execute proxy
   def render_data_layer(l)
     layer_data = l.processed_data
 
     t = Time.now
-
-    layer_line = Magick::Draw.new
-    layer_text = Magick::Draw.new
-
-    # global layer antialias can be override using layer option
-    layer_antialias = l.antialias
-    layer_antialias = options[:layers_antialias] if layer_antialias.nil?
-
-    layer_line.stroke_antialias(layer_antialias)
-    layer_line.fill(l.color)
-    layer_line.fill_opacity(1)
-    layer_line.stroke(l.color)
-    layer_line.stroke_opacity(1.0)
-    layer_line.stroke_width(1.0)
-    layer_line.stroke_linecap('square')
-    layer_line.stroke_linejoin('miter')
-
-    layer_text.text_antialias(font_antialias)
-    layer_text.pointsize(options[:layers_font_size])
-    layer_text.font_family('helvetica')
-    layer_text.font_style(Magick::NormalStyle)
-    layer_text.text_align(Magick::LeftAlign)
-    layer_text.text_undercolor(options[:background_color])
 
     # calculate coords, draw text, and then lines and circles
     coords = Array.new
@@ -231,55 +202,15 @@ class GraphImageDrawer
     logger.debug " TIME COST #{Time.now - t}"
     t = Time.now
 
-    # labels
-    if l.value_labels
-      coords.each do |c|
-        string_label = "#{truncate_string % c[:dy]}"
-        layer_text.text(
-          c[:ax] + 5, c[:ay],
-          string_label
-        )
-      end
-      layer_text.draw(@image)
+    # draw using proxy
+    drawer.render_data_layer(l, coords)
+  end
+
+  # Used for auto position for legend
+  def post_dot_drawn(bx, by)
+    if legend_auto_position
+      @drawn_points << { :x => bx, :y => by }
     end
-
-    logger.debug "labels"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-
-    # lines and circles
-    coords.each do |c|
-      # additional circle
-      layer_line.circle(
-        c[:ax], c[:ay],
-        c[:ax] + 3, c[:ay]
-      )
-      layer_line.circle(
-        c[:bx], c[:by],
-        c[:bx] + 3, c[:by]
-      )
-
-      # line
-      layer_line.line(
-        c[:ax], c[:ay],
-        c[:bx], c[:by]
-      )
-
-      # used for auto positioning of legend
-      if legend_auto_position
-        @drawn_points << { :x => c[:ax], :y => c[:ay] }
-        @drawn_points << { :x => c[:bx], :y => c[:by] }
-      end
-    end
-
-    logger.debug "dots and lines"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-
-    layer_line.draw(@image)
-
-    logger.debug "rmagick layer draw"
-    logger.debug " TIME COST #{Time.now - t}"
   end
 
   # height of 1 layer
@@ -323,7 +254,7 @@ class GraphImageDrawer
     logger.debug " TIME COST #{Time.now - t}"
     t = Time.now
 
-    # chose position with hihest distance
+    # chose position with highest distance
     positions.sort! { |a, b| a[:distance] <=> b[:distance] }
     best_position = positions.last
     options[:legend_x] = best_position[:x]
@@ -335,58 +266,14 @@ class GraphImageDrawer
 
   # Render legend on graph
   def render_data_legend
-    return unless draw_legend?
-
-    recalculate_legend_position
-
-    t = Time.now
-
-    legend_text = Magick::Draw.new
-    legend_text_antialias = options[:layers_font_size]
-    legend_text.stroke_antialias(legend_text_antialias)
-    legend_text.text_antialias(legend_text_antialias)
-    legend_text.pointsize(options[:axis_font_size])
-    legend_text.font_family('helvetica')
-    legend_text.font_style(Magick::NormalStyle)
-    legend_text.text_align(Magick::LeftAlign)
-    legend_text.text_undercolor(options[:background_color])
-
-    x = legend_x
-    y = legend_y
-
-    layers.each do |l|
-      legend_text.fill(l.color)
-
-      string_label = l.label
-      legend_text.text(
-        x, y,
-        string_label
-      )
-
-      # little dot
-      legend_text.circle(
-        x - 10, y,
-        x - 10 + 3, y
-      )
-
-      y += ONE_LAYER_LEGEND_HEIGHT
-    end
-
-    logger.debug "auto legend creating image layer"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-
-    legend_text.draw(@image)
-
-    logger.debug "auto legend drawing image layer"
-    logger.debug " TIME COST #{Time.now - t}"
+    # TODO moved
   end
 
   # Save output to file
   def save_to_file(file)
     t = Time.now
 
-    @image.write(file)
+    drawer.save(file)
 
     logger.debug "saving image"
     logger.debug " TIME COST #{Time.now - t}"
@@ -395,9 +282,8 @@ class GraphImageDrawer
   # Export image
   def to_format(format)
     t = Time.now
-    i = @image.flatten_images
-    i.format = format
-    blob = i.to_blob
+
+    blob = drawer.to_format(format)
 
     logger.debug "exporting image as string"
     logger.debug " TIME COST #{Time.now - t}"
