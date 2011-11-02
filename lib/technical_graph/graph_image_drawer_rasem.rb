@@ -22,24 +22,26 @@ class GraphImageDrawerRasem
 
     @image.group :stroke => options[:color], :stroke_width => options[:width] do
       x_array.each do |x|
-        line(x, 0, x, _s.width)
+        line(x, 0, x, _s.width, {})
       end
 
       y_array.each do |y|
-        line(0, y, _s.height, y)
+        line(0, y, _s.height, y, {})
       end
     end
   end
 
   def render_data_layer(l, coords)
     _s = self
+    _l = l
+    _coords = coords
 
     # value labels
     if l.value_labels
       t = Time.now
 
       @image.group :stroke => _s.options[:axis_color], :stroke_width => 1 do
-        coords.each do |c|
+        _coords.each do |c|
           string_label = "#{_s.truncate_string % c[:dy]}"
           text(
             c[:ax] + 5, c[:ay],
@@ -56,14 +58,15 @@ class GraphImageDrawerRasem
 
     # lines and dots
     @image.group :stroke => l.color, :stroke_width => 1 do
-      coords.each do |c|
+      _coords.each do |c|
         # additional circle
         circle(c[:ax], c[:ay], 2)
         circle(c[:bx], c[:by], 2)
         # line
         line(
           c[:ax], c[:ay],
-          c[:bx], c[:by]
+          c[:bx], c[:by],
+          {}
         )
 
         _s.drawer.post_dot_drawn(c[:ax], c[:ay])
@@ -77,13 +80,26 @@ class GraphImageDrawerRasem
 
 # Needed before saving?
   def close
-    @image.close
+    @image.close if not closed?
+    @closed = true
+  end
+
+  def closed?
+    @closed
   end
 
   def save(file)
+    close
+
     File.open(file, 'w') do |f|
       f << @image.output
     end
+  end
+
+  def to_format(format)
+    close
+
+    @image.output
   end
 
 end

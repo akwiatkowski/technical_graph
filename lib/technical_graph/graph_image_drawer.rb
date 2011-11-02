@@ -17,7 +17,8 @@ require 'technical_graph/graph_image_drawer_rasem'
 class GraphImageDrawer
 
   def drawing_class
-    return GraphImageDrawerRmagick
+    #return GraphImageDrawerRmagick
+    return GraphImageDrawerRasem
   end
 
   attr_reader :technical_graph

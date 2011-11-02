@@ -22,7 +22,11 @@ module GraphImageDrawerModule
   end
 
   def options
-    drawe.options
+    drawer.options
+  end
+
+  def logger
+    drawer.logger
   end
 
 
