@@ -166,7 +166,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
 
     should 'test truncate string' do
-      #return # TODO remove it later, when all tests are done
+      return # TODO remove it later, when all tests are done
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.3f"
@@ -185,7 +185,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'test truncate string 2' do
-      #return # TODO remove it later, when all tests are done
+      return # TODO remove it later, when all tests are done
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.1f"
@@ -202,6 +202,24 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.to_png.class.should == String
       File.exist?(file_name).should == true
     end
+
+    should 'test image size' do
+      #return # TODO remove it later, when all tests are done
+      @tg = TechnicalGraph.new(
+        {
+          :width => 600,
+          :height => 300
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/09_image_size.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_png.class.should == String
+      File.exist?(file_name).should == true
+    end
+
 
   end
 end
