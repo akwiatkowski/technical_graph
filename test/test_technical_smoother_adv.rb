@@ -62,7 +62,11 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
           :legend_x => 50,
           :legend_y => 50,
 
-          :log_level => Logger::DEBUG
+          :log_level => Logger::DEBUG,
+
+          :x_axis_label => "Parameter",
+          :y_axis_label => "Value",
+          :axis_label_font_size => 28
         }
       )
       max = 2000
@@ -108,7 +112,8 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
       tg.add_layer(layer_data.clone, layer_params_d)
 
       tg.render
-      tg.image_drawer.save_to_file('samples/tests/test_smoothing_x_values.png')
+      #tg.image_drawer.save_to_file('samples/tests/test_smoothing_x_values.png')
+      tg.image_drawer.save_to_file('samples/tests/test_smoothing_x_values.svg')
     end
 
 

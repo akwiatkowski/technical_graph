@@ -179,7 +179,7 @@ class GraphAxis
     )
   end
 
-
+  # Render axis for zeros
   def render_zero_axis
     drawer.axis(
       # X - 0
@@ -199,7 +199,15 @@ class GraphAxis
 
 
   def render_axis_labels
-    # TODO moved
+    drawer.axis_labels(
+      options[:x_axis_label].to_s,
+      options[:y_axis_label].to_s,
+      {
+        :color => options[:axis_color],
+        :width => 1,
+        :size => options[:axis_label_font_size],
+      }
+    )
   end
 
 end

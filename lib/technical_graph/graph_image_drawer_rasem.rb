@@ -21,27 +21,45 @@ class GraphImageDrawerRasem
     _s = self
 
     @image.group :stroke => options[:color], :stroke_width => options[:width] do
-      x_array.each_with_index do |x,i|
-        line(x, 0, x, _s.width, {})
+      x_array.each_with_index do |x, i|
+        line(x, 0, x, _s.height, { })
 
         # labels
         label = x_labels[i]
         if render_labels and not label.nil?
           label = "#{_s.truncate_string % label}"
-          text(x + 15, _s.height - 15, label, {})
+          text(x + 15, _s.height - 15, label, { })
         end
       end
 
-      y_array.each_with_index do |y,i|
-        line(0, y, _s.height, y, {})
+      y_array.each_with_index do |y, i|
+        line(0, y, _s.width, y, { })
 
         # labels
         label = y_labels[i]
         if render_labels and not label.nil?
           label = "#{_s.truncate_string % label}"
-          text(15, y + 15, label, {})
+          text(15, y + 15, label, { })
         end
       end
+    end
+  end
+
+  # Label for parameters and values
+  def axis_labels(parameter_label, value_label, options = { :color => 'black', :width => 1, :size => 20 })
+    _s = self
+    @image.group :stroke => options[:color], :stroke_width => options[:width] do
+      text(
+        (_s.width / 2).to_i,
+        _s.height - 40,
+        parameter_label, { 'font-size' => "#{options[:size]}px" }
+      )
+
+      text(
+        (_s.height / 2).to_i,
+        -40,
+        value_label, { :transform => 'rotate(90 0,0)', 'font-size' => "#{options[:size]}px" }
+      )
     end
   end
 
@@ -80,7 +98,7 @@ class GraphImageDrawerRasem
         line(
           c[:ax], c[:ay],
           c[:bx], c[:by],
-          {}
+          { }
         )
 
         _s.drawer.post_dot_drawn(c[:ax], c[:ay])
