@@ -52,4 +52,4 @@ samples\tests\*
 
 # my garbage
 lib/technical_graph/del/
-.idea/*
+#.idea/*

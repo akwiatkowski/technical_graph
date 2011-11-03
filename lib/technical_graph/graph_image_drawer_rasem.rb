@@ -92,8 +92,8 @@ class GraphImageDrawerRasem
     @image.group :stroke => l.color, :stroke_width => 1 do
       _coords.each do |c|
         # additional circle
-        circle(c[:ax], c[:ay], 2, { :fill => l.color})
-        circle(c[:bx], c[:by], 2, { :fill => l.color})
+        circle(c[:ax], c[:ay], 2, { :fill => l.color })
+        circle(c[:bx], c[:by], 2, { :fill => l.color })
         # line
         line(
           c[:ax], c[:ay],
@@ -131,17 +131,36 @@ class GraphImageDrawerRasem
     @closed
   end
 
+  # Save to file, convert when needed
   def save(file)
     close
 
+    format = format_from_filename(file)
+    case format
+      when 'svg' then
+        string = to_svg
+      when 'svgz' then
+        string = to_svgz
+      else
+        # ugly hack, save to svg and then convert using image magick
+        tmp_file = file.gsub(/#{format}/, 'svg')
+        # save to svg
+        save(tmp_file)
+        # convert
+        `convert "#{tmp_file}" "#{file}"`
+        return
+    end
+
     File.open(file, 'w') do |f|
-      f << @image.output
+      f << string
     end
   end
 
+
   def to_format(format)
     close
-
+    #aaa if not format == 'svg'
+    raise 'Not implemented' if not format == 'svg'
     @image.output
   end
 

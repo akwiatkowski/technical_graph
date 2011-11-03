@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'RMagick'
+require 'technical_graph/graph_image_drawer_module'
 
 class GraphImageDrawerRmagick
+  include GraphImageDrawerModule
 
   def initialize(drawer)
     @drawer = self

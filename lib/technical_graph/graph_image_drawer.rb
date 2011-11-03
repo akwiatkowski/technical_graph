@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 require 'date'
+require 'zlib'
 require 'technical_graph/graph_image_drawer_rmagick'
 require 'technical_graph/graph_image_drawer_rasem'
 
@@ -284,7 +285,7 @@ class GraphImageDrawer
       h[:label] = l.label
       h[:x] = x
       h[:y] = y
-      
+
       legend_data << h
       y += ONE_LAYER_LEGEND_HEIGHT
     end
@@ -316,8 +317,15 @@ class GraphImageDrawer
 
   # Return binary PNG
   def to_png
-    to_format('png')
+    drawer.to_png
   end
 
+  def to_svg
+    drawer.to_svg
+  end
+
+  def to_svgz
+    drawer.to_svgz
+  end
 
 end

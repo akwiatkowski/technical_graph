@@ -1,5 +1,8 @@
 require 'helper'
 
+# run only latest test to create new graphs for documentation
+DO_NOT_RUN_OLD_TESTS = true
+
 class TestTechnicalReadme < Test::Unit::TestCase
   context 'generate sample graphs using readme options description' do
     setup do
@@ -31,7 +34,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
     #
     should 'create simplest graph' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -45,7 +48,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
     #
     should 'create 2-layer graph' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new
       @tg.add_layer(@simple_data_array)
       @tg.add_layer(@simple_data_array_b)
@@ -60,7 +63,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
     #
     should 'change ranges' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_min => -2,
@@ -79,7 +82,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'change ranges (fixed)' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_min => 1,
@@ -99,7 +102,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'fixed amount of axis' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_axis_fixed_interval => false,
@@ -118,7 +121,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'fixed axis interval' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_axis_fixed_interval => true,
@@ -147,7 +150,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'let choose axis label' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_axis_label => 'parameter',
@@ -166,7 +169,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
 
     should 'test truncate string' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.3f"
@@ -185,7 +188,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'test truncate string 2' do
-      return # TODO remove it later, when all tests are done
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.1f"
@@ -204,7 +207,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'test image size' do
-      #return # TODO remove it later, when all tests are done
+      #return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :width => 600,
@@ -216,7 +219,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 

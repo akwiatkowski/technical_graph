@@ -15,5 +15,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'technical_graph'
 
+# rasem - svg
+# rmagick - png
+BEST_OUTPUT_FORMAT = 'svg'
+
 class Test::Unit::TestCase
 end

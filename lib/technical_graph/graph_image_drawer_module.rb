@@ -30,7 +30,6 @@ module GraphImageDrawerModule
   end
 
 
-
   # Draw one or many axis
   def x_axis(x_array, options = { :color => 'black', :width => 1 })
     axis(x_array, [], options)
@@ -39,6 +38,30 @@ module GraphImageDrawerModule
   # Draw one or many axis
   def y_axis(y_array, options = { :color => 'black', :width => 1 })
     axis([], y_array, options)
+  end
+
+  # Return binary PNG
+  def to_png
+    to_format('png')
+  end
+
+  def to_svg
+    to_format('svg')
+  end
+
+  def to_svgz
+    drawer.deflate_string( to_format('svg') )
+  end
+
+  def deflate_string(str, level = 9)
+    z = Zlib::Deflate.new(level)
+    dst = z.deflate(str, Zlib::FINISH)
+    z.close
+    dst
+  end
+
+  def format_from_filename(file)
+    file.gsub(/^.*\./, '')
   end
 
 end
