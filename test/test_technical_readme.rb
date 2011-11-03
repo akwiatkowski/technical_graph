@@ -42,7 +42,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -57,7 +57,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -77,7 +77,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -97,7 +97,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -116,7 +116,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -145,7 +145,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -163,7 +163,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -183,7 +183,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
@@ -202,7 +202,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.image_drawer.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_png.class.should == String
+      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
       File.exist?(file_name).should == true
     end
 
