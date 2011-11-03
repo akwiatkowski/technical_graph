@@ -13,7 +13,7 @@ class Array
   end
 
   # Create partial array and fill with border values if needed
-  def clone_partial_w_fil(_from, _to)
+  def clone_partial_w_fill(_from, _to)
     part_array = Array.new
     # border = false
 
@@ -25,13 +25,13 @@ class Array
         next
       end
 
-      if data.size <= current_i
-        part_array << data.last
+      if self.size <= current_i
+        part_array << self.last
         # border = true
         next
       end
 
-      part_array << data[current_i]
+      part_array << self[current_i]
     end
 
     return part_array

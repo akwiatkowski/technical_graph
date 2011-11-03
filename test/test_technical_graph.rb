@@ -74,7 +74,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
     end
 
     should 'has ability to filter records with similar x\'es' do
-      @tg.add_layer
+      # was turned off by default, performance issue
+      @tg.add_layer([], {:perform_parameter_uniq => true})
       layer = @tg.layers.last
       layer.raw_data.size.should == 0
       layer.processed_data.size.should == 0
@@ -103,7 +104,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
 
       # uniq check
       layer.append_data([{ :z => 0, :y => 1 }])
-      layer.append_data([{}])
+      layer.append_data([{ }])
       layer.raw_data.size.should == 1
       layer.processed_data.size.should == 1
     end

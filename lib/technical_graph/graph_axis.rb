@@ -115,9 +115,9 @@ class GraphAxis
     return if a.size < 2
 
     ax = a[0]
-    ax = image_drawer.calc_bitmap_y(ax).round
+    ax = image.calc_bitmap_y(ax).round
     bx = a[1]
-    bx = image_drawer.calc_bitmap_y(bx).round
+    bx = image.calc_bitmap_y(bx).round
 
     axis_distance = (bx - ax).abs
 
@@ -135,9 +135,9 @@ class GraphAxis
     return if a.size < 2
 
     ay = a[0]
-    ay = image_drawer.calc_bitmap_y(ay).round
+    ay = image.calc_bitmap_y(ay).round
     by = a[1]
-    by = image_drawer.calc_bitmap_y(by).round
+    by = image.calc_bitmap_y(by).round
 
     axis_distance = (by - ay).abs
 
