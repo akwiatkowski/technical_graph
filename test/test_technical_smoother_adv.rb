@@ -52,8 +52,8 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
 
       tg = TechnicalGraph.new(
         {
-          :width => 8000,
-          :height => 6000,
+          :width => 2000, #8000,
+          :height => 1500, #6000,
 
           :legend => true,
           :legend_auto => true,
@@ -69,7 +69,7 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
           :axis_label_font_size => 28
         }
       )
-      max = 2000
+      max = 50 #2000
 
       layer_data = Array.new
       (0..max).each do |i|

@@ -92,8 +92,8 @@ class GraphImageDrawerRasem
     @image.group :stroke => l.color, :stroke_width => 1 do
       _coords.each do |c|
         # additional circle
-        circle(c[:ax], c[:ay], 2)
-        circle(c[:bx], c[:by], 2)
+        circle(c[:ax], c[:ay], 2, { :fill => l.color})
+        circle(c[:bx], c[:by], 2, { :fill => l.color})
         # line
         line(
           c[:ax], c[:ay],
@@ -108,6 +108,17 @@ class GraphImageDrawerRasem
 
     logger.debug "dots and lines"
     logger.debug " TIME COST #{Time.now - t}"
+  end
+
+  def legend(legend_data)
+    _s = self
+
+    @image.group :stroke_width => 1, :stroke => '' do
+      legend_data.each do |l|
+        circle(l[:x], l[:y], 2, { :stroke => l[:color], :fill => l[:color] })
+        text(l[:x] + 5, l[:y], l[:label], { :stroke => l[:color], :fill => l[:color] })
+      end
+    end
   end
 
 # Needed before saving?

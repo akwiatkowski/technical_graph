@@ -270,7 +270,26 @@ class GraphImageDrawer
 
   # Render legend on graph
   def render_data_legend
-    # TODO moved
+    return unless draw_legend?
+    recalculate_legend_position
+
+    x = legend_x
+    y = legend_y
+
+    legend_data = Array.new
+
+    layers.each do |l|
+      h = Hash.new
+      h[:color] = l.color
+      h[:label] = l.label
+      h[:x] = x
+      h[:y] = y
+      
+      legend_data << h
+      y += ONE_LAYER_LEGEND_HEIGHT
+    end
+
+    drawer.legend(legend_data)
   end
 
   # Save output to file
