@@ -68,6 +68,8 @@ class GraphImageDrawer
     options[:width] ||= DEFAULT_WIDTH
     options[:height] ||= DEFAULT_HEIGHT
 
+    options[:axis_value_and_param_labels] = true if options[:axis_value_and_param_labels].nil?
+
     # colors
     options[:background_color] ||= 'white'
     options[:background_hatch_color] ||= 'lightcyan2'

@@ -53,27 +53,7 @@ module DataLayerProcessorNoiseRemoval
     i_from = noise_removal_window_from(i)
     i_to = noise_removal_window_to(i)
 
-    # create partial array, TODO move it somewhere else
-    part_array = Array.new
-    border = false
-
-    (i_from..i_to).each do |current_i|
-      # outside ranges
-      if current_i < 0
-        part_array << data.first
-        border = true
-        next
-      end
-
-      if data.size <= current_i
-        part_array << data.last
-        border = true
-        next
-      end
-
-      part_array << data[current_i]
-
-    end
+    part_array = data.clone_partial_w_fill(i_from, i_to)
     y_mean = part_array.collect { |p| p.y }.float_mean
 
     # another algorithm

@@ -37,7 +37,6 @@ class DataLayerProcessor
     simple_smoother_initialize(data_params)
     noise_removal_initialize(data_params)
 
-    # TODO add in options array to choose order of these methods
     noise_removal_process
     simple_smoother_process
     

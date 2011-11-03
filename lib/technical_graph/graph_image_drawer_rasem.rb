@@ -13,7 +13,7 @@ class GraphImageDrawerRasem
   end
 
   # Draw both array axis
-  def axis(x_array, y_array, options = { :color => 'black', :width => 1 })
+  def axis(x_array, y_array, options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
     # for single axis
     x_array = [x_array] if not x_array.kind_of? Array
     y_array = [y_array] if not y_array.kind_of? Array
@@ -21,12 +21,26 @@ class GraphImageDrawerRasem
     _s = self
 
     @image.group :stroke => options[:color], :stroke_width => options[:width] do
-      x_array.each do |x|
+      x_array.each_with_index do |x,i|
         line(x, 0, x, _s.width, {})
+
+        # labels
+        label = x_labels[i]
+        if render_labels and not label.nil?
+          label = "#{_s.truncate_string % label}"
+          text(x + 15, _s.height - 15, label, {})
+        end
       end
 
-      y_array.each do |y|
+      y_array.each_with_index do |y,i|
         line(0, y, _s.height, y, {})
+
+        # labels
+        label = y_labels[i]
+        if render_labels and not label.nil?
+          label = "#{_s.truncate_string % label}"
+          text(15, y + 15, label, {})
+        end
       end
     end
   end

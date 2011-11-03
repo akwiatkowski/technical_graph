@@ -21,8 +21,12 @@ class GraphAxis
     @technical_graph.data_processor
   end
 
-  def image_drawer
+  def image
     @technical_graph.image_drawer
+  end
+
+  def drawer
+    image.drawer
   end
 
   def logger
@@ -148,12 +152,8 @@ class GraphAxis
   def render_on_image(image)
     @image = image
 
-    render_values_axis
-    render_parameters_axis
-
-    render_values_zero_axis
-    render_parameters_zero_axis
-
+    render_axis
+    render_zero_axis
     render_axis_labels
   end
 
@@ -161,22 +161,42 @@ class GraphAxis
     options[:axis_antialias] == true
   end
 
-
-  def render_values_axis
-    # TODO moved
+  # Render normal axis
+  def render_axis
+    drawer.axis(
+      # X
+      parameter_axis.collect { |x| image.calc_bitmap_x(x) },
+      # Y
+      value_axis.collect { |y| image.calc_bitmap_y(y) },
+      # options
+      { :color => options[:axis_color], :width => 1 },
+      # draw labels
+      options[:axis_value_and_param_labels],
+      # X axis labels
+      parameter_axis,
+      # Y axis labels
+      value_axis
+    )
   end
 
-  def render_parameters_axis
-    # TODO moved
+
+  def render_zero_axis
+    drawer.axis(
+      # X - 0
+      image.calc_bitmap_x(0.0),
+      # Y - 0
+      image.calc_bitmap_y(0.0),
+      # options, slightly wider
+      { :color => options[:axis_color], :width => 2 },
+      # draw label
+      options[:axis_zero_labels],
+      # X label,
+      [0.0],
+      # Y label
+      [0.0]
+    )
   end
 
-  def render_values_zero_axis
-    # TODO moved
-  end
-
-  def render_parameters_zero_axis
-    # TODO moved
-  end
 
   def render_axis_labels
     # TODO moved

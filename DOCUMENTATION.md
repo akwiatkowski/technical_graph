@@ -38,6 +38,13 @@ Labels has truncate string to define precision. Default it is "%.2f".
 
     options[:truncate_string] = "%.2f"
 
+Draw axis labels, and labels for zero axis
+
+    options[:axis_value_and_param_labels] = true
+    options[:axis_zero_labels] = true
+
+
+
 Graph image size:
 
     options[:width]
