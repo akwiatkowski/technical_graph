@@ -157,8 +157,8 @@ class GraphAxis
     render_axis_labels
   end
 
-  def axis_antialias
-    options[:axis_antialias] == true
+  def antialias
+    options[:antialias] == true
   end
 
   # Render normal axis

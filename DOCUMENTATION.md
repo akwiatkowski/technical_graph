@@ -60,9 +60,9 @@ Possible #RRGGBB or color names (ex. 'white').
 
 Anti-aliasing:
 
-    options[:axis_antialias] - use anti-aliasing for axis, default false
-    options[:layers_antialias] - use anti-aliasing for data layers, default false, can be override using layer option
-    options[:font_antialias] - use anti-aliasing for all fonts, default false
+    options[:antialias] - draw axis using antialias
+    # options[:layers_antialias] - use anti-aliasing for data layers, default false, can be override using layer option
+    # options[:font_antialias] - use anti-aliasing for all fonts, default false
 
 Font size:
 

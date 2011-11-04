@@ -78,9 +78,7 @@ class GraphImageDrawer
     options[:axis_color] ||= '#aaaaaa'
 
     # antialias
-    options[:layers_antialias] = false if options[:layers_antialias].nil?
-    options[:axis_antialias] = false if options[:axis_antialias].nil?
-    options[:font_antialias] = false if options[:font_antialias].nil?
+    options[:antialias] = false if options[:antialias].nil?
 
     # font sizes
     options[:axis_font_size] ||= 10
@@ -118,8 +116,8 @@ class GraphImageDrawer
     options[:height] = h.to_i if h.to_i > 0
   end
 
-  def font_antialias
-    options[:font_antialias] == true
+  def antialias
+    options[:antialias] == true
   end
 
   def draw_legend?

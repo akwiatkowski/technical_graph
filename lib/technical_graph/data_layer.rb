@@ -107,10 +107,6 @@ class DataLayer
     return @data_params[:color]
   end
 
-  def antialias
-    return @data_params[:antialias]
-  end
-
   def label
     return @data_params[:label]
   end
