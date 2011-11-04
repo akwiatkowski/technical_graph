@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{technical_graph}
-  s.version = "0.3.2"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = %q{2011-10-16}
+  s.date = %q{2011-11-05}
   s.description = %q{Purpose of this gem is to create neat, simple, technical graphs. This is alternative to most new libraries which create small, candy graphs using JavaScript.}
   s.email = %q{bobikx@poczta.fm}
   s.extra_rdoc_files = [
@@ -36,6 +36,9 @@ Gem::Specification.new do |s|
     "lib/technical_graph/graph_color_library.rb",
     "lib/technical_graph/graph_data_processor.rb",
     "lib/technical_graph/graph_image_drawer.rb",
+    "lib/technical_graph/graph_image_drawer_module.rb",
+    "lib/technical_graph/graph_image_drawer_rasem.rb",
+    "lib/technical_graph/graph_image_drawer_rmagick.rb",
     "test/helper.rb",
     "test/test_technical_autocolor.rb",
     "test/test_technical_axis_enlarge.rb",
@@ -43,6 +46,7 @@ Gem::Specification.new do |s|
     "test/test_technical_graph_axis.rb",
     "test/test_technical_multilayer.rb",
     "test/test_technical_noise_removal.rb",
+    "test/test_technical_rasem.rb",
     "test/test_technical_readme.rb",
     "test/test_technical_simple_graph.rb",
     "test/test_technical_smoother.rb",
@@ -59,6 +63,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rmagick>, [">= 0"])
+      s.add_runtime_dependency(%q<rasem>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
@@ -66,6 +71,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<rmagick>, [">= 0"])
+      s.add_dependency(%q<rasem>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<rspec>, [">= 0"])
@@ -74,6 +80,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rmagick>, [">= 0"])
+    s.add_dependency(%q<rasem>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<rspec>, [">= 0"])
