@@ -2,6 +2,8 @@
 
 Options Hash
 
+    options[:drawer_class] = :rasem (default) or :rmagick
+
 Default ranges:
 
     options[:x_min]

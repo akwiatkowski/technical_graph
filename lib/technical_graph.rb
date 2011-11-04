@@ -31,10 +31,21 @@ class TechnicalGraph
     @axis = GraphAxis.new(self)
     @layers = Array.new
   end
+
   attr_reader :options, :data_processor, :image_drawer, :axis, :layers, :logger
 
+  # Best output image format, used for testing
+  def best_output_format
+    if options[:drawer_class] == :rasem
+      return 'svg'
+    end
+    if options[:drawer_class] == :rmagick
+      return 'png'
+    end
+  end
+
   # Add new data layer to layer array
-  def add_layer(data = [], options = {})
+  def add_layer(data = [], options = { })
     t = Time.now
     @layers << DataLayer.new(data, options, self)
     logger.debug "layer added, size #{data.size}"
@@ -48,7 +59,7 @@ class TechnicalGraph
     @layers.each do |l|
       @data_processor.process_data_layer(l)
     end
-    
+
     # draw axis
     @axis.render_on_image(@image)
     # draw layers

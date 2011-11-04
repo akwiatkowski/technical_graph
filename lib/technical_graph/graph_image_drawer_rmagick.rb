@@ -5,13 +5,7 @@ require 'technical_graph/graph_image_drawer_module'
 class GraphImageDrawerRmagick
   include GraphImageDrawerModule
 
-  def initialize(drawer)
-    @drawer = self
-  end
-
-  attr_reader :drawer
-
-  def crate_blank_graph_image
+  def create_blank_image
     @image = Magick::ImageList.new
     @image.new_image(
       width,
@@ -57,6 +51,21 @@ class GraphImageDrawerRmagick
     return draw
   end
 
+  # Layer used for drawing value labels
+  def layer_value_labels_draw_object(layer)
+    draw = axis_draw_object
+    draw.pointsize(options[:layers_font_size])
+    return draw
+  end
+
+  # Layer used for drawing chart, lines and dots
+  def layer_draw_object(layer)
+    draw = axis_draw_object
+    draw.fill(layer.color)
+    draw.stroke(layer.color)
+    return draw
+  end
+
 
   # Draw both array axis
   def axis(x_array, y_array, options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
@@ -67,23 +76,23 @@ class GraphImageDrawerRmagick
     plot_axis = axis_draw_object
 
     x_array.each_with_index do |x, i|
-      plot_axis.line(x, 0, x, _s.height)
+      plot_axis.line(x, 0, x, height)
 
       # labels
       label = x_labels[i]
       if render_labels and not label.nil?
-        label = "#{_s.truncate_string % label}"
-        plot_axis.text(x + 15, _s.height - 15, label)
+        label = "#{truncate_string % label}"
+        plot_axis.text(x + 15, height - 15, label)
       end
     end
 
     y_array.each_with_index do |y, i|
-      plot_axis.line(0, y, _s.width, y)
+      plot_axis.line(0, y, width, y)
 
       # labels
       label = y_labels[i]
       if render_labels and not label.nil?
-        label = "#{_s.truncate_string % label}"
+        label = "#{truncate_string % label}"
         plot_axis.text(15, y + 15, label)
       end
     end
@@ -118,118 +127,88 @@ class GraphImageDrawerRmagick
     end
   end
 
-
-
-
-
-  
-
-# TODO refactor it
-
-# Render data layer
-  def render_data_layer(l)
-    layer_data = l.processed_data
-
-    t = Time.now
-
-    layer_line = Magick::Draw.new
-    layer_text = Magick::Draw.new
-
-    # global layer antialias can be override using layer option
-    layer_antialias = l.antialias
-    layer_antialias = options[:layers_antialias] if layer_antialias.nil?
-
-    layer_line.stroke_antialias(layer_antialias)
-    layer_line.fill(l.color)
-    layer_line.fill_opacity(1)
-    layer_line.stroke(l.color)
-    layer_line.stroke_opacity(1.0)
-    layer_line.stroke_width(1.0)
-    layer_line.stroke_linecap('square')
-    layer_line.stroke_linejoin('miter')
-
-    layer_text.text_antialias(font_antialias)
-    layer_text.pointsize(options[:layers_font_size])
-    layer_text.font_family('helvetica')
-    layer_text.font_style(Magick::NormalStyle)
-    layer_text.text_align(Magick::LeftAlign)
-    layer_text.text_undercolor(options[:background_color])
-
-    # calculate coords, draw text, and then lines and circles
-    coords = Array.new
-
-    (0...(layer_data.size - 1)).each do |i|
-      ax = layer_data[i].x
-      ax = calc_bitmap_x(ax).round
-      ay = layer_data[i].y
-      ay = calc_bitmap_y(ay).round
-
-      bx = layer_data[i+1].x
-      bx = calc_bitmap_x(bx).round
-      by = layer_data[i+1].y
-      by = calc_bitmap_y(by).round
-
-      coords << {
-        :ax => ax, :ay => ay,
-        :bx => bx, :by => by,
-        :dy => layer_data[i].y
-      }
-    end
-
-    logger.debug "rendering layer of size #{layer_data.size}, bitmap position calculation"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-
-    # labels
+  def render_data_layer(l, coords)
+    # value labels
     if l.value_labels
+      plot = layer_value_labels_draw_object(l)
       coords.each do |c|
         string_label = "#{truncate_string % c[:dy]}"
-        layer_text.text(
+        plot.text(
           c[:ax] + 5, c[:ay],
           string_label
         )
       end
-      layer_text.draw(@image)
+      plot.draw(@image)
     end
 
-    logger.debug "labels"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-
-    # lines and circles
+    # lines and dots
+    plot = layer_draw_object(l)
     coords.each do |c|
       # additional circle
-      layer_line.circle(
-        c[:ax], c[:ay],
-        c[:ax] + 3, c[:ay]
-      )
-      layer_line.circle(
-        c[:bx], c[:by],
-        c[:bx] + 3, c[:by]
-      )
+      plot.circle(c[:ax], c[:ay], c[:ax] + 2, c[:ay])
+      plot.circle(c[:bx], c[:by], c[:bx] + 2, c[:by])
 
       # line
-      layer_line.line(
+      plot.line(
         c[:ax], c[:ay],
         c[:bx], c[:by]
       )
 
-      # used for auto positioning of legend
-      if legend_auto_position
-        @drawn_points << { :x => c[:ax], :y => c[:ay] }
-        @drawn_points << { :x => c[:bx], :y => c[:by] }
-      end
+      drawer.post_dot_drawn(c[:ax], c[:ay])
+      drawer.post_dot_drawn(c[:bx], c[:by])
     end
+    plot.draw(@image)
+  end
 
-    logger.debug "dots and lines"
-    logger.debug " TIME COST #{Time.now - t}"
+
+  def legend(legend_data)
+    legend_data.each do |l|
+      plot = axis_draw_object
+      plot.fill(l[:color])
+      plot.stroke(l[:color])
+
+      plot.circle(l[:x], l[:y], l[:x] + 2, l[:y])
+      plot.text(l[:x] + 5, l[:y], l[:label])
+
+      plot.draw(@image)
+    end
+  end
+
+  def close
+    # only for compatibility
+    @closed = true
+  end
+
+  def closed?
+    @closed
+  end
+
+  # Save output to file
+  def save(file)
     t = Time.now
 
-    layer_line.draw(@image)
+    @image.write(file)
 
-    logger.debug "rmagick layer draw"
+    logger.debug "saving image"
     logger.debug " TIME COST #{Time.now - t}"
   end
+
+  # Export image
+  def to_format(format)
+    t = Time.now
+    i = @image.flatten_images
+    i.format = format
+    blob = i.to_blob
+
+    logger.debug "exporting image as string"
+    logger.debug " TIME COST #{Time.now - t}"
+
+    return blob
+  end
+
+
+# TODO refactor it
+
 
 # Render legend on graph
   def render_data_legend
@@ -280,28 +259,6 @@ class GraphImageDrawerRmagick
     logger.debug " TIME COST #{Time.now - t}"
   end
 
-# Save output to file
-  def save_to_file(file)
-    t = Time.now
-
-    @image.write(file)
-
-    logger.debug "saving image"
-    logger.debug " TIME COST #{Time.now - t}"
-  end
-
-# Export image
-  def to_format(format)
-    t = Time.now
-    i = @image.flatten_images
-    i.format = format
-    blob = i.to_blob
-
-    logger.debug "exporting image as string"
-    logger.debug " TIME COST #{Time.now - t}"
-
-    return blob
-  end
 
   def render_values_axis
     t = Time.now

@@ -161,7 +161,7 @@ class GraphImageDrawerRasem
   def to_format(format)
     close
 
-    return to_svg if format == 'svg'
+    return @image.output if format == 'svg'
     return to_svgz if format == 'svgz'
 
     #raise 'Not implemented' if not format == 'svg'

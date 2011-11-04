@@ -2,8 +2,6 @@
 
 require 'date'
 require 'zlib'
-require 'technical_graph/graph_image_drawer_rmagick'
-require 'technical_graph/graph_image_drawer_rasem'
 
 # Universal class for creating graphs/charts.
 
@@ -17,9 +15,22 @@ require 'technical_graph/graph_image_drawer_rasem'
 
 class GraphImageDrawer
 
+  # Which type of drawing class use?
   def drawing_class
-    #return GraphImageDrawerRmagick
-    return GraphImageDrawerRasem
+    if options[:drawer_class] == :rasem
+      require 'technical_graph/graph_image_drawer_rasem'
+      return GraphImageDrawerRasem
+    end
+
+    if options[:drawer_class] == :rmagick
+      require 'technical_graph/graph_image_drawer_rmagick'
+      return GraphImageDrawerRmagick
+    end
+  end
+
+  # Best output image format, used for testing
+  def best_output_format
+    @technical_graph.best_output_format
   end
 
   attr_reader :technical_graph
@@ -65,6 +76,10 @@ class GraphImageDrawer
     @technical_graph = technical_graph
 
     t = Time.now
+
+    # drawer type
+    #options[:drawer_class] ||= :rmagick
+    options[:drawer_class] ||= :rasem
 
     options[:width] ||= DEFAULT_WIDTH
     options[:height] ||= DEFAULT_HEIGHT
