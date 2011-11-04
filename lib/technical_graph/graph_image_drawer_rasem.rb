@@ -3,6 +3,7 @@
 require 'technical_graph/graph_image_drawer_module'
 require 'rubygems'
 require 'rasem'
+require 'tmpdir'
 
 class GraphImageDrawerRasem
   include GraphImageDrawerModule
@@ -159,9 +160,26 @@ class GraphImageDrawerRasem
 
   def to_format(format)
     close
-    #aaa if not format == 'svg'
-    raise 'Not implemented' if not format == 'svg'
-    @image.output
+
+    return to_svg if format == 'svg'
+    return to_svgz if format == 'svgz'
+
+    #raise 'Not implemented' if not format == 'svg'
+    return ugly_convert(format)
+  end
+
+  # Ugly, save temporary file, convert, read, delete temp file
+  def ugly_convert(format)
+    # create temp file
+    tmp_file = File.join(Dir.tmpdir, "#{random_filename}.#{format}")
+    save(tmp_file)
+    # read content
+    contents = open(tmp_file, "rb") { |io| io.read }
+    # remove temp file
+    File.delete(tmp_file)
+
+    # return content
+    contents
   end
 
 end

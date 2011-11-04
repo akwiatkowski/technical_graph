@@ -64,4 +64,9 @@ module GraphImageDrawerModule
     file.gsub(/^.*\./, '')
   end
 
+  # Used for creating temp files
+  def random_filename
+    (0...16).map{65.+(rand(25)).chr}.join
+  end
+
 end
