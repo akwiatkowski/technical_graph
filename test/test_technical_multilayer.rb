@@ -87,8 +87,8 @@ class TestTechnicalMultilayer < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file("samples/tests/test_multilayer.#{BEST_OUTPUT_FORMAT}")
-      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
+      @tg.image_drawer.save_to_file("samples/tests/test_multilayer.#{@tg.best_output_format}")
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
 
     end
   end

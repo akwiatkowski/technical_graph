@@ -267,7 +267,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.axis.parameter_axis.should == [-8.0, -6.0, -4.0, -2.0, 0.0, 2.0, 4.0, 6.0]
       @tg.axis.value_axis.should == [-4.0, -2.0, 0.0, 2.0]
 
-      @tg.image_drawer.save_to_file('samples/tests/test1.png')
+      @tg.image_drawer.save_to_file("samples/tests/test1.#{@tg.best_output_format}")
     end
 
 
@@ -303,7 +303,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file('samples/tests/test2.png')
+      @tg.image_drawer.save_to_file("samples/tests/test2.#{@tg.best_output_format}")
     end
 
   end

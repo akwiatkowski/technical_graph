@@ -165,9 +165,9 @@ class GraphAxis
   def render_axis
     drawer.axis(
       # X
-      parameter_axis.collect { |x| image.calc_bitmap_x(x) },
+      parameter_axis.collect { |x| image.calc_bitmap_x(x).to_i },
       # Y
-      value_axis.collect { |y| image.calc_bitmap_y(y) },
+      value_axis.collect { |y| image.calc_bitmap_y(y).to_i },
       # options
       { :color => options[:axis_color], :width => 1 },
       # draw labels
@@ -183,9 +183,9 @@ class GraphAxis
   def render_zero_axis
     drawer.axis(
       # X - 0
-      image.calc_bitmap_x(0.0),
+      image.calc_bitmap_x(0.0).to_i,
       # Y - 0
-      image.calc_bitmap_y(0.0),
+      image.calc_bitmap_y(0.0).to_i,
       # options, slightly wider
       { :color => options[:axis_color], :width => 2 },
       # draw label

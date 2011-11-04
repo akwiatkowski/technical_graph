@@ -58,7 +58,7 @@ Possible #RRGGBB or color names (ex. 'white').
 
     options[:background_color] - background color of image
     options[:background_hatch_color] - background hatch color
-    options[:axis_color] - color of axis
+    options[:axis_color] - color of axis, default #000000
 
 Anti-aliasing:
 

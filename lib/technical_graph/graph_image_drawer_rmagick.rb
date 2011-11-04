@@ -25,7 +25,7 @@ class GraphImageDrawerRmagick
 
     plot_axis.stroke_antialias(options[:antialias])
     plot_axis.text_antialias(options[:antialias])
-    plot_axis.fill_opacity(0)
+    plot_axis.fill_opacity(1.0)
     plot_axis.stroke(options[:axis_color])
     plot_axis.stroke_opacity(1.0)
     plot_axis.stroke_width(1.0)
@@ -66,14 +66,33 @@ class GraphImageDrawerRmagick
     return draw
   end
 
+  # Create no-stroke draw object
+  def layer_no_stroke(_draw)
+    draw = _draw.clone
+    draw.stroke_opacity(0.0)
+    draw.stroke_width(0.0)
+    return draw
+  end
+
+  # Create no-fill draw object
+  def layer_no_fill(_draw)
+    draw = _draw.clone
+    draw.fill_opacity(0.0)
+    return draw
+  end
+
 
   # Draw both array axis
-  def axis(x_array, y_array, options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
+  def axis(x_array, y_array, _options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
     # for single axis
     x_array = [x_array] if not x_array.kind_of? Array
     y_array = [y_array] if not y_array.kind_of? Array
 
     plot_axis = axis_draw_object
+    plot_axis.stroke(_options[:color])
+    plot_axis.stroke_width(_options[:width])
+    plot_axis_text = layer_no_stroke(plot_axis)
+    plot_axis_text.fill(_options[:color])
 
     x_array.each_with_index do |x, i|
       plot_axis.line(x, 0, x, height)
@@ -82,7 +101,7 @@ class GraphImageDrawerRmagick
       label = x_labels[i]
       if render_labels and not label.nil?
         label = "#{truncate_string % label}"
-        plot_axis.text(x + 15, height - 15, label)
+        plot_axis_text.text(x + 15, height - 15, label)
       end
     end
 
@@ -93,17 +112,20 @@ class GraphImageDrawerRmagick
       label = y_labels[i]
       if render_labels and not label.nil?
         label = "#{truncate_string % label}"
-        plot_axis.text(15, y + 15, label)
+        plot_axis_text.text(15, y + 15, label)
       end
     end
 
     plot_axis.draw(@image)
+    plot_axis_text.draw(@image)
   end
 
   # Label for parameters and values
-  def axis_labels(parameter_label, value_label, options = { :color => 'black', :width => 1, :size => 20 })
+  def axis_labels(parameter_label, value_label, _options = { :color => 'black', :width => 1, :size => 20 })
     if options[:x_axis_label].to_s.size > 0
       plot = axis_labels_draw_object
+      plot.stroke(_options[:color])
+      plot.stroke_width(_options[:width])
 
       plot.text(
         (width / 2).to_i,
@@ -116,11 +138,13 @@ class GraphImageDrawerRmagick
 
     if options[:y_axis_label].to_s.size > 0
       plot = axis_labels_draw_object
-      plot = plot_axis_text.rotate(90)
+      plot.stroke(_options[:color])
+      plot.stroke_width(_options[:width])
+      plot = plot.rotate(90)
 
       plot.text(
         (height / 2).to_i,
-        40,
+        -40,
         options[:y_axis_label].to_s
       )
       plot.draw(@image)
@@ -130,7 +154,7 @@ class GraphImageDrawerRmagick
   def render_data_layer(l, coords)
     # value labels
     if l.value_labels
-      plot = layer_value_labels_draw_object(l)
+      plot = layer_no_stroke(layer_value_labels_draw_object(l))
       coords.each do |c|
         string_label = "#{truncate_string % c[:dy]}"
         plot.text(
@@ -164,13 +188,17 @@ class GraphImageDrawerRmagick
   def legend(legend_data)
     legend_data.each do |l|
       plot = axis_draw_object
+      plot_text = layer_no_stroke(plot)
+
       plot.fill(l[:color])
       plot.stroke(l[:color])
+      plot_text.fill(l[:color])
 
       plot.circle(l[:x], l[:y], l[:x] + 2, l[:y])
-      plot.text(l[:x] + 5, l[:y], l[:label])
+      plot_text.text(l[:x] + 5, l[:y], l[:label])
 
       plot.draw(@image)
+      plot_text.draw(@image)
     end
   end
 
@@ -205,264 +233,5 @@ class GraphImageDrawerRmagick
 
     return blob
   end
-
-
-# TODO refactor it
-
-
-# Render legend on graph
-  def render_data_legend
-    return unless draw_legend?
-
-    recalculate_legend_position
-
-    t = Time.now
-
-    legend_text = Magick::Draw.new
-    legend_text_antialias = options[:layers_font_size]
-    legend_text.stroke_antialias(legend_text_antialias)
-    legend_text.text_antialias(legend_text_antialias)
-    legend_text.pointsize(options[:axis_font_size])
-    legend_text.font_family('helvetica')
-    legend_text.font_style(Magick::NormalStyle)
-    legend_text.text_align(Magick::LeftAlign)
-    legend_text.text_undercolor(options[:background_color])
-
-    x = legend_x
-    y = legend_y
-
-    layers.each do |l|
-      legend_text.fill(l.color)
-
-      string_label = l.label
-      legend_text.text(
-        x, y,
-        string_label
-      )
-
-      # little dot
-      legend_text.circle(
-        x - 10, y,
-        x - 10 + 3, y
-      )
-
-      y += ONE_LAYER_LEGEND_HEIGHT
-    end
-
-    logger.debug "auto legend creating image layer"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-
-    legend_text.draw(@image)
-
-    logger.debug "auto legend drawing image layer"
-    logger.debug " TIME COST #{Time.now - t}"
-  end
-
-
-  def render_values_axis
-    t = Time.now
-
-    plot_axis_y_line = Magick::Draw.new
-    plot_axis_y_text = Magick::Draw.new
-
-    plot_axis_y_line.stroke_antialias(axis_antialias)
-    plot_axis_y_text.text_antialias(image_drawer.font_antialias)
-
-    plot_axis_y_line.fill_opacity(0)
-    plot_axis_y_line.stroke(options[:axis_color])
-    plot_axis_y_line.stroke_opacity(1.0)
-    plot_axis_y_line.stroke_width(1.0)
-    plot_axis_y_line.stroke_linecap('square')
-    plot_axis_y_line.stroke_linejoin('miter')
-
-    plot_axis_y_text.pointsize(options[:axis_font_size])
-    plot_axis_y_text.font_family('helvetica')
-    plot_axis_y_text.font_style(Magick::NormalStyle)
-    plot_axis_y_text.text_align(Magick::LeftAlign)
-    plot_axis_y_text.text_undercolor(options[:background_color])
-
-    value_axis.each do |y|
-      by = image_drawer.calc_bitmap_y(y)
-      plot_axis_y_line.line(
-        0, by.round,
-        @image.columns-1, by.round
-      )
-
-      string_label = "#{truncate_string % y}"
-
-      plot_axis_y_text.text(
-        5,
-        by.round + 15,
-        string_label
-      )
-    end
-
-    logger.debug "render values axis layer"
-    logger.debug " TIME COST #{Time.now - t}"
-
-    t = Time.now
-    plot_axis_y_line.draw(@image)
-    logger.debug "render values axis drawing lines"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-    plot_axis_y_text.draw(@image)
-    logger.debug "render values axis drawing text"
-    logger.debug " TIME COST #{Time.now - t}"
-  end
-
-  def render_parameters_axis
-    t = Time.now
-
-    plot_axis_x_line = Magick::Draw.new
-    plot_axis_x_text = Magick::Draw.new
-
-    plot_axis_x_line.stroke_antialias(axis_antialias)
-    plot_axis_x_text.text_antialias(axis_antialias)
-
-    plot_axis_x_line.fill_opacity(0)
-    plot_axis_x_line.stroke(options[:axis_color])
-    plot_axis_x_line.stroke_opacity(1.0)
-    plot_axis_x_line.stroke_width(1.0)
-    plot_axis_x_line.stroke_linecap('square')
-    plot_axis_x_line.stroke_linejoin('miter')
-
-    plot_axis_x_text.pointsize(options[:axis_font_size])
-    plot_axis_x_text.font_family('helvetica')
-    plot_axis_x_text.font_style(Magick::NormalStyle)
-    plot_axis_x_text.text_align(Magick::LeftAlign)
-    plot_axis_x_text.text_undercolor(options[:background_color])
-
-    parameter_axis.each do |x|
-      bx = image_drawer.calc_bitmap_x(x)
-      plot_axis_x_line.line(
-        bx.round, 0,
-        bx.round, @image.rows-1
-      )
-
-      string_label = "#{truncate_string % x}"
-
-      plot_axis_x_text.text(
-        bx.round + 5,
-        @image.rows - 15,
-        string_label
-      )
-    end
-
-    logger.debug "render parameters axis layer"
-    logger.debug " TIME COST #{Time.now - t}"
-
-    t = Time.now
-    plot_axis_x_line.draw(@image)
-    logger.debug "render parameters axis drawing lines"
-    logger.debug " TIME COST #{Time.now - t}"
-    t = Time.now
-    plot_axis_x_text.draw(@image)
-    logger.debug "render parameters axis drawing text"
-    logger.debug " TIME COST #{Time.now - t}"
-
-  end
-
-# TODO: make it DRY
-  def render_values_zero_axis
-    t = Time.now
-
-    plot_axis_y_line = Magick::Draw.new
-    plot_axis_y_text = Magick::Draw.new
-
-    plot_axis_y_line.stroke_antialias(axis_antialias)
-    plot_axis_y_text.text_antialias(image_drawer.font_antialias)
-
-    plot_axis_y_line.fill_opacity(0)
-    plot_axis_y_line.stroke(options[:axis_color])
-    plot_axis_y_line.stroke_opacity(1.0)
-    plot_axis_y_line.stroke_width(2.0)
-    plot_axis_y_line.stroke_linecap('square')
-    plot_axis_y_line.stroke_linejoin('miter')
-
-    plot_axis_y_text.pointsize(options[:axis_font_size])
-    plot_axis_y_text.font_family('helvetica')
-    plot_axis_y_text.font_style(Magick::NormalStyle)
-    plot_axis_y_text.text_align(Magick::LeftAlign)
-    plot_axis_y_text.text_undercolor(options[:background_color])
-
-    y = 0.0
-    by = image_drawer.calc_bitmap_y(y)
-    plot_axis_y_line.line(
-      0, by.round,
-      @image.columns-1, by.round
-    )
-
-    plot_axis_y_text.text(
-      5,
-      by.round + 15,
-      "#{y}"
-    )
-
-    logger.debug "render 0-value axis layer"
-    logger.debug " TIME COST #{Time.now - t}"
-
-    # TODO: why normal axis does not need it?
-    t = Time.now
-    plot_axis_y_line.draw(@image)
-    logger.debug "render 0-value axis drawing line"
-    logger.debug " TIME COST #{Time.now - t}"
-
-    t = Time.now
-    plot_axis_y_text.draw(@image)
-    logger.debug "render 0-value axis drawing text"
-    logger.debug " TIME COST #{Time.now - t}"
-  end
-
-  def render_parameters_zero_axis
-    t = Time.now
-
-    plot_axis_x_line = Magick::Draw.new
-    plot_axis_x_text = Magick::Draw.new
-
-    plot_axis_x_line.stroke_antialias(axis_antialias)
-    plot_axis_x_text.text_antialias(image_drawer.font_antialias)
-
-    plot_axis_x_line.fill_opacity(0)
-    plot_axis_x_line.stroke(options[:axis_color])
-    plot_axis_x_line.stroke_opacity(1.0)
-    plot_axis_x_line.stroke_width(2.0)
-    plot_axis_x_line.stroke_linecap('square')
-    plot_axis_x_line.stroke_linejoin('miter')
-
-    plot_axis_x_text.pointsize(options[:axis_font_size])
-    plot_axis_x_text.font_family('helvetica')
-    plot_axis_x_text.font_style(Magick::NormalStyle)
-    plot_axis_x_text.text_align(Magick::LeftAlign)
-    plot_axis_x_text.text_undercolor(options[:background_color])
-
-    x = 0.0
-    bx = image_drawer.calc_bitmap_x(x)
-    plot_axis_x_line.line(
-      bx.round, 0,
-      bx.round, @image.rows-1
-    )
-
-    plot_axis_x_text.text(
-      bx.round + 15,
-      @image.rows - 15,
-      "#{x}"
-    )
-
-    logger.debug "render 0-parameter axis layer"
-    logger.debug " TIME COST #{Time.now - t}"
-
-    # TODO: why normal axis does not need it?
-    t = Time.now
-    plot_axis_x_line.draw(@image)
-    logger.debug "render 0-parameter axis drawing line"
-    logger.debug " TIME COST #{Time.now - t}"
-
-    t = Time.now
-    plot_axis_x_text.draw(@image)
-    logger.debug "render 0-parameter axis drawing text"
-    logger.debug " TIME COST #{Time.now - t}"
-  end
-
 
 end

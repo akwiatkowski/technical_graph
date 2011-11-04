@@ -14,14 +14,14 @@ class GraphImageDrawerRasem
   end
 
   # Draw both array axis
-  def axis(x_array, y_array, options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
+  def axis(x_array, y_array, _options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
     # for single axis
     x_array = [x_array] if not x_array.kind_of? Array
     y_array = [y_array] if not y_array.kind_of? Array
 
     _s = self
 
-    @image.group :stroke => options[:color], :stroke_width => options[:width] do
+    @image.group :stroke => _options[:color], :stroke_width => _options[:width] do
       x_array.each_with_index do |x, i|
         line(x, 0, x, _s.height, { })
 
@@ -47,19 +47,19 @@ class GraphImageDrawerRasem
   end
 
   # Label for parameters and values
-  def axis_labels(parameter_label, value_label, options = { :color => 'black', :width => 1, :size => 20 })
+  def axis_labels(parameter_label, value_label, _options = { :color => 'black', :width => 1, :size => 20 })
     _s = self
-    @image.group :stroke => options[:color], :stroke_width => options[:width] do
+    @image.group :stroke => _options[:color], :stroke_width => _options[:width] do
       text(
         (_s.width / 2).to_i,
         _s.height - 40,
-        parameter_label, { 'font-size' => "#{options[:size]}px" }
+        parameter_label, { 'font-size' => "#{_options[:size]}px" }
       )
 
       text(
         (_s.height / 2).to_i,
         -40,
-        value_label, { :transform => 'rotate(90 0,0)', 'font-size' => "#{options[:size]}px" }
+        value_label, { :transform => 'rotate(90 0,0)', 'font-size' => "#{_options[:size]}px" }
       )
     end
   end

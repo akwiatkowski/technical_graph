@@ -90,7 +90,7 @@ class GraphImageDrawer
     # colors
     options[:background_color] ||= 'white'
     options[:background_hatch_color] ||= 'lightcyan2'
-    options[:axis_color] ||= '#aaaaaa'
+    options[:axis_color] ||= '#000000'
 
     # antialias
     options[:antialias] = false if options[:antialias].nil?

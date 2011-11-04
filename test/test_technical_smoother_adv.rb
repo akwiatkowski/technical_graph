@@ -52,6 +52,7 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
 
       tg = TechnicalGraph.new(
         {
+          :drawer_class => DRAWER_CLASS,
           :width => 2000, #8000,
           :height => 1500, #6000,
 
@@ -92,7 +93,9 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
         :simple_smoother => false,
         :simple_smoother_level => 1,
         :simple_smoother_strategy => :gauss,
-        :simple_smoother_x => false
+        :simple_smoother_x => false,
+
+        :value_labels => true
       }
       layer_params_c = layer_params.clone.merge(
         {
@@ -112,8 +115,7 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
       tg.add_layer(layer_data.clone, layer_params_d)
 
       tg.render
-      #tg.image_drawer.save_to_file('samples/tests/test_smoothing_x_values.png')
-      tg.image_drawer.save_to_file('samples/tests/test_smoothing_x_values.svg')
+      tg.image_drawer.save_to_file("samples/tests/test_smoothing_x_values.#{tg.best_output_format}")
     end
 
 

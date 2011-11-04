@@ -126,7 +126,7 @@ class TestTechnicalSmoother < Test::Unit::TestCase
       tg.add_layer(layer_data_b, layer_params_b)
 
       tg.render
-      tg.image_drawer.save_to_file('samples/tests/test_simple_gauss.png')
+      tg.image_drawer.save_to_file("samples/tests/test_simple_gauss.#{tg.best_output_format}")
     end
 
     should 'create simple graph using only layer params' do
@@ -204,7 +204,7 @@ class TestTechnicalSmoother < Test::Unit::TestCase
 
 
       tg.render
-      tg.image_drawer.save_to_file('samples/tests/test_smoothing_multiple.png')
+      tg.image_drawer.save_to_file("samples/tests/test_smoothing_multiple.#{tg.best_output_format}")
     end
 
 

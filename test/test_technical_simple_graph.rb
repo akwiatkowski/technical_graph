@@ -55,8 +55,8 @@ class TestTechnicalSimpleGraph < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file('samples/tests/test_simple.png')
-      @tg.image_drawer.to_format(BEST_OUTPUT_FORMAT).class.should == String
+      @tg.image_drawer.save_to_file("samples/tests/test_simple.#{@tg.best_output_format}")
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
 
     end
   end
