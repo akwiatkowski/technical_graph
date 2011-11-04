@@ -25,9 +25,108 @@ class GraphImageDrawerRmagick
     return @image
   end
 
-  # TODO refactor it
+  # Layer used for drawing axis
+  def axis_draw_object
+    plot_axis = Magick::Draw.new
 
-  # Render data layer
+    plot_axis.stroke_antialias(options[:antialias])
+    plot_axis.text_antialias(options[:antialias])
+    plot_axis.fill_opacity(0)
+    plot_axis.stroke(options[:axis_color])
+    plot_axis.stroke_opacity(1.0)
+    plot_axis.stroke_width(1.0)
+    plot_axis.stroke_linecap('square')
+    plot_axis.stroke_linejoin('miter')
+
+    plot_axis.pointsize(options[:axis_font_size])
+    plot_axis.font_family('helvetica')
+    plot_axis.font_style(Magick::NormalStyle)
+    plot_axis.text_align(Magick::LeftAlign)
+    plot_axis.text_undercolor(options[:background_color])
+
+    return plot_axis
+  end
+
+  # Layer used for drawing main labels (parameter, value)
+  def axis_labels_draw_object
+    draw = axis_draw_object
+    draw.pointsize(options[:axis_label_font_size])
+    draw.font_style(Magick::NormalStyle)
+    draw.text_align(Magick::CenterAlign)
+
+    return draw
+  end
+
+
+  # Draw both array axis
+  def axis(x_array, y_array, options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
+    # for single axis
+    x_array = [x_array] if not x_array.kind_of? Array
+    y_array = [y_array] if not y_array.kind_of? Array
+
+    plot_axis = axis_draw_object
+
+    x_array.each_with_index do |x, i|
+      plot_axis.line(x, 0, x, _s.height)
+
+      # labels
+      label = x_labels[i]
+      if render_labels and not label.nil?
+        label = "#{_s.truncate_string % label}"
+        plot_axis.text(x + 15, _s.height - 15, label)
+      end
+    end
+
+    y_array.each_with_index do |y, i|
+      plot_axis.line(0, y, _s.width, y)
+
+      # labels
+      label = y_labels[i]
+      if render_labels and not label.nil?
+        label = "#{_s.truncate_string % label}"
+        plot_axis.text(15, y + 15, label)
+      end
+    end
+
+    plot_axis.draw(@image)
+  end
+
+  # Label for parameters and values
+  def axis_labels(parameter_label, value_label, options = { :color => 'black', :width => 1, :size => 20 })
+    if options[:x_axis_label].to_s.size > 0
+      plot = axis_labels_draw_object
+
+      plot.text(
+        (width / 2).to_i,
+        height - 40,
+        options[:x_axis_label].to_s
+      )
+      plot.draw(@image)
+    end
+
+
+    if options[:y_axis_label].to_s.size > 0
+      plot = axis_labels_draw_object
+      plot = plot_axis_text.rotate(90)
+
+      plot.text(
+        (height / 2).to_i,
+        40,
+        options[:y_axis_label].to_s
+      )
+      plot.draw(@image)
+    end
+  end
+
+
+
+
+
+  
+
+# TODO refactor it
+
+# Render data layer
   def render_data_layer(l)
     layer_data = l.processed_data
 
@@ -132,7 +231,7 @@ class GraphImageDrawerRmagick
     logger.debug " TIME COST #{Time.now - t}"
   end
 
-  # Render legend on graph
+# Render legend on graph
   def render_data_legend
     return unless draw_legend?
 
@@ -181,7 +280,7 @@ class GraphImageDrawerRmagick
     logger.debug " TIME COST #{Time.now - t}"
   end
 
-  # Save output to file
+# Save output to file
   def save_to_file(file)
     t = Time.now
 
@@ -191,7 +290,7 @@ class GraphImageDrawerRmagick
     logger.debug " TIME COST #{Time.now - t}"
   end
 
-  # Export image
+# Export image
   def to_format(format)
     t = Time.now
     i = @image.flatten_images
@@ -307,7 +406,7 @@ class GraphImageDrawerRmagick
 
   end
 
-  # TODO: make it DRY
+# TODO: make it DRY
   def render_values_zero_axis
     t = Time.now
 
@@ -408,61 +507,5 @@ class GraphImageDrawerRmagick
     logger.debug " TIME COST #{Time.now - t}"
   end
 
-  def render_axis_labels
-    if options[:x_axis_label].to_s.size > 0
-      t = Time.now
-
-      plot_axis_text = Magick::Draw.new
-      plot_axis_text.text_antialias(image_drawer.font_antialias)
-
-      plot_axis_text.pointsize(options[:axis_label_font_size])
-      plot_axis_text.font_family('helvetica')
-      plot_axis_text.font_style(Magick::NormalStyle)
-      #plot_axis_text.text_align(Magick::LeftAlign)
-      plot_axis_text.text_align(Magick::CenterAlign)
-      plot_axis_text.text_undercolor(options[:background_color])
-
-      plot_axis_text.text(
-        (@image.columns / 2).to_i,
-        @image.rows - 40,
-        options[:x_axis_label].to_s
-      )
-      logger.debug "render parameter axis label layer"
-      logger.debug " TIME COST #{Time.now - t}"
-
-      t = Time.now
-      plot_axis_text.draw(@image)
-      logger.debug "render drawing parameter axis label"
-      logger.debug " TIME COST #{Time.now - t}"
-    end
-
-    if options[:y_axis_label].to_s.size > 0
-      t = Time.now
-
-      plot_axis_text = Magick::Draw.new
-      plot_axis_text.text_antialias(image_drawer.font_antialias)
-
-      plot_axis_text.pointsize(options[:axis_label_font_size])
-      plot_axis_text.font_family('helvetica')
-      plot_axis_text.font_style(Magick::NormalStyle)
-      #plot_axis_text.text_align(Magick::LeftAlign)
-      plot_axis_text.text_align(Magick::CenterAlign)
-      plot_axis_text.text_undercolor(options[:background_color])
-
-      plot_axis_text = plot_axis_text.rotate(90)
-      plot_axis_text.text(
-        (@image.rows / 2).to_i,
-        -40,
-        options[:y_axis_label].to_s
-      )
-      logger.debug "render value axis label layer"
-      logger.debug " TIME COST #{Time.now - t}"
-
-      t = Time.now
-      plot_axis_text.draw(@image)
-      logger.debug "render drawing value axis label"
-      logger.debug " TIME COST #{Time.now - t}"
-    end
-  end
 
 end
