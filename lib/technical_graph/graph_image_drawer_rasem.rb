@@ -24,8 +24,16 @@ class GraphImageDrawerRasem
     @image.group :stroke => _options[:color], :stroke_width => _options[:width] do
       x_array.each_with_index do |x, i|
         line(x, 0, x, _s.height, { })
+      end
 
-        # labels
+      y_array.each_with_index do |y, i|
+        line(0, y, _s.width, y, { })
+      end
+    end
+
+    # labels
+    @image.group :fill => _options[:color] do
+      x_array.each_with_index do |x, i|
         label = x_labels[i]
         if render_labels and not label.nil?
           label = "#{_s.truncate_string % label}"
@@ -34,8 +42,6 @@ class GraphImageDrawerRasem
       end
 
       y_array.each_with_index do |y, i|
-        line(0, y, _s.width, y, { })
-
         # labels
         label = y_labels[i]
         if render_labels and not label.nil?
@@ -49,7 +55,7 @@ class GraphImageDrawerRasem
   # Label for parameters and values
   def axis_labels(parameter_label, value_label, _options = { :color => 'black', :width => 1, :size => 20 })
     _s = self
-    @image.group :stroke => _options[:color], :stroke_width => _options[:width] do
+    @image.group :fill => _options[:color] do
       text(
         (_s.width / 2).to_i,
         _s.height - 40,
@@ -73,12 +79,12 @@ class GraphImageDrawerRasem
     if l.value_labels
       t = Time.now
 
-      @image.group :stroke => _s.options[:axis_color], :stroke_width => 1 do
+      @image.group :fill => _s.options[:axis_color] do
         _coords.each do |c|
           string_label = "#{_s.truncate_string % c[:dy]}"
           text(
             c[:ax] + 5, c[:ay],
-            string_label
+            string_label, {}
           )
         end
       end
@@ -114,10 +120,10 @@ class GraphImageDrawerRasem
   def legend(legend_data)
     _s = self
 
-    @image.group :stroke_width => 1, :stroke => '' do
+    @image.group  do
       legend_data.each do |l|
-        circle(l[:x], l[:y], 2, { :stroke => l[:color], :fill => l[:color] })
-        text(l[:x] + 5, l[:y], l[:label], { :stroke => l[:color], :fill => l[:color] })
+        circle(l[:x], l[:y], 2, { :stroke => l[:color], :fill => l[:color], :stroke_width => 1 })
+        text(l[:x] + 5, l[:y], l[:label], { :fill => l[:color] })
       end
     end
   end
