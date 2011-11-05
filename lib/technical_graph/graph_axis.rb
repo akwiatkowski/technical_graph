@@ -81,6 +81,8 @@ class GraphAxis
         axis << current
         current += interval
       end
+      axis = move_axis_to_fit_zero(axis)
+
       logger.debug "fixed interval axis calculation from #{from} to #{to} using int. #{interval}"
       logger.debug " TIME COST #{Time.now - t}"
       return axis
@@ -89,11 +91,32 @@ class GraphAxis
       (0...count).each do |i|
         axis << from + (l.to_f * i.to_f) / count.to_f
       end
+      axis = move_axis_to_fit_zero(axis)
+
       logger.debug "fixed count axis calculation from #{from} to #{to} using count #{count}"
       logger.debug " TIME COST #{Time.now - t}"
       return axis
 
     end
+  end
+
+  # Process axis array, give offset to match zero axis, and remove zero axis from array
+  def move_axis_to_fit_zero(axis)
+    # if zero axis is within
+    if axis.min <= 0 and axis.max >= 0
+      # if there is axis within -1..1
+      axis.each_with_index do |a, i|
+        if a >= -1.0 and a <= 1.0
+          # this is the offset, move using found offset
+          return axis.collect { |b| b - a }
+        end
+      end
+    end
+
+    # TODO when it won't work?
+
+    # return unmodified
+    return axis
   end
 
   # Enlarge image to maintain proper axis density
