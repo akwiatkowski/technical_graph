@@ -2,11 +2,9 @@ source "http://rubygems.org"
 
 gem 'rasem'
 
-group :optional do
-  # Optional, not needed but useful
-  if false
-    gem 'rmagick'
-  end
+# optional gem
+if Gem.source_index.find_name('rmagick').size > 0
+  gem 'rmagick'
 end
 
 # Add dependencies to develop your gem here.
