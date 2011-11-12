@@ -61,14 +61,12 @@ Colors:
 Possible #RRGGBB or color names (ex. 'white').
 
     options[:background_color] - background color of image
-    options[:background_hatch_color] - background hatch color
+    options[:background_hatch_color] - background hatch color, used only in rmagick renderer
     options[:axis_color] - color of axis, default #000000
 
 Anti-aliasing:
 
     options[:antialias] - draw axis using antialias
-    # options[:layers_antialias] - use anti-aliasing for data layers, default false, can be override using layer option
-    # options[:font_antialias] - use anti-aliasing for all fonts, default false
 
 Font size:
 

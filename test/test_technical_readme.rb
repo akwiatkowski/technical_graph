@@ -207,15 +207,90 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'test image size' do
-      #return if DO_NOT_RUN_OLD_TESTS
+      return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :width => 600,
-          :height => 300
+          :height => 300,
+          :drawer_class => :rmagick
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
       file_name = 'samples/readme/09_image_size.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+    should 'test colors' do
+      return if DO_NOT_RUN_OLD_TESTS
+      @tg = TechnicalGraph.new(
+        {
+          :background_color => '#000000',
+          :background_hatch_color => '#222222',
+          :axis_color => '#FFFFFF',
+          :drawer_class => :rmagick,
+        })
+      @tg.add_layer(@simple_data_array, {:color => '#0000FF'})
+      @tg.render
+      file_name = 'samples/readme/10_colors.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+    should 'test renderer' do
+      return if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new(
+        {
+          :drawer_class => :rmagick
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/11_renderer_rmagick.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      @tg = TechnicalGraph.new(
+        {
+          :drawer_class => :rasem
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/11_renderer_rasem.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+    should 'test antialiasing' do
+      #return if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new(
+        {
+          :antialias => true,
+          :drawer_class => :rmagick
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/12_aa_true.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # only for size comparison
+      @tg = TechnicalGraph.new(
+        {
+          :antialias => false,
+          :drawer_class => :rmagick
+        })
+      @tg.add_layer(@simple_data_array)
+      @tg.render
+      file_name = 'samples/readme/12_aa_false.png'
       @tg.image_drawer.save_to_file(file_name)
 
       # test
