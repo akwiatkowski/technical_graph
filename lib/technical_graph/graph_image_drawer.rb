@@ -96,6 +96,8 @@ class GraphImageDrawer
     options[:axis_value_and_param_labels] = true if options[:axis_value_and_param_labels].nil?
     options[:axis_zero_labels] = true if options[:axis_zero_labels].nil?
 
+    options[:adjust_axis_to_zero] = true if options[:adjust_axis_to_zero].nil?
+
     # colors
     options[:background_color] ||= 'white'
     options[:background_hatch_color] ||= 'lightcyan2'
