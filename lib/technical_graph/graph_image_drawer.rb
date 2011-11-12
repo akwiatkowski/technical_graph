@@ -17,15 +17,24 @@ class GraphImageDrawer
 
   # Which type of drawing class use?
   def drawing_class
+    if options[:drawer_class] == :rmagick and rmagick_installed?
+      require 'technical_graph/graph_image_drawer_rmagick'
+      return GraphImageDrawerRmagick
+    end
+
     if options[:drawer_class] == :rasem
       require 'technical_graph/graph_image_drawer_rasem'
       return GraphImageDrawerRasem
     end
 
-    if options[:drawer_class] == :rmagick
-      require 'technical_graph/graph_image_drawer_rmagick'
-      return GraphImageDrawerRmagick
-    end
+    # default
+    require 'technical_graph/graph_image_drawer_rasem'
+    return GraphImageDrawerRasem
+  end
+
+  # Check if rmagick is installed
+  def rmagick_installed?
+    return Gem.source_index.find_name('rmagick').size > 0
   end
 
   # Best output image format, used for testing
