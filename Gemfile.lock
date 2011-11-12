@@ -13,7 +13,6 @@ GEM
     rcov (0.9.11)
     rdoc (3.11)
       json (~> 1.4)
-    rmagick (2.13.1)
     rspec (2.7.0)
       rspec-core (~> 2.7.0)
       rspec-expectations (~> 2.7.0)
@@ -33,6 +32,5 @@ DEPENDENCIES
   rasem
   rcov
   rdoc
-  rmagick
   rspec
   shoulda
