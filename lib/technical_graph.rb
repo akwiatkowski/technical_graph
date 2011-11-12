@@ -54,11 +54,12 @@ class TechnicalGraph
 
   # Create graph
   def render
-    @image = @image_drawer.crate_blank_graph_image
-    # recalculate ranges if needed
     @layers.each do |l|
       @data_processor.process_data_layer(l)
     end
+
+    # recalculate ranges if needed
+    @image = @image_drawer.crate_blank_graph_image
 
     # draw axis
     @axis.render_on_image(@image)

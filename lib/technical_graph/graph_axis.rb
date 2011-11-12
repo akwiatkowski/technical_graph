@@ -139,6 +139,7 @@ class GraphAxis
   def x_axis_distance_image_enlarge
     a = parameter_axis
     # must be at least 2 axis
+    logger.debug "axis enlargement - parameter_axis #{a.inspect}"
     return if a.size < 2
 
     ax = a[0]
@@ -148,10 +149,12 @@ class GraphAxis
 
     axis_distance = (bx - ax).abs
 
+    logger.debug "axis enlargement - width, axis distance #{axis_distance} should be at least #{options[:x_axis_min_distance]}"
     if axis_distance < options[:x_axis_min_distance]
       # enlarging image
       options[:old_width] = options[:width]
       options[:width] *= (options[:x_axis_min_distance] / axis_distance).ceil
+      logger.debug "axis enlarged - width modified to #{options[:width]}"
     end
   end
 
@@ -159,6 +162,7 @@ class GraphAxis
   def y_axis_distance_image_enlarge
     a = value_axis
     # must be at least 2 axis
+    logger.debug "axis enlargement - value_axis #{a.inspect}"
     return if a.size < 2
 
     ay = a[0]
@@ -168,10 +172,12 @@ class GraphAxis
 
     axis_distance = (by - ay).abs
 
+    logger.debug "axis enlargement - height, axis distance #{axis_distance} should be at least #{options[:y_axis_min_distance]}"
     if axis_distance < options[:y_axis_min_distance]
       # enlarging image
       options[:old_height] = options[:height]
       options[:height] *= (options[:y_axis_min_distance] / axis_distance).ceil
+      logger.debug "axis enlarged - height modified from #{options[:old_height]} to #{options[:height]}"
     end
   end
 

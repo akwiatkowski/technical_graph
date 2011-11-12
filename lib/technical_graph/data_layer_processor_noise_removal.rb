@@ -71,7 +71,15 @@ module DataLayerProcessorNoiseRemoval
     # safety
     return false if avg_der == 0 or current_der == 0
 
-    current_level = Math.log( (current_der / avg_der) ** NOISE_POWER_COEFF ).abs
+    begin
+      current_level = Math.log((current_der / avg_der) ** NOISE_POWER_COEFF).abs
+    rescue Errno::EDOM
+      # can not calculate logarithm
+      return false
+    rescue Errno::ERANGE
+      # can not calculate logarithm
+      return false
+    end
     logger.debug "noise removal, avg der #{avg_der}, current #{current_der}, current lev #{current_level}, threshold #{noise_threshold}"
     return current_level > noise_threshold
   end

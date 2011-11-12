@@ -153,7 +153,7 @@ class GraphImageDrawerRasem
         # ugly hack, save to svg and then convert using image magick
         tmp_file = file.gsub(/#{format}/, 'svg')
         # change temp filename if it exist
-        tmp_file = tmp_file.gsub(/\.svg/, "_#{random_filename}.svg") if File.exists?(tmp_file)
+        tmp_file = File.join(Dir.tmpdir, "#{random_filename}.svg") if File.exists?(tmp_file)
         # save to svg
         save(tmp_file)
         # convert
