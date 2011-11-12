@@ -4,6 +4,7 @@ require 'technical_graph/graph_image_drawer_module'
 require 'rubygems'
 require 'rasem'
 require 'tmpdir'
+require 'md5'
 
 class GraphImageDrawerRasem
   include GraphImageDrawerModule
@@ -151,6 +152,8 @@ class GraphImageDrawerRasem
       else
         # ugly hack, save to svg and then convert using image magick
         tmp_file = file.gsub(/#{format}/, 'svg')
+        # change temp filename if it exist
+        tmp_file = MD5.md5(Time.now.to_f.to_s).to_s + "_" + tmp_file if File.exists?(tmp_file)
         # save to svg
         save(tmp_file)
         # convert
