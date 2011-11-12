@@ -202,7 +202,9 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
           :y_axis_interval => 1.0,
           :x_axis_interval => 4.0,
           :x_axis_fixed_interval => true,
-          :y_axis_fixed_interval => true
+          :y_axis_fixed_interval => true,
+
+          :adjust_axis_to_zero => false
         }
       )
 

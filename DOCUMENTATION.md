@@ -36,6 +36,10 @@ Axis labels:
     options[:x_axis_label] = 'x'
     options[:y_axis_label] = 'y'
 
+Adjust axis to be on 'zero':
+
+    options[:adjust_axis_to_zero] = true
+
 Labels has truncate string to define precision. Default it is "%.2f".
 
     options[:truncate_string] = "%.2f"
