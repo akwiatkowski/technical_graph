@@ -1,7 +1,7 @@
 require 'helper'
 
 # run only latest test to create new graphs for documentation
-DO_NOT_RUN_OLD_TESTS = false
+DO_NOT_RUN_OLD_TESTS = true
 README_RENDERED = :rmagick
 
 class TestTechnicalReadme < Test::Unit::TestCase
