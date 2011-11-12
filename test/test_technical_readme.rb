@@ -1,7 +1,8 @@
 require 'helper'
 
 # run only latest test to create new graphs for documentation
-DO_NOT_RUN_OLD_TESTS = true
+DO_NOT_RUN_OLD_TESTS = false
+README_RENDERED = :rmagick
 
 class TestTechnicalReadme < Test::Unit::TestCase
   context 'generate sample graphs using readme options description' do
@@ -35,7 +36,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     #
     should 'create simplest graph' do
       return if DO_NOT_RUN_OLD_TESTS
-      @tg = TechnicalGraph.new
+      @tg = TechnicalGraph.new({:drawer_class => README_RENDERED})
       @tg.add_layer(@simple_data_array)
       @tg.render
       file_name = 'samples/readme/01_simplest.png'
@@ -49,7 +50,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     #
     should 'create 2-layer graph' do
       return if DO_NOT_RUN_OLD_TESTS
-      @tg = TechnicalGraph.new
+      @tg = TechnicalGraph.new({:drawer_class => README_RENDERED})
       @tg.add_layer(@simple_data_array)
       @tg.add_layer(@simple_data_array_b)
       @tg.render
@@ -70,6 +71,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :x_max => 10,
           :y_min => -1,
           :y_max => 10,
+          :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -89,7 +91,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :x_max => 2,
           :y_min => 1,
           :y_max => 2,
-          :xy_behaviour => :fixed
+          :xy_behaviour => :fixed,
+          :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -109,6 +112,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :y_axis_fixed_interval => false,
           :y_axis_count => 20,
           :x_axis_count => 20,
+          :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -128,6 +132,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :y_axis_fixed_interval => true,
           :y_axis_interval => 0.8,
           :x_axis_interval => 0.6,
+          :drawer_class => README_RENDERED
         })
       @tg.axis.x_axis_interval.should == 0.6
       @tg.axis.y_axis_interval.should == 0.8
@@ -155,7 +160,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
         {
           :x_axis_label => 'parameter',
           :y_axis_label => 'value',
-          :axis_label_font_size => 36
+          :axis_label_font_size => 36,
+          :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -172,7 +178,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
       return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
-          :truncate_string => "%.3f"
+          :truncate_string => "%.3f",
+          :drawer_class => README_RENDERED
         })
       @layer_params = {
         :value_labels => true
@@ -191,7 +198,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
       return if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
-          :truncate_string => "%.1f"
+          :truncate_string => "%.1f",
+          :drawer_class => README_RENDERED
         })
       @layer_params = {
         :value_labels => true
@@ -212,7 +220,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
         {
           :width => 600,
           :height => 300,
-          :drawer_class => :rmagick
+          :drawer_class => README_RENDERED,
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -231,7 +239,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :background_color => '#000000',
           :background_hatch_color => '#222222',
           :axis_color => '#FFFFFF',
-          :drawer_class => :rmagick,
+          :drawer_class => README_RENDERED,
         })
       @tg.add_layer(@simple_data_array, {:color => '#0000FF'})
       @tg.render
@@ -248,7 +256,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
       @tg = TechnicalGraph.new(
         {
-          :drawer_class => :rmagick
+          :drawer_class => :rmagick,
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
@@ -269,7 +277,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       File.exist?(file_name).should == true
     end
 
-    should 'test antialiasing' do
+    should 'test anti-aliasing' do
       return if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
@@ -308,7 +316,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :y_axis_label => 'value',
           :layers_font_size => 14,
           :axis_font_size => 18,
-          :axis_label_font_size => 48
+          :axis_label_font_size => 48,
+          :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array, {:value_labels => true})
       @tg.render
@@ -330,7 +339,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg = TechnicalGraph.new(
         {
           :legend => true,
-          :legend_font_size => 20
+          :legend_font_size => 20,
+          :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array, {:label => 'simple', :color => '#FFFF00'})
       @tg.add_layer(@simple_data_array_second, {:label => 'offset', :color => '#00FFFF'})
@@ -347,7 +357,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
 
     should 'test smoothing' do
-      #return if DO_NOT_RUN_OLD_TESTS
+      return if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -356,7 +366,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :legend => true,
           :x_axis_label => "Parameter",
           :y_axis_label => "Value",
-          :drawer_class => :rmagick
+          :drawer_class => README_RENDERED,
         }
       )
       max = 250 #2000
@@ -399,6 +409,110 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
       @tg.render
       file_name = 'samples/readme/15_smoothing.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+
+
+    should 'test noise filtering' do
+      return if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new(
+        {
+          #:log_level => Logger::DEBUG,
+          :legend => true,
+          :drawer_class => README_RENDERED
+        }
+      )
+      max = 250 #2000
+
+      @layer_data = Array.new
+      (0..max).each do |i|
+        x = -10.0 + (20.0 * i.to_f / max.to_f)
+        y = -10.0 + (20.0 * i.to_f / max.to_f)
+        @layer_data << { :x => x, :y => y }
+      end
+
+      # custom spikes
+      [3, 36, 99, 187, 204].each do |i|
+        offset = 5.0
+        offset *= -1.0 if rand(100) % 2 == 1
+        @layer_data[i][:y] += offset
+      end
+
+      150.times do
+        i = rand(@layer_data.size)
+        offset = rand(80).to_f / 10.0
+        offset *= -1.0 if rand(100) % 2 == 1
+
+        @layer_data[i][:y] += offset
+      end
+
+      # adding simple layer
+      @layer_params = {
+        :label => 'raw',
+        :value_labels => false,
+      }
+      @layer_params_b = @layer_params.clone.merge(
+        {
+          :label => 'n.r. level 3, window 10',
+          :noise_removal_window_size => 10,
+          :noise_removal_level => 3,
+          :noise_removal => true
+        })
+      @layer_params_e = @layer_params.clone.merge(
+        {
+          :label => 'n.r level 10, window 30',
+          :noise_removal_window_size => 10,
+          :noise_removal_level => 30,
+          :noise_removal => true
+        })
+
+      @tg.add_layer(@layer_data.clone, @layer_params)
+      @tg.add_layer(@layer_data.clone, @layer_params_b)
+      @tg.add_layer(@layer_data.clone, @layer_params_e)
+
+      @tg.render
+      file_name = 'samples/readme/16_noise_removal.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+
+    should 'test axis enlargement' do
+      return if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new(
+        {
+          :log_level => Logger::DEBUG,
+          :drawer_class => README_RENDERED,
+          :axis_density_enlarge_image => true,
+          :x_axis_min_distance => 500,
+          :x_axis_interval => 1.0,
+          :x_axis_fixed_interval => true,
+          :width => 400
+        }
+      )
+      max = 250 #2000
+
+      @layer_data = Array.new
+      (0..max).each do |i|
+        x = -10.0 + (20.0 * i.to_f / max.to_f)
+        y = -10.0 + rand(2000).to_f / 100.0
+        @layer_data << { :x => x, :y => y }
+      end
+
+      @tg.add_layer(@layer_data)
+
+      @tg.render
+      file_name = 'samples/readme/17_axis_enlargement.png'
       @tg.image_drawer.save_to_file(file_name)
 
       # test

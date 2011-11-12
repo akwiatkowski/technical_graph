@@ -667,8 +667,7 @@ p. Useful when origin of data is a bit noisy. For best results you can add two l
     :height => 1500,
     :legend => true,
     :x_axis_label => "Parameter",
-    :y_axis_label => "Value",
-    :drawer_class => :rmagick
+    :y_axis_label => "Value"
   }
 )
 max = 250 #2000
@@ -719,12 +718,119 @@ file_name = 'samples/readme/15_smoothing.png'
 
 
 
+h2. Noise removal
 
+p. Useful when origin of data is a bit noisy. For best results you can add two layers: one raw, and second with noise removal.
+   Can be used with smoothing.
+
+<pre>
+<code>
+@tg = TechnicalGraph.new(
+  {
+    :legend => true
+  }
+)
+max = 250
+
+@layer_data = Array.new
+(0..max).each do |i|
+  x = -10.0 + (20.0 * i.to_f / max.to_f)
+  y = -10.0 + (20.0 * i.to_f / max.to_f)
+  @layer_data << { :x => x, :y => y }
+end
+
+# custom spikes
+[3, 36, 99, 187, 204].each do |i|
+  offset = 5.0
+  offset *= -1.0 if rand(100) % 2 == 1
+  @layer_data[i][:y] += offset
+end
+
+# some random spikes
+150.times do
+  i = rand(@layer_data.size)
+  offset = rand(80).to_f / 10.0
+  offset *= -1.0 if rand(100) % 2 == 1
+
+  @layer_data[i][:y] += offset
+end
+
+# adding simple layer
+@layer_params = {
+  :label => 'raw',
+  :value_labels => false,
+}
+@layer_params_b = @layer_params.clone.merge(
+  {
+    :label => 'n.r. level 3, window 10',
+    :noise_removal_window_size => 10,
+    :noise_removal_level => 3,
+    :noise_removal => true
+  })
+@layer_params_e = @layer_params.clone.merge(
+  {
+    :label => 'n.r level 10, window 30',
+    :noise_removal_window_size => 10,
+    :noise_removal_level => 30,
+    :noise_removal => true
+  })
+
+@tg.add_layer(@layer_data.clone, @layer_params)
+@tg.add_layer(@layer_data.clone, @layer_params_b)
+@tg.add_layer(@layer_data.clone, @layer_params_e)
+
+@tg.render
+file_name = 'samples/readme/16_noise_removal.png'
+@tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/16_noise_removal.png((16) Noise removal)!
+
+
+
+
+
+h2. Axis interval enlargement
+
+p. In case of large amount of data axis can be squeezed and graph is unreadable. You can set axis enlargement to kick in
+   in these situations. When distance between axis is lower than set in options[:x_axis_min_distance] or
+   options[:y_axis_min_distance] image dimensions are enlarged to maintain proper axis distances.
+
+<pre>
+<code>
+@tg = TechnicalGraph.new(
+  {
+    :axis_density_enlarge_image => true,
+    :x_axis_min_distance => 500,
+    :x_axis_interval => 1.0,
+    :x_axis_fixed_interval => true,
+    :width => 400
+  }
+)
+max = 250
+
+@layer_data = Array.new
+(0..max).each do |i|
+  x = -10.0 + (20.0 * i.to_f / max.to_f)
+  y = -10.0 + rand(2000).to_f / 100.0
+  @layer_data << { :x => x, :y => y }
+end
+
+@tg.add_layer(@layer_data)
+
+@tg.render
+file_name = 'samples/readme/17_axis_enlargement.png'
+@tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/17_axis_enlargement.png((17) Axis enlargement)!
 
 
 h2. TODO
 
-# Axis density checking algorithm: sample when it us useful
+# Axis density checking algorithm - more info
 # Smoother - parameters
-# Noise removal
+# Noise removal - para
 # Adjusting axis to zero
