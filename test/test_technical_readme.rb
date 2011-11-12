@@ -308,8 +308,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :y_axis_label => 'value',
           :layers_font_size => 14,
           :axis_font_size => 18,
-          :axis_label_font_size => 48,
-          :drawer_class => :rmagick
+          :axis_label_font_size => 48
         })
       @tg.add_layer(@simple_data_array, {:value_labels => true})
       @tg.render
@@ -323,7 +322,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
 
     should 'test layer labels, colors and legend' do
-      #return if DO_NOT_RUN_OLD_TESTS
+      return if DO_NOT_RUN_OLD_TESTS
 
       @simple_data_array_second = @simple_data_array.collect{|a| {:x => a[:x] + 0.31, :y => a[:y] + 0.21 }}
       @simple_data_array_third = @simple_data_array.collect{|a| {:x => a[:x] * 0.99 + 0.23, :y => a[:y] * 1.2 - 0.12 }}
@@ -331,8 +330,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg = TechnicalGraph.new(
         {
           :legend => true,
-          :legend_font_size => 20,
-          :drawer_class => :rmagick
+          :legend_font_size => 20
         })
       @tg.add_layer(@simple_data_array, {:label => 'simple', :color => '#FFFF00'})
       @tg.add_layer(@simple_data_array_second, {:label => 'offset', :color => '#00FFFF'})
@@ -340,6 +338,67 @@ class TestTechnicalReadme < Test::Unit::TestCase
 
       @tg.render
       file_name = 'samples/readme/14_simple_legend.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+
+    should 'test smoothing' do
+      #return if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new(
+        {
+          :width => 2000,
+          :height => 1500,
+          :legend => true,
+          :x_axis_label => "Parameter",
+          :y_axis_label => "Value",
+          :drawer_class => :rmagick
+        }
+      )
+      max = 250 #2000
+
+      @layer_data = Array.new
+      (0..max).each do |i|
+        x = -10.0 + (20.0 * i.to_f / max.to_f)
+        y = 10.0 * Math.cos(i.to_f * (2.0 * 3.14 / max.to_f))
+
+        y += rand * 2.0
+
+        @layer_data << { :x => x, :y => y }
+      end
+
+      # adding simple layer
+      @layer_params = {
+        :label => 'raw',
+        :value_labels => false,
+        :simple_smoother => false,
+        :simple_smoother_level => 1,
+        :simple_smoother_strategy => :gauss,
+        :simple_smoother_x => false,
+      }
+      @layer_params_b = @layer_params.clone.merge(
+        {
+          :label => 'smoothed - level 3',
+          :simple_smoother_level => 3,
+          :simple_smoother => true
+        })
+      @layer_params_e = @layer_params.clone.merge(
+        {
+          :label => 'smoothed - level 50',
+          :simple_smoother_level => 50,
+          :simple_smoother => true
+        })
+
+      @tg.add_layer(@layer_data.clone, @layer_params)
+      @tg.add_layer(@layer_data.clone, @layer_params_b)
+      @tg.add_layer(@layer_data.clone, @layer_params_e)
+
+      @tg.render
+      file_name = 'samples/readme/15_smoothing.png'
       @tg.image_drawer.save_to_file(file_name)
 
       # test

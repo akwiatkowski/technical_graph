@@ -655,6 +655,67 @@ There are also other useful parameters
 
 
 
+h2. Smoothing
+
+p. Useful when origin of data is a bit noisy. For best results you can add two layers: one raw, and second with smoothing.
+
+<pre>
+<code>
+@tg = TechnicalGraph.new(
+  {
+    :width => 2000,
+    :height => 1500,
+    :legend => true,
+    :x_axis_label => "Parameter",
+    :y_axis_label => "Value",
+    :drawer_class => :rmagick
+  }
+)
+max = 250 #2000
+
+@layer_data = Array.new
+(0..max).each do |i|
+  x = -10.0 + (20.0 * i.to_f / max.to_f)
+  y = 10.0 * Math.cos(i.to_f * (2.0 * 3.14 / max.to_f))
+
+  y += rand * 2.0
+
+  @layer_data << { :x => x, :y => y }
+end
+
+# adding simple layer
+@layer_params = {
+  :label => 'raw',
+  :value_labels => false,
+  :simple_smoother => false,
+  :simple_smoother_level => 1,
+  :simple_smoother_strategy => :gauss,
+  :simple_smoother_x => false,
+}
+@layer_params_b = @layer_params.clone.merge(
+  {
+    :label => 'smoothed - level 3',
+    :simple_smoother_level => 3,
+    :simple_smoother => true
+  })
+@layer_params_e = @layer_params.clone.merge(
+  {
+    :label => 'smoothed - level 50',
+    :simple_smoother_level => 50,
+    :simple_smoother => true
+  })
+
+@tg.add_layer(@layer_data.clone, @layer_params)
+@tg.add_layer(@layer_data.clone, @layer_params_b)
+@tg.add_layer(@layer_data.clone, @layer_params_e)
+
+@tg.render
+file_name = 'samples/readme/15_smoothing.png'
+@tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/15_smoothing.png((15) Smoothing)!
 
 
 
@@ -664,6 +725,6 @@ There are also other useful parameters
 h2. TODO
 
 # Axis density checking algorithm: sample when it us useful
-# Smoother:
+# Smoother - parameters
 # Noise removal
 # Adjusting axis to zero
