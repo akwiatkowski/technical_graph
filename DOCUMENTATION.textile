@@ -542,15 +542,128 @@ file_name = 'samples/readme/12_aa_false.png'
 
 
 
+h2. Font size
+
+p. You can set various font sizes.
+
+# options[:layers_font_size] - size of font used for values in graph, keep in mind that layer_options[:value_labels]
+  must be enabled to see any result
+
+# options[:axis_font_size] - size of font used in axis
+
+# options[:axis_label_font_size] - size of font used in options[:x_axis_label] and options[:y_axis_label], to see
+  any result at least one of them must be set
+
+
+<pre>
+<code>
+@simple_data_array = [
+  { :x => 0, :y => 0 },
+  { :x => 1, :y => 1 },
+  { :x => 2, :y => 2 },
+  { :x => 3, :y => 2 },
+  { :x => 4, :y => 1 },
+  { :x => 5, :y => 0 },
+]
+
+@tg = TechnicalGraph.new(
+  {
+    :x_axis_label => 'parameter',
+    :y_axis_label => 'value',
+    :layers_font_size => 14,
+    :axis_font_size => 18,
+    :axis_label_font_size => 48
+  })
+@tg.add_layer(@simple_data_array, {:value_labels => true})
+@tg.render
+file_name = 'samples/readme/13_font_sizes.png'
+@tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/13_font_sizes.png((13) Font size)!
+
+
+
+h2. Legend
+
+p. If you want to use legend you only have to set labels for layers and turn legend enabled by using:
+
+# options[:legend] - turn on legend, on default auto position mode is enabled
+
+# layer_options[:label] - label used for legend
+
+Position of legend is calculated automatic - 8 corner places are checked for distance to all graph points. Point
+which has longest distance is used for legend position.
+
+Every layer has own color which can be set by user using code below. If you don't set there is bank of some fixed colors
+and random color generator.
+
+<pre>
+<code>
+layer_options[:color] = '#FF0000' # color in format #RRGGBB
+</code>
+</pre>
+
+Graph sample code:
+
+<pre>
+<code>
+@simple_data_array = [
+  { :x => 0, :y => 0 },
+  { :x => 1, :y => 1 },
+  { :x => 2, :y => 2 },
+  { :x => 3, :y => 2 },
+  { :x => 4, :y => 1 },
+  { :x => 5, :y => 0 },
+]
+
+@simple_data_array_second = @simple_data_array.collect{|a| {:x => a[:x] + 0.31, :y => a[:y] + 0.21 }}
+@simple_data_array_third = @simple_data_array.collect{|a| {:x => a[:x] * 0.99 + 0.23, :y => a[:y] * 1.2 - 0.12 }}
+
+@tg = TechnicalGraph.new(
+  {
+    :legend => true
+  })
+@tg.add_layer(@simple_data_array, {:label => 'simple', :color => '#FFFF00'})
+@tg.add_layer(@simple_data_array_second, {:label => 'offset', :color => '#00FFFF'})
+@tg.add_layer(@simple_data_array_third, {:label => 'scaled', :color => '#FF00FF'})
+@tg.render
+file_name = 'samples/readme/14_simple_legend.png'
+@tg.image_drawer.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/14_simple_legend.png((14) Legend)!
+
+You can turn off auto position if you like:
+
+<pre>
+<code>
+options[:legend_auto] = false
+options[:legend_x] = 100
+options[:legend_y] = 100
+</code>
+</pre>
+
+There are also other useful parameters
+
+# options[:legend_width] - width of longest label in pixels used for setting proper distance while drawing on right border
+  default 100 and is enlarged auto. using font size
+
+# options[:legend_margin] - graph margin used not to draw legend on border, default 50
+
+
+
+
+
+
+
+
 
 h2. TODO
 
-# Font sizes
 # Axis density checking algorithm: sample when it us useful
-# Layer labels: used in legend
-# Layer colors, random colors
-# Legend with set position
-# Legend with auto position
 # Smoother:
 # Noise removal
 # Adjusting axis to zero

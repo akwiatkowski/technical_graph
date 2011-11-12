@@ -119,11 +119,12 @@ class GraphImageDrawerRasem
 
   def legend(legend_data)
     _s = self
+    legend_text_offset = (options[:legend_font_size] / 2.0).round - 4
 
     @image.group  do
       legend_data.each do |l|
         circle(l[:x], l[:y], 2, { :stroke => l[:color], :fill => l[:color], :stroke_width => 1 })
-        text(l[:x] + 5, l[:y], l[:label], { :fill => l[:color] })
+        text(l[:x] + 5, l[:y] + legend_text_offset, l[:label], { :fill => l[:color], 'font-size' => "#{_s.options[:legend_font_size]}px" })
       end
     end
   end

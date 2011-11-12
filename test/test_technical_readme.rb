@@ -270,7 +270,7 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     should 'test antialiasing' do
-      #return if DO_NOT_RUN_OLD_TESTS
+      return if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -291,6 +291,55 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.add_layer(@simple_data_array)
       @tg.render
       file_name = 'samples/readme/12_aa_false.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+    
+    should 'test font sizes' do
+      return if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new(
+        {
+          :x_axis_label => 'parameter',
+          :y_axis_label => 'value',
+          :layers_font_size => 14,
+          :axis_font_size => 18,
+          :axis_label_font_size => 48,
+          :drawer_class => :rmagick
+        })
+      @tg.add_layer(@simple_data_array, {:value_labels => true})
+      @tg.render
+      file_name = 'samples/readme/13_font_sizes.png'
+      @tg.image_drawer.save_to_file(file_name)
+
+      # test
+      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      File.exist?(file_name).should == true
+    end
+
+
+    should 'test layer labels, colors and legend' do
+      #return if DO_NOT_RUN_OLD_TESTS
+
+      @simple_data_array_second = @simple_data_array.collect{|a| {:x => a[:x] + 0.31, :y => a[:y] + 0.21 }}
+      @simple_data_array_third = @simple_data_array.collect{|a| {:x => a[:x] * 0.99 + 0.23, :y => a[:y] * 1.2 - 0.12 }}
+
+      @tg = TechnicalGraph.new(
+        {
+          :legend => true,
+          :legend_font_size => 20,
+          :drawer_class => :rmagick
+        })
+      @tg.add_layer(@simple_data_array, {:label => 'simple', :color => '#FFFF00'})
+      @tg.add_layer(@simple_data_array_second, {:label => 'offset', :color => '#00FFFF'})
+      @tg.add_layer(@simple_data_array_third, {:label => 'scaled', :color => '#FF00FF'})
+
+      @tg.render
+      file_name = 'samples/readme/14_simple_legend.png'
       @tg.image_drawer.save_to_file(file_name)
 
       # test

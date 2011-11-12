@@ -186,6 +186,8 @@ class GraphImageDrawerRmagick
 
 
   def legend(legend_data)
+    legend_text_offset = (options[:legend_font_size] / 2.0).round - 4
+
     legend_data.each do |l|
       plot = axis_draw_object
       plot_text = layer_no_stroke(plot)
@@ -193,9 +195,10 @@ class GraphImageDrawerRmagick
       plot.fill(l[:color])
       plot.stroke(l[:color])
       plot_text.fill(l[:color])
+      plot_text.pointsize(options[:legend_font_size])
 
       plot.circle(l[:x], l[:y], l[:x] + 2, l[:y])
-      plot_text.text(l[:x] + 5, l[:y], l[:label])
+      plot_text.text(l[:x] + 5, l[:y] + legend_text_offset, l[:label])
 
       plot.draw(@image)
       plot_text.draw(@image)

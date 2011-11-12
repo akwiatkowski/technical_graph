@@ -42,6 +42,11 @@ class GraphColorLibrary
   FAIL_COLOR = 'black'
 
   def initialize
+    reset
+  end
+
+  # Reset color bank
+  def reset
     @colors = BASIC_COLORS + ADDITIONAL_COLORS.sort { rand }
   end
 

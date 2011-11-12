@@ -30,7 +30,7 @@ class DataLayer
     @data_params = options
 
     @data_params[:color] ||= GraphColorLibrary.instance.get_color
-    @data_params[:label] ||= ''
+    @data_params[:label] ||= ' '
     # default true, write values near dots
     @data_params[:value_labels] = false if options[:value_labels] == false
 

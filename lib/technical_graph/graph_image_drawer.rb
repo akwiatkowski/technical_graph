@@ -110,6 +110,7 @@ class GraphImageDrawer
     options[:axis_font_size] ||= 10
     options[:layers_font_size] ||= 10
     options[:axis_label_font_size] ||= 10
+    options[:legend_font_size] ||= 10
 
     # legend
     options[:legend] = false if options[:legend].nil?
@@ -166,6 +167,10 @@ class GraphImageDrawer
     options[:legend_width]
   end
 
+  def legend_height
+    options[:legend_height]
+  end
+
   def legend_margin
     options[:legend_margin]
   end
@@ -193,6 +198,9 @@ class GraphImageDrawer
 
   # Create background image
   def crate_blank_graph_image
+    # reset color banks
+    GraphColorLibrary.instance.reset
+    # calculate some stuff :]
     pre_image_create_calculations
     # create drawing proxy
     @drawer = drawing_class.new(self)
@@ -242,15 +250,27 @@ class GraphImageDrawer
     end
   end
 
-  # height of 1 layer
-  ONE_LAYER_LEGEND_HEIGHT = 15
+  # height of 1 layer without font size
+  ONE_LAYER_LEGEND_SPACER = 5
+
+  def one_layer_legend_height
+    options[:legend_font_size] + ONE_LAYER_LEGEND_SPACER
+  end
+
+  # Enlarge legend's width using legend labels sizes
+  def recalculate_legend_size
+    layers.each do |l|
+      w = l.label.size * options[:legend_font_size]
+      options[:legend_width] = w if w > legend_width
+    end
+
+    options[:legend_height] = layers.size * one_layer_legend_height
+  end
 
   # Choose best location
   def recalculate_legend_position
     return unless legend_auto_position
     logger.debug "Auto position calculation, drawn points #{@drawn_points.size}"
-
-    legend_height = layers.size * ONE_LAYER_LEGEND_HEIGHT
 
     # check 8 places:
     positions = [
@@ -296,6 +316,7 @@ class GraphImageDrawer
   # Render legend on graph
   def render_data_legend
     return unless draw_legend?
+    recalculate_legend_size
     recalculate_legend_position
 
     x = legend_x
@@ -311,7 +332,7 @@ class GraphImageDrawer
       h[:y] = y
 
       legend_data << h
-      y += ONE_LAYER_LEGEND_HEIGHT
+      y += one_layer_legend_height
     end
 
     drawer.legend(legend_data)
