@@ -58,6 +58,10 @@ class GraphAxis
     options[:x_axis_interval]
   end
 
+  def adjust_axis_to_zero
+    options[:adjust_axis_to_zero]
+  end
+
   # Where to put axis values
   def value_axis
     return calc_axis(data_processor.y_min, data_processor.y_max, options[:y_axis_interval], options[:y_axis_count], y_axis_fixed?)
@@ -81,7 +85,7 @@ class GraphAxis
         axis << current
         current += interval
       end
-      axis = move_axis_to_fit_zero(axis)
+      axis = move_axis_to_fit_zero(axis) if adjust_axis_to_zero
 
       logger.debug "fixed interval axis calculation from #{from} to #{to} using int. #{interval}"
       logger.debug " TIME COST #{Time.now - t}"
@@ -91,7 +95,7 @@ class GraphAxis
       (0...count).each do |i|
         axis << from + (l.to_f * i.to_f) / count.to_f
       end
-      axis = move_axis_to_fit_zero(axis)
+      axis = move_axis_to_fit_zero(axis) if adjust_axis_to_zero
 
       logger.debug "fixed count axis calculation from #{from} to #{to} using count #{count}"
       logger.debug " TIME COST #{Time.now - t}"
