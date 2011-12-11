@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{technical_graph}
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
-  s.date = %q{2011-11-12}
+  s.date = %q{2011-12-11}
   s.description = %q{Purpose of this gem is to create neat, simple, technical graphs. This is alternative to most new libraries which create small, candy graphs using JavaScript.}
   s.email = %q{bobikx@poczta.fm}
   s.extra_rdoc_files = [
@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
     "test/helper.rb",
     "test/test_technical_autocolor.rb",
     "test/test_technical_axis_enlarge.rb",
+    "test/test_technical_fix1.rb",
     "test/test_technical_graph.rb",
     "test/test_technical_graph_axis.rb",
     "test/test_technical_multilayer.rb",
