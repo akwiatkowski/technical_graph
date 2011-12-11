@@ -68,19 +68,37 @@ class GraphDataProcessor
 
   # Ranges without zoom
   def raw_x_min
+    enforce_x_axis_range
     options[:x_min]
   end
 
   def raw_x_max
+    enforce_x_axis_range
     options[:x_max]
   end
 
   def raw_y_min
+    enforce_y_axis_range
     options[:y_min]
   end
 
   def raw_y_max
+    enforce_y_axis_range
     options[:y_max]
+  end
+
+  def enforce_x_axis_range
+    if options[:x_min] == options[:x_max]
+      options[:x_min] -= 0.01
+      options[:x_max] += 0.01
+    end
+  end
+
+  def enforce_y_axis_range
+    if options[:y_min] == options[:y_max]
+      options[:y_min] -= 0.01
+      options[:y_max] += 0.01
+    end
   end
 
   # Ranges with zoom
