@@ -356,9 +356,9 @@ describe TechnicalGraph do
           :legend_font_size => 20,
           :drawer_class => README_RENDERED
         })
-      @tg.add_layer(@simple_data_array, { :label => 'simple', :color => '#FFFF00' })
-      @tg.add_layer(@simple_data_array_second, { :label => 'offset', :color => '#00FFFF' })
-      @tg.add_layer(@simple_data_array_third, { :label => 'scaled', :color => '#FF00FF' })
+      @tg.add_layer(@simple_data_array, { :label => 'simple', :color => '#AA7722' })
+      @tg.add_layer(@simple_data_array_second, { :label => 'offset', :color => '#00AA55' })
+      @tg.add_layer(@simple_data_array_third, { :label => 'scaled', :color => '#3322BB' })
 
       @tg.render
       file_name = File.join(README_PATH, '14_simple_legend.png')
@@ -375,15 +375,15 @@ describe TechnicalGraph do
 
       @tg = TechnicalGraph.new(
         {
-          :width => 2000,
-          :height => 1500,
+          :width => 1000,
+          :height => 750,
           :legend => true,
           :x_axis_label => "Parameter",
           :y_axis_label => "Value",
           :drawer_class => README_RENDERED,
         }
       )
-      max = 250 #2000
+      max = 100 #2000
 
       @layer_data = Array.new
       (0..max).each do |i|
