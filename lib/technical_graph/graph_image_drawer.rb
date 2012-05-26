@@ -83,6 +83,9 @@ class GraphImageDrawer
   DEFAULT_WIDTH = 1600
   DEFAULT_HEIGHT = 1200
 
+  @@default_width = DEFAULT_WIDTH
+  @@default_height = DEFAULT_HEIGHT
+
   def initialize(technical_graph)
     @technical_graph = technical_graph
 
@@ -92,8 +95,8 @@ class GraphImageDrawer
     #options[:drawer_class] ||= :rmagick
     options[:drawer_class] ||= :rasem
 
-    options[:width] ||= DEFAULT_WIDTH
-    options[:height] ||= DEFAULT_HEIGHT
+    options[:width] ||= @@default_width
+    options[:height] ||= @@default_height
 
     options[:axis_value_and_param_labels] = true if options[:axis_value_and_param_labels].nil?
     options[:axis_zero_labels] = true if options[:axis_zero_labels].nil?
@@ -143,6 +146,26 @@ class GraphImageDrawer
 
   def height=(h)
     options[:height] = h.to_i if h.to_i > 0
+  end
+
+  # Get default graph width
+  def self.width
+    @@default_width
+  end
+
+  # Get default graph height
+  def self.height
+    @@default_height
+  end
+
+  # Set default graph width
+  def self.width=(w)
+    @@default_width = w.to_i if w.to_i > 0
+  end
+
+  # Set default graph height
+  def self.height=(h)
+    @@default_height = h.to_i if h.to_i > 0
   end
 
   def antialias

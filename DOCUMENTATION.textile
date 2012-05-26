@@ -5,6 +5,20 @@ p. All this examples are generated in test/test_technical_readme.rb.
 
 
 
+h2. Default graph size
+
+p. In this documentation I lowered default graph size so it looks nicer here. If you
+would like to do this insert something like this at the beginning of your code:
+
+<pre>
+<code>
+GraphImageDrawer.width = 400
+GraphImageDrawer.height = 300
+</code>
+</pre>
+
+
+
 
 h2. Simple graph
 

@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 # run only latest test to create new graphs for documentation
-DO_NOT_RUN_OLD_TESTS = false
+DO_NOT_RUN_OLD_TESTS = true
 README_RENDERED = :rmagick
 README_FORMAT = 'png'
 README_PATH = File.join('tmp', 'readme')
