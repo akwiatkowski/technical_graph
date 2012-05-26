@@ -24,57 +24,55 @@ is definitely not the right tool for you. You can find my competitors [here](htt
 Future
 ------
 
-1. Finish data processors: smoothing (nearly done), noise removal (50%), interpolation or curved graphs (planned).
-2. Fix export to SVG.
-3. Optimization, and if needed find or write something faster for creating SVGs.
-
+1. Curved graphs.
+2. Bug fixes, cleaning.
 
 Quick start
 -----------
 
 Check currents test if documentation is not enough :)
 
-1. Create 'the instance'
+* Create 'the instance'
 
-  > tg = TechnicalGraph.new
+    > tg = TechnicalGraph.new
 
-  or
+    or
 
-  > tg = TechnicalGraph.new( options )
+    > tg = TechnicalGraph.new( options )
 
-  where:
+    where:
 
-  * options - Hash of parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
+    + options - Hash of parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
 
-2. Add layer
+* Add layer
 
-  > tg.add_layer(layer_data)
+    > tg.add_layer(layer_data)
 
-  or
+    or
 
-  > tg.add_layer(layer_data, layer_params)
+    > tg.add_layer(layer_data, layer_params)
 
-  where:
+    where:
 
-  * layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
-  * layer_params - Hash of other parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
+    + layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
+    + layer_params - Hash of other parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
 
-3. Save to file
+* Save to file
 
-  > tg.save_to_file('image.svg')
+    > tg.save_to_file('image.svg')
 
-  or
+    or
 
-  > tg.save_to_file('image.svgz')
+    > tg.save_to_file('image.svgz')
 
-  or
+    or
 
-  > tg.save_to_file('image.png')
+    > tg.save_to_file('image.png')
 
 
-  or get binary version of output using
+    or get binary version of output using
 
-  > tg.to_format(format) # where format is 'svg', 'svgz', 'png', ...
+    > tg.to_format(format) # where format is 'svg', 'svgz', 'png', ...
 
 
 This is the new, easiest, better and nicer approach because technical_graph render graph
@@ -95,17 +93,17 @@ An old way
 
 Up to version 0.5.1 you had to render image before you could save it to file. It should work in current version too.
 
-3. Render graph
+* Render graph
 
-> tg.render
+    > tg.render
 
-4. Save to file
+* Save to file
 
-> tg.image_drawer.save_to_file('image.png')
+    > tg.image_drawer.save_to_file('image.png')
 
-or get image binary content.
+    or get image binary content.
 
-> tg.image_drawer.to_format(format)
+    > tg.image_drawer.to_format(format)
 
 
 
