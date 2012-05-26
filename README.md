@@ -36,45 +36,45 @@ Check currents test if documentation is not enough :)
 
 1. Create 'the instance'
 
-> tg = TechnicalGraph.new
+  > tg = TechnicalGraph.new
 
-or
+  or
 
-> tg = TechnicalGraph.new( options )
+  > tg = TechnicalGraph.new( options )
 
-where:
+  where:
 
-* options - Hash of parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
+  * options - Hash of parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
 
 2. Add layer
 
-> tg.add_layer(layer_data)
+  > tg.add_layer(layer_data)
 
-or
+  or
 
-> tg.add_layer(layer_data, layer_params)
+  > tg.add_layer(layer_data, layer_params)
 
-where:
+  where:
 
-* layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
-* layer_params - Hash of other parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
+  * layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
+  * layer_params - Hash of other parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
 
 3. Save to file
 
-> tg.save_to_file('image.svg')
+  > tg.save_to_file('image.svg')
 
-or
+  or
 
-> tg.save_to_file('image.svgz')
+  > tg.save_to_file('image.svgz')
 
-or
+  or
 
-> tg.save_to_file('image.png')
+  > tg.save_to_file('image.png')
 
 
-or get binary version of output using
+  or get binary version of output using
 
-> tg.to_format(format) # where format is 'svg', 'svgz', 'png', ...
+  > tg.to_format(format) # where format is 'svg', 'svgz', 'png', ...
 
 
 This is the new, easiest, better and nicer approach because technical_graph render graph
