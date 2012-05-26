@@ -17,6 +17,8 @@ class GraphImageDrawer
 
   # Which type of drawing class use?
   def drawing_class
+    puts options[:drawer_class]
+    
     if options[:drawer_class] == :rasem
       require 'technical_graph/graph_image_drawer_rasem'
       return GraphImageDrawerRasem

@@ -78,12 +78,12 @@ class TechnicalGraph
 
     case ext
       when 'svg', 'svgz' then
-        options[:drawer_class] == :rasem
+        @options[:drawer_class] = :rasem
         render
         @image_drawer.save_to_file(filename)
 
       when 'png' then
-        options[:drawer_class] == :chunky_png
+        @options[:drawer_class] = :chunky_png
         render
         @image_drawer.save_to_file(filename)
         
@@ -97,12 +97,12 @@ class TechnicalGraph
   def to_format(ext)
     case ext
       when 'svg', 'svgz' then
-        options[:drawer_class] == :rasem
+        @options[:drawer_class] = :rasem
         render
         @image_drawer.to_format(ext)
 
       when 'png' then
-        options[:drawer_class] == :chunky_png
+        @options[:drawer_class] = :chunky_png
         render
         @image_drawer.to_format(ext)
 

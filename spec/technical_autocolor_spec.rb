@@ -82,19 +82,17 @@ describe TechnicalGraph do
       @tg.layers.size.should == 4
 
       # old way
-      @tg.render
+      #@tg.render
 
-      @tg.image_drawer.save_to_file("tmp/test_autocolor.#{@tg.best_output_format}")
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      #@tg.image_drawer.save_to_file("tmp/test_autocolor.#{@tg.best_output_format}")
+      #@tg.image_drawer.to_format(@tg.best_output_format).class.should == String
 
       # new way
-      @tg.render
-
-      #@tg.save_to_file("tmp/test_autocolor_new.png")
+      @tg.save_to_file("tmp/test_autocolor_new.png")
       #@tg.to_format('png').class.should == String
 
-      @tg.save_to_file("tmp/test_autocolor_new.svg")
-      @tg.to_format('svg').class.should == String
+      #@tg.save_to_file("tmp/test_autocolor_new.svg")
+      #@tg.to_format('svg').class.should == String
 
     end
   end

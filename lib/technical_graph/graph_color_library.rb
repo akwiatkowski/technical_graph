@@ -10,10 +10,10 @@ class GraphColorLibrary
   # rock solid colors
   # http://www.imagemagick.org/script/color.php
   BASIC_COLORS = [
-    'blue',
-    'red',
-    'green',
-    'purple'
+    '#0000FF', #'blue',
+    '#FF0000', #'red',
+    '#00FF00', #'green',
+    '#FF00FF', #'purple'
   ]
 
   # other random picked up, SVG need #RGB and I'm too lazy :]
@@ -39,7 +39,7 @@ class GraphColorLibrary
                #'firebrick3'
   ]
 
-  FAIL_COLOR = 'black'
+  FAIL_COLOR = '#000000' #'black'
 
   def initialize
     reset
