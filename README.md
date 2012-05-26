@@ -16,12 +16,10 @@ If you want to:
 then you should try this gem.
 
 I created it because there were not available and maintained gems for that I needed. Now I use it to create hourly
-temperature and wind graphs for vast period of time (months, years), visualize measurements for [HomeIO](https://github.com/akwiatkowski/HomeIO).
+temperature and wind speed graphs for vast period of time (months, years), visualize measurements for [HomeIO](https://github.com/akwiatkowski/HomeIO).
 
-If you want to create candy, ultra fast, web graphs it maybe not the best tool. If you want other graph types than linear it
-is definitely not the right tool for you. It is also not SVG ready yet, but it should be within a few months.
-You can find my competitors [here](https://www.ruby-toolbox.com/categories/graphing).
-
+If you want to create candy, ultra fast, web graphs it is maybe not the best tool. If you want other graph types than linear it
+is definitely not the right tool for you. You can find my competitors [here](https://www.ruby-toolbox.com/categories/graphing).
 
 Future
 ------
@@ -34,9 +32,9 @@ Future
 Quick start
 -----------
 
-Check currents test when documentation is not enough :)
+Check currents test if documentation is not enough :)
 
-1. Create instance
+1. Create 'the instance'
 
 > tg = TechnicalGraph.new
 
@@ -46,7 +44,7 @@ or
 
 where:
 
-* options - Hash of parameters, all parameters are described below.
+* options - Hash of parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
 
 2. Add layer
 
@@ -59,25 +57,43 @@ or
 where:
 
 * layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
-* layer_params - Hash of other parameters, all parameters are described later.
+* layer_params - Hash of other parameters, all parameters are described [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile).
 
 3. Save to file
 
-> tg.save_to_file('image.svg') # or .svgz
+> tg.save_to_file('image.svg')
+
+or
+
+> tg.save_to_file('image.svgz')
 
 or
 
 > tg.save_to_file('image.png')
 
-This is the new, easiest approach because technical_graph render graph using appropriate
-drawer to file extension.
+
+or get binary version of output using
+
+> tg.to_format(format) # where format is 'svg', 'svgz', 'png', ...
+
+
+This is the new, easiest, better and nicer approach because technical_graph render graph
+using appropriate drawer to file extension.
+
+
+Some notes about formats and dependencies
+-----------------------------------------
+
+technical_graph uses [rasem](https://github.com/aseldawy/rasem) for SVG and it works wery well.
+For PNG it uses [chunky_png](https://github.com/wvanbergen/chunky_png) with [oily_png](https://github.com/wvanbergen/oily_png)
+if possible, but there is a lot of missing features so if you need PNG I recommend to install
+good, old [rmagick](https://github.com/rmagick/rmagick).
 
 
 An old way
 -------------
 
-Up to version 0.5.1 you had to render image using chosen renderer and then save it to file.
-It should work in current version too.
+Up to version 0.5.1 you had to render image before you could save it to file. It should work in current version too.
 
 3. Render graph
 
@@ -117,6 +133,6 @@ Contributing to technical-graph
 Copyright
 ---------
 
-Copyright (c) 2011 Aleksander Kwiatkowski. See LICENSE.txt for
+Copyright (c) 2011-2012 Aleksander Kwiatkowski. See LICENSE.txt for
 further details.
 

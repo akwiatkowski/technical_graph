@@ -73,6 +73,20 @@ class TechnicalGraph
     @image_drawer.render_data_legend
   end
 
+  # Render and save graph to a file
+  def save_to_file(filename)
+    ext = File.extname(filename).gsub(/^\./, '')
+    pre_render(ext)
+    @image_drawer.save_to_file(filename)
+  end
+
+  # Render and return graph string
+  def to_format(ext)
+    pre_render(ext)
+    @image_drawer.to_format(ext)
+  end
+
+  # You don't have to run this
   def pre_render(ext)
     case ext
       when 'svg', 'svgz' then
@@ -100,19 +114,6 @@ class TechnicalGraph
         raise ArgumentError
 
     end
-  end
-
-  # Render and save graph to a file
-  def save_to_file(filename)
-    ext = File.extname(filename).gsub(/^\./, '')
-    pre_render(ext)
-    @image_drawer.save_to_file(filename)
-  end
-
-  # Render and return graph string
-  def to_format(ext)
-    pre_render(ext)
-    @image_drawer.to_format(ext)
   end
 
 end
