@@ -6,7 +6,7 @@ module DataLayerProcessorSimpleSmoother
     :rectangular => 'generate_vector_rectangular',
     :gauss => 'generate_vector_gauss'
   }
-  DEFAULT_SIMPLE_SMOOTHER_STRATEGY = :rectangular
+  DEFAULT_SIMPLE_SMOOTHER_STRATEGY = :gauss
 
   MIN_SIMPLE_SMOOTHER_LEVEL = 1
   MAX_SIMPLE_SMOOTHER_LEVEL = 200

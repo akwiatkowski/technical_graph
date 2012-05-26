@@ -159,7 +159,6 @@ class GraphAxis
       options[:width] = options[:width].to_f * (options[:x_axis_min_distance].to_f / axis_distance.to_f)
       options[:width] *= SAFE_ENL_COEFF
       options[:width] = options[:width].ceil
-      puts options[:width]
       logger.debug "axis enlarged - width modified to #{options[:width]}"
     end
   end

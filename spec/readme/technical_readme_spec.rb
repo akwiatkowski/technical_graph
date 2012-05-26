@@ -6,6 +6,8 @@ DO_NOT_RUN_OLD_TESTS = false
 README_RENDERED = :rmagick
 README_FORMAT = 'png'
 README_PATH = File.join('tmp', 'readme')
+#LOG_LEVEL = Logger::DEBUG
+LOG_LEVEL = Logger::ERROR
 
 Dir.mkdir(README_PATH) unless File.exists?(README_PATH)
 
@@ -159,7 +161,7 @@ describe TechnicalGraph do
       # puts axis_x.inspect
       # puts axis_y.inspect
 
-      @tg.render
+
       file_name = File.join(README_PATH, '06_axis_fixed_interval.png')
       @tg.save_to_file(file_name)
 
@@ -178,7 +180,7 @@ describe TechnicalGraph do
           :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
+
       file_name = File.join(README_PATH, '07_axis_label.png')
       @tg.save_to_file(file_name)
 
@@ -199,7 +201,7 @@ describe TechnicalGraph do
         :value_labels => true
       }
       @tg.add_layer(@float_data_array, @layer_params)
-      @tg.render
+
       file_name = File.join(README_PATH, '08a_truncate_string.png')
       @tg.save_to_file(file_name)
 
@@ -219,7 +221,7 @@ describe TechnicalGraph do
         :value_labels => true
       }
       @tg.add_layer(@float_data_array, @layer_params)
-      @tg.render
+
       file_name = File.join(README_PATH, '08b_truncate_string.png')
       @tg.save_to_file(file_name)
 
@@ -237,7 +239,7 @@ describe TechnicalGraph do
           :drawer_class => README_RENDERED,
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
+
       file_name = File.join(README_PATH, '09_image_size.png')
       @tg.save_to_file(file_name)
 
@@ -256,7 +258,7 @@ describe TechnicalGraph do
           :drawer_class => README_RENDERED,
         })
       @tg.add_layer(@simple_data_array, { :color => '#0000FF' })
-      @tg.render
+
       file_name = File.join(README_PATH, '10_colors.png')
       @tg.save_to_file(file_name)
 
@@ -273,7 +275,7 @@ describe TechnicalGraph do
           :drawer_class => :rmagick,
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
+
       file_name = File.join(README_PATH, '11_renderer_rmagick.png')
       @tg.save_to_file(file_name)
 
@@ -282,7 +284,7 @@ describe TechnicalGraph do
           :drawer_class => :rasem
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
+
       file_name = File.join(README_PATH, '11_renderer_rasem.png')
       @tg.save_to_file(file_name)
 
@@ -300,7 +302,7 @@ describe TechnicalGraph do
           :drawer_class => :rmagick
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
+
       file_name = File.join(README_PATH, '12_aa_true.png')
       @tg.save_to_file(file_name)
 
@@ -311,7 +313,7 @@ describe TechnicalGraph do
           :drawer_class => :rmagick
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
+
       file_name = File.join(README_PATH, '12_aa_false.png')
       @tg.save_to_file(file_name)
 
@@ -334,7 +336,7 @@ describe TechnicalGraph do
           :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array, { :value_labels => true })
-      @tg.render
+
       file_name = File.join(README_PATH, '13_font_sizes.png')
       @tg.save_to_file(file_name)
 
@@ -360,7 +362,7 @@ describe TechnicalGraph do
       @tg.add_layer(@simple_data_array_second, { :label => 'offset', :color => '#00AA55' })
       @tg.add_layer(@simple_data_array_third, { :label => 'scaled', :color => '#3322BB' })
 
-      @tg.render
+
       file_name = File.join(README_PATH, '14_simple_legend.png')
       @tg.save_to_file(file_name)
 
@@ -421,7 +423,7 @@ describe TechnicalGraph do
       @tg.add_layer(@layer_data.clone, @layer_params_b)
       @tg.add_layer(@layer_data.clone, @layer_params_e)
 
-      @tg.render
+
       file_name = File.join(README_PATH, '15_smoothing.png')
       @tg.save_to_file(file_name)
 
@@ -436,7 +438,7 @@ describe TechnicalGraph do
 
       @tg = TechnicalGraph.new(
         {
-          #:log_level => Logger::DEBUG,
+          #:log_level => LOG_LEVEL,
           :legend => true,
           :drawer_class => README_RENDERED
         }
@@ -489,7 +491,7 @@ describe TechnicalGraph do
       @tg.add_layer(@layer_data.clone, @layer_params_b)
       @tg.add_layer(@layer_data.clone, @layer_params_e)
 
-      @tg.render
+
       file_name = File.join(README_PATH, '16_noise_removal.png')
       @tg.save_to_file(file_name)
 
@@ -504,7 +506,7 @@ describe TechnicalGraph do
 
       @tg = TechnicalGraph.new(
         {
-          :log_level => Logger::DEBUG,
+          :log_level => LOG_LEVEL,
           :drawer_class => README_RENDERED,
           :x_axis_density_enlarge_image => true,
           :x_axis_min_distance => 30,
@@ -524,8 +526,99 @@ describe TechnicalGraph do
 
       @tg.add_layer(@layer_data)
 
-      @tg.render
+
       file_name = File.join(README_PATH, '17_axis_enlargement.png')
+      @tg.save_to_file(file_name)
+
+      # test
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
+    end
+
+
+    it 'test advanced smoothing' do
+      next if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new(
+        {
+          :width => 1600,
+          :height => 1200,
+          :legend => true,
+          :x_axis_label => "Parameter",
+          :y_axis_label => "Value",
+          :drawer_class => README_RENDERED,
+        }
+      )
+      max = 200
+
+      @layer_data = Array.new
+      (0..max).each do |i|
+        x = -10.0 + (20.0 * i.to_f / max.to_f)
+        y = 10.0 * Math.cos(i.to_f * (2.0 * 3.14 / max.to_f))
+
+        y += rand * 2.0
+
+        @layer_data << { :x => x, :y => y }
+      end
+
+      # adding simple layer
+      @layer_params = {
+        :label => 'raw',
+        :value_labels => false
+      }
+
+      @layer_params_smooth_wox = @layer_params.clone.merge(
+        {
+          :label => 'without X smoothin',
+          :simple_smoother => true,
+          :simple_smoother_level => 5,
+          :simple_smoother_strategy => :gauss,
+          :simple_smoother_x => false,
+        }
+      )
+
+      @layer_params_smooth_wx = @layer_params.clone.merge(
+        {
+          :label => 'with X smoothing',
+          :simple_smoother => true,
+          :simple_smoother_level => 5,
+          :simple_smoother_x => true,
+        }
+      )
+
+      @tg.add_layer(@layer_data.clone, @layer_params_smooth_wox)
+      @tg.add_layer(@layer_data.clone, @layer_params_smooth_wx)
+      @tg.add_layer(@layer_data.clone, @layer_params)
+
+
+      file_name = File.join(README_PATH, '18_adv_smoothing.png')
+      @tg.save_to_file(file_name)
+
+      # test
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
+    end
+
+
+    it 'tests adjusting axis' do
+      next if DO_NOT_RUN_OLD_TESTS
+
+      @tg = TechnicalGraph.new({:adjust_axis_to_zero => false})
+      max = 200
+
+      @layer_data = Array.new
+      (0..max).each do |i|
+        x = -10.0 + (20.0 * i.to_f / max.to_f) + 0.11
+        y = 10.0 * Math.cos(i.to_f * (2.0 * 3.14 / max.to_f))
+
+        y += rand * 2.0
+
+        @layer_data << { :x => x, :y => y }
+      end
+
+      @tg.add_layer(@layer_data)
+
+      file_name = File.join(README_PATH, '19_axis_not_adjust.png')
       @tg.save_to_file(file_name)
 
       # test

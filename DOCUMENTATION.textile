@@ -793,9 +793,112 @@ file_name = '17_axis_enlargement.png'
 !https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/17_axis_enlargement.png((17) Axis enlargement)!
 
 
-h2. TODO
 
-# Axis density checking algorithm - more info
-# Smoother - parameters
-# Noise removal - para
-# Adjusting axis to zero
+h2. Advanced smoothing parameters
+
+p. The best way it to experiment with this all parameters and choose which fit best.
+
+p. Possible options:
+
+* layer_options[:simple_smoother] - set true to enable
+
+* layer_options[:simple_smoother_level] - higher -> more smooth
+
+* layer_options[:simple_smoother_x] - use X offset smoothing, slower but a little better quality
+
+
+<pre>
+<code>
+@tg = TechnicalGraph.new(
+  {
+    :width => 1600,
+    :height => 1200,
+    :legend => true,
+    :x_axis_label => "Parameter",
+    :y_axis_label => "Value",
+    :drawer_class => README_RENDERED,
+  }
+)
+max = 200
+
+@layer_data = Array.new
+(0..max).each do |i|
+  x = -10.0 + (20.0 * i.to_f / max.to_f)
+  y = 10.0 * Math.cos(i.to_f * (2.0 * 3.14 / max.to_f))
+
+  y += rand * 2.0
+
+  @layer_data << { :x => x, :y => y }
+end
+
+# adding simple layer
+@layer_params = {
+  :label => 'raw',
+  :value_labels => false
+}
+
+@layer_params_smooth_wox = @layer_params.clone.merge(
+  {
+    :label => 'without X smoothing',
+    :simple_smoother => true,
+    :simple_smoother_level => 5,
+    :simple_smoother_strategy => :gauss,
+    :simple_smoother_x => false,
+  }
+)
+
+@layer_params_smooth_wx = @layer_params.clone.merge(
+  {
+    :label => 'with X smoothing',
+    :simple_smoother => true,
+    :simple_smoother_level => 5,
+    :simple_smoother_x => true,
+  }
+)
+
+@tg.add_layer(@layer_data.clone, @layer_params_smooth_wox)
+@tg.add_layer(@layer_data.clone, @layer_params_smooth_wx)
+@tg.add_layer(@layer_data.clone, @layer_params)
+
+file_name = '18_adv_smoothing.png'
+@tg.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/18_adv_smoothing.png((18) Smoothing 2)!
+
+
+
+
+
+h2. Adjusting axis to zero
+
+p. Axis are placed automatically. It would look better if axis were located on zeroes. Fortunately it is enabled by default, but let check out how it would be without it.
+
+p. Possible options:
+
+* layer_options[:adjust_axis_to_zero] - set true to enable
+
+<pre>
+<code>
+@tg = TechnicalGraph.new({:adjust_axis_to_zero => false})
+max = 200
+
+@layer_data = Array.new
+(0..max).each do |i|
+  x = -10.0 + (20.0 * i.to_f / max.to_f) + 0.11
+  y = 10.0 * Math.cos(i.to_f * (2.0 * 3.14 / max.to_f))
+
+  y += rand * 2.0
+
+  @layer_data << { :x => x, :y => y }
+end
+
+@tg.add_layer(@layer_data)
+
+file_name = '19_axis_not_adjust.png'
+@tg.save_to_file(file_name)
+</code>
+</pre>
+
+!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/19_axis_not_adjust.png((19) Not adjusted axis)!
