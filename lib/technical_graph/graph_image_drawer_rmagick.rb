@@ -125,7 +125,9 @@ class GraphImageDrawerRmagick
     if options[:x_axis_label].to_s.size > 0
       plot = axis_labels_draw_object
       plot.stroke(_options[:color])
-      plot.stroke_width(_options[:width])
+      plot.stroke_width(0.0)
+      plot.fill_opacity(1.0)
+      plot.stroke_opacity(0.0)
 
       plot.text(
         (width / 2).to_i,
@@ -139,7 +141,9 @@ class GraphImageDrawerRmagick
     if options[:y_axis_label].to_s.size > 0
       plot = axis_labels_draw_object
       plot.stroke(_options[:color])
-      plot.stroke_width(_options[:width])
+      plot.stroke_width(0.0)
+      plot.fill_opacity(1.0)
+      plot.stroke_opacity(0.0)
       plot = plot.rotate(90)
 
       plot.text(
