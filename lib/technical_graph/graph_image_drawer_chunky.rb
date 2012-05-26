@@ -4,17 +4,80 @@ require 'technical_graph/graph_image_drawer_module'
 require 'rubygems'
 require 'chunky_png'
 
-if Gem.source_index.find_name('oily_png').size > 0
-  gem 'oily_png'
-end
+#if Gem.source_index.find_name('oily_png').size > 0
+#  gem 'oily_png'
+#end
 
-class GraphImageDrawerRasem
+class GraphImageDrawerChunky
   include GraphImageDrawerModule
 
   # Initialize blank image
   def create_blank_image
-    @image = Rasem::SVGImage.new(drawer.width, drawer.height)
+    @image = ChunkyPNG::Image.new(drawer.width, drawer.heigh, ChunkyPNG::Color::WHITE)
   end
+
+  # Layer used for drawing axis
+  def axis_draw_object
+    plot_axis = Magick::Draw.new
+
+    plot_axis.stroke_antialias(options[:antialias])
+    plot_axis.text_antialias(options[:antialias])
+    plot_axis.fill_opacity(1.0)
+    plot_axis.stroke(options[:axis_color])
+    plot_axis.stroke_opacity(1.0)
+    plot_axis.stroke_width(1.0)
+    plot_axis.stroke_linecap('square')
+    plot_axis.stroke_linejoin('miter')
+
+    plot_axis.pointsize(options[:axis_font_size])
+    plot_axis.font_family('helvetica')
+    plot_axis.font_style(Magick::NormalStyle)
+    plot_axis.text_align(Magick::LeftAlign)
+    plot_axis.text_undercolor(options[:background_color])
+
+    return plot_axis
+  end
+
+  # Layer used for drawing main labels (parameter, value)
+  def axis_labels_draw_object
+    draw = axis_draw_object
+    draw.pointsize(options[:axis_label_font_size])
+    draw.font_style(Magick::NormalStyle)
+    draw.text_align(Magick::CenterAlign)
+
+    return draw
+  end
+
+  # Layer used for drawing value labels
+  def layer_value_labels_draw_object(layer)
+    draw = axis_draw_object
+    draw.pointsize(options[:layers_font_size])
+    return draw
+  end
+
+  # Layer used for drawing chart, lines and dots
+  def layer_draw_object(layer)
+    draw = axis_draw_object
+    draw.fill(layer.color)
+    draw.stroke(layer.color)
+    return draw
+  end
+
+  # Create no-stroke draw object
+  def layer_no_stroke(_draw)
+    draw = _draw.clone
+    draw.stroke_opacity(0.0)
+    draw.stroke_width(0.0)
+    return draw
+  end
+
+  # Create no-fill draw object
+  def layer_no_fill(_draw)
+    draw = _draw.clone
+    draw.fill_opacity(0.0)
+    return draw
+  end
+
 
   # Draw both array axis
   def axis(x_array, y_array, _options = { :color => 'black', :width => 1 }, render_labels = false, x_labels = [], y_labels = [])
@@ -22,119 +85,125 @@ class GraphImageDrawerRasem
     x_array = [x_array] if not x_array.kind_of? Array
     y_array = [y_array] if not y_array.kind_of? Array
 
-    _s = self
+    plot_axis = axis_draw_object
+    plot_axis.stroke(_options[:color])
+    plot_axis.stroke_width(_options[:width])
+    plot_axis_text = layer_no_stroke(plot_axis)
+    plot_axis_text.fill(_options[:color])
 
-    @image.group :stroke => _options[:color], :stroke_width => _options[:width] do
-      x_array.each_with_index do |x, i|
-        line(x, 0, x, _s.height, { })
+    x_array.each_with_index do |x, i|
+      plot_axis.line(x, 0, x, height)
+
+      # labels
+      label = x_labels[i]
+      if render_labels and not label.nil?
+        label = "#{truncate_string % label}"
+        plot_axis_text.text(x + 15, height - 15, label)
       end
+    end
 
-      y_array.each_with_index do |y, i|
-        line(0, y, _s.width, y, { })
+    y_array.each_with_index do |y, i|
+      plot_axis.line(0, y, width, y)
+
+      # labels
+      label = y_labels[i]
+      if render_labels and not label.nil?
+        label = "#{truncate_string % label}"
+        plot_axis_text.text(15, y + 15, label)
       end
     end
 
-    # labels
-    @image.group :fill => _options[:color] do
-      x_array.each_with_index do |x, i|
-        label = x_labels[i]
-        if render_labels and not label.nil?
-          label = "#{_s.truncate_string % label}"
-          text(x + 15, _s.height - 15, label, { })
-        end
-      end
-
-      y_array.each_with_index do |y, i|
-        # labels
-        label = y_labels[i]
-        if render_labels and not label.nil?
-          label = "#{_s.truncate_string % label}"
-          text(15, y + 15, label, { })
-        end
-      end
-    end
+    plot_axis.draw(@image)
+    plot_axis_text.draw(@image)
   end
 
   # Label for parameters and values
   def axis_labels(parameter_label, value_label, _options = { :color => 'black', :width => 1, :size => 20 })
-    _s = self
-    @image.group :fill => _options[:color] do
-      text(
-        (_s.width / 2).to_i,
-        _s.height - 40,
-        parameter_label, { 'font-size' => "#{_options[:size]}px" }
-      )
+    if options[:x_axis_label].to_s.size > 0
+      plot = axis_labels_draw_object
+      plot.stroke(_options[:color])
+      plot.stroke_width(_options[:width])
 
-      text(
-        (_s.height / 2).to_i,
-        -40,
-        value_label, { :transform => 'rotate(90 0,0)', 'font-size' => "#{_options[:size]}px" }
+      plot.text(
+        (width / 2).to_i,
+        height - 40,
+        options[:x_axis_label].to_s
       )
+      plot.draw(@image)
+    end
+
+
+    if options[:y_axis_label].to_s.size > 0
+      plot = axis_labels_draw_object
+      plot.stroke(_options[:color])
+      plot.stroke_width(_options[:width])
+      plot = plot.rotate(90)
+
+      plot.text(
+        (height / 2).to_i,
+        -40,
+        options[:y_axis_label].to_s
+      )
+      plot.draw(@image)
     end
   end
 
   def render_data_layer(l, coords)
-    _s = self
-    _l = l
-    _coords = coords
-
     # value labels
     if l.value_labels
-      t = Time.now
-
-      @image.group :fill => _s.options[:axis_color] do
-        _coords.each do |c|
-          string_label = "#{_s.truncate_string % c[:dy]}"
-          text(
-            c[:ax] + 5, c[:ay],
-            string_label, {}
-          )
-        end
+      plot = layer_no_stroke(layer_value_labels_draw_object(l))
+      coords.each do |c|
+        string_label = "#{truncate_string % c[:dy]}"
+        plot.text(
+          c[:ax] + 5, c[:ay],
+          string_label
+        )
       end
-
-      logger.debug "labels"
-      logger.debug " TIME COST #{Time.now - t}"
+      plot.draw(@image)
     end
-
-    t = Time.now
 
     # lines and dots
-    @image.group :stroke => l.color, :stroke_width => 1 do
-      _coords.each do |c|
-        # additional circle
-        circle(c[:ax], c[:ay], 2, { :fill => l.color })
-        circle(c[:bx], c[:by], 2, { :fill => l.color })
-        # line
-        line(
-          c[:ax], c[:ay],
-          c[:bx], c[:by],
-          { }
-        )
+    plot = layer_draw_object(l)
+    coords.each do |c|
+      # additional circle
+      plot.circle(c[:ax], c[:ay], c[:ax] + 2, c[:ay])
+      plot.circle(c[:bx], c[:by], c[:bx] + 2, c[:by])
 
-        _s.drawer.post_dot_drawn(c[:ax], c[:ay])
-        _s.drawer.post_dot_drawn(c[:bx], c[:by])
-      end
+      # line
+      plot.line(
+        c[:ax], c[:ay],
+        c[:bx], c[:by]
+      )
+
+      drawer.post_dot_drawn(c[:ax], c[:ay])
+      drawer.post_dot_drawn(c[:bx], c[:by])
     end
-
-    logger.debug "dots and lines"
-    logger.debug " TIME COST #{Time.now - t}"
+    plot.draw(@image)
   end
+
 
   def legend(legend_data)
-    _s = self
     legend_text_offset = (options[:legend_font_size] / 2.0).round - 4
 
-    @image.group  do
-      legend_data.each do |l|
-        circle(l[:x], l[:y], 2, { :stroke => l[:color], :fill => l[:color], :stroke_width => 1 })
-        text(l[:x] + 5, l[:y] + legend_text_offset, l[:label], { :fill => l[:color], 'font-size' => "#{_s.options[:legend_font_size]}px" })
-      end
+    legend_data.each do |l|
+      plot = axis_draw_object
+      plot_text = layer_no_stroke(plot)
+
+      plot.fill(l[:color])
+      plot.stroke(l[:color])
+      plot_text.fill(l[:color])
+      plot_text.pointsize(options[:legend_font_size])
+
+      plot.circle(l[:x], l[:y], l[:x] + 2, l[:y])
+      plot_text.text(l[:x] + 5, l[:y] + legend_text_offset, l[:label])
+
+      plot.draw(@image)
+      plot_text.draw(@image)
     end
   end
 
-# Needed before saving?
   def close
-    @image.close if not closed?
+    # only for compatibility
     @closed = true
   end
 
@@ -142,56 +211,27 @@ class GraphImageDrawerRasem
     @closed
   end
 
-  # Save to file, convert when needed
+  # Save output to file
   def save(file)
-    close
+    t = Time.now
 
-    format = format_from_filename(file)
-    case format
-      when 'svg' then
-        string = to_svg
-      when 'svgz' then
-        string = to_svgz
-      else
-        # ugly hack, save to svg and then convert using image magick
-        tmp_file = file.gsub(/#{format}/, 'svg')
-        # change temp filename if it exist
-        tmp_file = File.join(Dir.tmpdir, "#{random_filename}.svg") if File.exists?(tmp_file)
-        # save to svg
-        save(tmp_file)
-        # convert
-        `convert "#{tmp_file}" "#{file}"`
-        return
-    end
+    @image.write(file)
 
-    File.open(file, 'w') do |f|
-      f << string
-    end
+    logger.debug "saving image"
+    logger.debug " TIME COST #{Time.now - t}"
   end
 
-
+  # Export image
   def to_format(format)
-    close
+    t = Time.now
+    i = @image.flatten_images
+    i.format = format
+    blob = i.to_blob
 
-    return @image.output if format == 'svg'
-    return to_svgz if format == 'svgz'
+    logger.debug "exporting image as string"
+    logger.debug " TIME COST #{Time.now - t}"
 
-    #raise 'Not implemented' if not format == 'svg'
-    return ugly_convert(format)
-  end
-
-  # Ugly, save temporary file, convert, read, delete temp file
-  def ugly_convert(format)
-    # create temp file
-    tmp_file = File.join(Dir.tmpdir, "#{random_filename}.#{format}")
-    save(tmp_file)
-    # read content
-    contents = open(tmp_file, "rb") { |io| io.read }
-    # remove temp file
-    File.delete(tmp_file)
-
-    # return content
-    contents
+    return blob
   end
 
 end

@@ -71,4 +71,45 @@ class TechnicalGraph
     # draw legend
     @image_drawer.render_data_legend
   end
+
+  # Render and save graph to a file
+  def save_to_file(filename)
+    ext = File.extname(filename).gsub(/^\./,'')
+
+    case ext
+      when 'svg', 'svgz' then
+        options[:drawer_class] == :rasem
+        render
+        @image_drawer.save_to_file(filename)
+
+      when 'png' then
+        options[:drawer_class] == :chunky_png
+        render
+        @image_drawer.save_to_file(filename)
+        
+      else
+        raise ArgumentError
+
+    end
+  end
+
+  # Render and return graph string
+  def to_format(ext)
+    case ext
+      when 'svg', 'svgz' then
+        options[:drawer_class] == :rasem
+        render
+        @image_drawer.to_format(ext)
+
+      when 'png' then
+        options[:drawer_class] == :chunky_png
+        render
+        @image_drawer.to_format(ext)
+
+      else
+        raise ArgumentError
+
+    end
+  end
+
 end

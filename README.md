@@ -61,6 +61,24 @@ where:
 * layer_data - Array of Hashes, like [{:x => 0, :y => 0}, {:x => 1, :y => 1}, ...]
 * layer_params - Hash of other parameters, all parameters are described later.
 
+3. Save to file
+
+> tg.save_to_file('image.svg') # or .svgz
+
+or
+
+> tg.save_to_file('image.png')
+
+This is the new, easiest approach because technical_graph render graph using appropriate
+drawer to file extension.
+
+
+An old way
+-------------
+
+Up to version 0.5.1 you had to render image using chosen renderer and then save it to file.
+It should work in current version too.
+
 3. Render graph
 
 > tg.render
@@ -73,7 +91,7 @@ or get image binary content.
 
 > tg.image_drawer.to_format(format)
 
-where format is image format, ex. 'png', 'jpeg', ... Of course I prefer 'png'.
+
 
 
 Documentation

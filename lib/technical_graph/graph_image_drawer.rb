@@ -17,14 +17,19 @@ class GraphImageDrawer
 
   # Which type of drawing class use?
   def drawing_class
-    if options[:drawer_class] == :rmagick and rmagick_installed?
-      require 'technical_graph/graph_image_drawer_rmagick'
-      return GraphImageDrawerRmagick
-    end
-
     if options[:drawer_class] == :rasem
       require 'technical_graph/graph_image_drawer_rasem'
       return GraphImageDrawerRasem
+    end
+
+    if options[:drawer_class] == :chunky_png
+      require 'technical_graph/graph_image_drawer_chunky'
+      return GraphImageDrawerChunky
+    end
+
+    if options[:drawer_class] == :rmagick and rmagick_installed?
+      require 'technical_graph/graph_image_drawer_rmagick'
+      return GraphImageDrawerRmagick
     end
 
     # default
