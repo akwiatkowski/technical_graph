@@ -59,7 +59,7 @@ describe DataLayerProcessorSimpleSmoother do
           :legend_x => 50,
           :legend_y => 50,
 
-          :log_level => Logger::DEBUG,
+          #:log_level => Logger::DEBUG,
 
           :x_axis_label => "Parameter",
           :y_axis_label => "Value",
