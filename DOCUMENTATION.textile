@@ -1,6 +1,7 @@
 h1. How to use it
 
-p. All this examples are generated in test/test_technical_readme.rb.
+p. All this examples are generated in spec/readme/technical_readme_spec.rb . Only difference
+is image filename.
 
 
 
@@ -57,9 +58,8 @@ p. We added data but we don't see anything. Now we have to render graph and save
 
 <pre>
 <code>
-@tg.render
-file_name = 'samples/readme/01_simplest.png'
-@tg.image_drawer.save_to_file(file_name)
+file_name = '01_simplest.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -98,9 +98,9 @@ p. Maybe example with two layers?
 @tg = TechnicalGraph.new
 @tg.add_layer(@simple_data_array)
 @tg.add_layer(@simple_data_array_b)
-@tg.render
-file_name = 'samples/readme/02_two_layers.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '02_two_layers.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -134,9 +134,9 @@ p. On default ranges are calculated automatically so all points are visible. You
   })
 
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/03_changed_ranges.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '03_changed_ranges.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -182,9 +182,9 @@ Example:
   })
 
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/04_changed_ranges_fixed.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '04_changed_ranges_fixed.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -223,9 +223,9 @@ options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false,
   })
 
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/05_axis_fixed_amount.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '05_axis_fixed_amount.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -263,9 +263,9 @@ options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false,
     :x_axis_interval => 0.6,
   })
   @tg.add_layer(@simple_data_array)
-  @tg.render
-  file_name = 'samples/readme/06_axis_fixed_interval.png'
-  @tg.image_drawer.save_to_file(file_name)
+  
+  file_name = '06_axis_fixed_interval.png'
+  @tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -299,9 +299,9 @@ size using options[:axis_label_font_size].
     :axis_label_font_size => 36
   })
   @@tg.add_layer(@simple_data_array)
-  @tg.render
-  file_name = 'samples/readme/07_axis_label.png'
-  @tg.image_drawer.save_to_file(file_name)
+  
+  file_name = '07_axis_label.png'
+  @tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -337,9 +337,9 @@ layer_options[:value_labels]
   :value_labels => true
 }
 @tg.add_layer(@float_data_array, @layer_params)
-@tg.render
-file_name = 'samples/readme/08a_truncate_string.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '08a_truncate_string.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -364,9 +364,9 @@ file_name = 'samples/readme/08a_truncate_string.png'
   :value_labels => true
 }
 @tg.add_layer(@float_data_array, @layer_params)
-@tg.render
-file_name = 'samples/readme/08b_truncate_string.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '08b_truncate_string.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -398,9 +398,9 @@ p. It would be very silly if this library had hard coded image size. You can cha
     :height => 300
   })
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/09_image_size.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '09_image_size.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -444,9 +444,9 @@ Ane 1 layer options
     :axis_color => '#FFFFFF'
   })
 @tg.add_layer(@simple_data_array, {:color => '#0000FF'})
-@tg.render
-file_name = 'samples/readme/10_colors.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '10_colors.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -486,18 +486,18 @@ There is fallback - if you don't have install rmagick gem even if you set RMagic
     :drawer_class => :rmagick
   })
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/11_renderer_rmagick.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '11_renderer_rmagick.png'
+@tg.save_to_file(file_name)
 
 @tg = TechnicalGraph.new(
   {
     :drawer_class => :rasem
   })
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/11_renderer_rasem.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '11_renderer_rasem.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -534,9 +534,9 @@ Sample graph without anti-aliasing has 11kB, with 69kB. Does size matter to you?
     :drawer_class => :rmagick
   })
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/12_aa_true.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '12_aa_true.png'
+@tg.save_to_file(file_name)
 
 # only for size comparison
 @tg = TechnicalGraph.new(
@@ -545,9 +545,9 @@ file_name = 'samples/readme/12_aa_true.png'
     :drawer_class => :rmagick
   })
 @tg.add_layer(@simple_data_array)
-@tg.render
-file_name = 'samples/readme/12_aa_false.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '12_aa_false.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -589,9 +589,9 @@ p. You can set various font sizes.
     :axis_label_font_size => 48
   })
 @tg.add_layer(@simple_data_array, {:value_labels => true})
-@tg.render
-file_name = 'samples/readme/13_font_sizes.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '13_font_sizes.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -642,9 +642,9 @@ Graph sample code:
 @tg.add_layer(@simple_data_array, {:label => 'simple', :color => '#FFFF00'})
 @tg.add_layer(@simple_data_array_second, {:label => 'offset', :color => '#00FFFF'})
 @tg.add_layer(@simple_data_array_third, {:label => 'scaled', :color => '#FF00FF'})
-@tg.render
-file_name = 'samples/readme/14_simple_legend.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '14_simple_legend.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -722,9 +722,9 @@ end
 @tg.add_layer(@layer_data.clone, @layer_params_b)
 @tg.add_layer(@layer_data.clone, @layer_params_e)
 
-@tg.render
-file_name = 'samples/readme/15_smoothing.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '15_smoothing.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -793,9 +793,9 @@ end
 @tg.add_layer(@layer_data.clone, @layer_params_b)
 @tg.add_layer(@layer_data.clone, @layer_params_e)
 
-@tg.render
-file_name = 'samples/readme/16_noise_removal.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '16_noise_removal.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -833,9 +833,9 @@ end
 
 @tg.add_layer(@layer_data)
 
-@tg.render
-file_name = 'samples/readme/17_axis_enlargement.png'
-@tg.image_drawer.save_to_file(file_name)
+
+file_name = '17_axis_enlargement.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 

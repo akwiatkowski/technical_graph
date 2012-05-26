@@ -36,11 +36,20 @@ describe TechnicalGraph do
         { :x => 2.555, :y => 1.042 },
         { :x => 2.888, :y => 0.988 },
       ]
+
+      w = 600
+      GraphImageDrawer.width = w
+      GraphImageDrawer.height = (w.to_f * 3.0 / 4.0).round
+    end
+
+    after :each do
+      GraphImageDrawer.width = 1600
+      GraphImageDrawer.height = 1200
     end
 
     #
     it 'create simplest graph' do
-      next if DO_NOT_RUN_OLD_TESTS
+      #next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new({ :drawer_class => README_RENDERED })
       @tg.add_layer(@simple_data_array)
 
