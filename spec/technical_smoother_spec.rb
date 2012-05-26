@@ -1,8 +1,8 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalSmoother < Test::Unit::TestCase
-  context 'calculations' do
-    setup do
+describe DataLayerProcessorSimpleSmoother do
+  context 'using smoother' do
+    before :each do
       max = 500
 
       # adding simple layer
@@ -28,11 +28,12 @@ class TestTechnicalSmoother < Test::Unit::TestCase
       @processor = @data_layer.processor
     end
 
-    should 'do some basic tests' do
+
+    it 'do some basic tests' do
       @processor.should.kind_of? DataLayerProcessor
     end
 
-    should 'calculated vector has proper size and sum eq. 1.0' do
+    it 'calculated vector has proper size and sum eq. 1.0' do
       @processor.generate_vector.should.kind_of? Array
       @processor.generate_vector.size.should == @processor.simple_smoother_level
 
@@ -58,7 +59,7 @@ class TestTechnicalSmoother < Test::Unit::TestCase
 
     end
 
-    should 'processed data has the same size that old one' do
+    it 'processed data has the same size that old one' do
       DataLayerProcessor::SIMPLE_SMOOTHER_STRATEGIES.keys.each do |s|
         @processor.simple_smoother_strategy = s
         @processor.simple_smoother_strategy.should == s
@@ -79,7 +80,7 @@ class TestTechnicalSmoother < Test::Unit::TestCase
       end
     end
 
-    should 'create simple graph with unprocessed and processed layer (gauss)' do
+    it 'create simple graph with unprocessed and processed layer (gauss)' do
       tg = TechnicalGraph.new(
         {
           :width => 2000,
@@ -125,11 +126,10 @@ class TestTechnicalSmoother < Test::Unit::TestCase
       }
       tg.add_layer(layer_data_b, layer_params_b)
 
-      tg.render
-      tg.image_drawer.save_to_file("samples/tests/test_simple_gauss.#{tg.best_output_format}")
+      tg.save_to_file("tmp/test_simple_gauss.svg")
     end
 
-    should 'create simple graph using only layer params' do
+    it 'create simple graph using only layer params' do
       tg = TechnicalGraph.new(
         {
           :width => 5000,
@@ -174,12 +174,13 @@ class TestTechnicalSmoother < Test::Unit::TestCase
       #  :simple_smoother => true
       #})
       #tg.add_layer(layer_data.clone, layer_params)
-      layer_params_c = layer_params.clone.merge({
-        :color => 'green',
-        :label => 'processed - level 100',
-        :simple_smoother_level => 100,
-        :simple_smoother => true
-      })
+      layer_params_c = layer_params.clone.merge(
+        {
+          :color => 'green',
+          :label => 'processed - level 100',
+          :simple_smoother_level => 100,
+          :simple_smoother => true
+        })
       #tg.add_layer(layer_data.clone, layer_params)
       #layer_params_d = layer_params.clone.merge({
       #  :color => 'brown',
@@ -193,18 +194,17 @@ class TestTechnicalSmoother < Test::Unit::TestCase
       #tg.add_layer(layer_data.clone, layer_params_d)
 
 
-      layer_params_e = layer_params.clone.merge({
-        :color => 'blue',
-        :label => 'processed (rectangular) - level 100',
-        :simple_smoother_level => 100,
-        :simple_smoother => true,
-        :simple_smoother_strategy => :rectangular
-      })
+      layer_params_e = layer_params.clone.merge(
+        {
+          :color => 'blue',
+          :label => 'processed (rectangular) - level 100',
+          :simple_smoother_level => 100,
+          :simple_smoother => true,
+          :simple_smoother_strategy => :rectangular
+        })
       tg.add_layer(layer_data.clone, layer_params_e)
 
-
-      tg.render
-      tg.image_drawer.save_to_file("samples/tests/test_smoothing_multiple.#{tg.best_output_format}")
+      tg.save_to_file("tmp/test_smoothing_multiple.svg")
     end
 
 

@@ -1,9 +1,8 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalSmootherAdv < Test::Unit::TestCase
+describe DataLayerProcessorSimpleSmoother do
   context 'using additional X values in smoothing process' do
-
-    should 'calculate proper values' do
+    it 'calculate proper values' do
       max = 2000
 
       layer_data = Array.new
@@ -47,12 +46,9 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
     end
 
 
-    should 'create simple X smoothing' do
-      #return # TODO
-
+    it 'create simple X smoothing' do
       tg = TechnicalGraph.new(
         {
-          :drawer_class => DRAWER_CLASS,
           :width => 2000, #8000,
           :height => 1500, #6000,
 
@@ -114,12 +110,8 @@ class TestTechnicalSmootherAdv < Test::Unit::TestCase
       tg.add_layer(layer_data.clone, layer_params_c)
       tg.add_layer(layer_data.clone, layer_params_d)
 
-      tg.render
-      tg.image_drawer.save_to_file("samples/tests/test_smoothing_x_values.#{tg.best_output_format}")
+      tg.save_to_file("tmp/test_smoothing_x_values.svg")
     end
 
-
   end
-
-
 end

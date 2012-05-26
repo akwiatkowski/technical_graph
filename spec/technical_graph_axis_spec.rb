@@ -1,11 +1,8 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalGraphAxis < Test::Unit::TestCase
+describe TechnicalGraph do
   context 'ranges calculation' do
-    setup do
-    end
-
-    should 'provide defined ranges' do
+    it 'should provide defined ranges' do
       x_min = 0.0
       x_max = 10.0
       y_min = -5.0
@@ -28,7 +25,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.data_processor.y_max.should == y_max
     end
 
-    should 'calculate ranges per layer' do
+    it 'should calculate ranges per layer' do
       # adding simple layer
       layer_data = [
         { :x => -1, :y => 3.0 },
@@ -45,7 +42,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
     end
 
 
-    should 'provide ranges calculated using data layer, and multiple layers' do
+    it 'should provide ranges calculated using data layer, and multiple layers' do
       x_min = 0.0
       x_max = 1.0
       y_min = -1.0
@@ -74,7 +71,8 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
-      @tg.render
+      #@tg.render
+      @tg.to_format('svg') # equal result as above
 
 
       @tg.data_processor.x_min.should_not == x_min
@@ -122,7 +120,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.data_processor.y_max.should == 333.0
     end
 
-    should 'provide ranges calculated with zoom' do
+    it 'provide ranges calculated with zoom' do
       x_min = 0.0
       x_max = 1.0
       y_min = -1.0
@@ -183,7 +181,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
     end
 
 
-    should 'calculate axis with fixed interval' do
+    it 'calculate axis with fixed interval' do
       x_min = -5.0
       x_max = 5.0
       y_min = -5.0
@@ -228,7 +226,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
     end
 
 
-    should 'calculate axis with fixed count' do
+    it 'calculate axis with fixed count' do
       x_min = -8.0
       x_max = 8.0
       y_min = -4.0
@@ -264,16 +262,14 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
-      @tg.render
+      @tg.save_to_file("tmp/test1.svg")
 
       @tg.axis.parameter_axis.should == [-8.0, -6.0, -4.0, -2.0, 0.0, 2.0, 4.0, 6.0]
       @tg.axis.value_axis.should == [-4.0, -2.0, 0.0, 2.0]
-
-      @tg.image_drawer.save_to_file("samples/tests/test1.#{@tg.best_output_format}")
     end
 
 
-    should 'draw simple graph' do
+    it 'draw simple graph' do
       @tg = TechnicalGraph.new(
         {
           :x_axis_count => 10,
@@ -303,9 +299,7 @@ class TestTechnicalGraphAxis < Test::Unit::TestCase
       @tg.layers.last.processed_data.size > 0
       # checking ranger for layer
 
-      @tg.render
-
-      @tg.image_drawer.save_to_file("samples/tests/test2.#{@tg.best_output_format}")
+      @tg.save_to_file("tmp/test2.svg")
     end
 
   end

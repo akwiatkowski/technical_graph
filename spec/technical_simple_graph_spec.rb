@@ -1,8 +1,8 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalSimpleGraph < Test::Unit::TestCase
-  context 'initial options' do
-    should 'draw simple graph' do
+describe TechnicalGraph do
+  context 'creating simple graph' do
+    it 'draw simple graph' do
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.1f",
@@ -53,10 +53,8 @@ class TestTechnicalSimpleGraph < Test::Unit::TestCase
       @tg.layers.last.processed_data.size.should > 0
       # checking ranger for layer
 
-      @tg.render
-
-      @tg.image_drawer.save_to_file("samples/tests/test_simple.#{@tg.best_output_format}")
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      @tg.save_to_file("tmp/test_simple.svg")
+      @tg.to_format('svg').class.should == String
 
     end
   end

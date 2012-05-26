@@ -1,18 +1,18 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalGraph < Test::Unit::TestCase
-  context 'initial options' do
-    setup do
+describe TechnicalGraph do
+  context 'creating simple graph' do
+    before :each do
       @technical_graph = TechnicalGraph.new
     end
 
-    should "has options with default values" do
+    it "has options with default values" do
       @technical_graph.options.class.should == Hash
       @technical_graph.options[:width] > 0
       @technical_graph.options[:height] > 0
     end
 
-    should "has options with custom values" do
+    it "has options with custom values" do
       s = 10
       tg = TechnicalGraph.new({ :height => s, :width => s })
       @technical_graph.options[:width] == s
@@ -22,7 +22,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
       @technical_graph.image_drawer.height == s
     end
 
-    should "has changeable options" do
+    it "has changeable options" do
       s = 20
       tg = TechnicalGraph.new
       tg.image_drawer.width = s
@@ -32,8 +32,8 @@ class TestTechnicalGraph < Test::Unit::TestCase
     end
   end
 
-  context 'basic layer operation and saving file' do
-    setup do
+  context 'basic layer operation' do
+    before :each do
       @tg = TechnicalGraph.new
       @data_size = 100
 
@@ -46,7 +46,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
       end
     end
 
-    should 'has ability do add new layer' do
+    it 'has ability do add new layer' do
       layers = @tg.layers.size
       @tg.add_layer(@data)
       @tg.layers.size.should == layers + 1
@@ -56,7 +56,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer.processed_data.size.should == @data_size
     end
 
-    should 'has ability to manipulate layers, add more data' do
+    it 'has ability to manipulate layers, add more data' do
       @tg.add_layer(@data)
       layer = @tg.layers.last
       layer.class.should == DataLayer
@@ -68,14 +68,11 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer.append_data(@second_data)
       layer.raw_data.size.should == 2 * @data_size
       layer.processed_data.size.should == 2 * @data_size
-
-      # @tg.render
-      # @tg.image.save_to_file("samples/tests/test1.#{@th.best_output_format}")
     end
 
-    should 'has ability to filter records with similar x\'es' do
+    it 'has ability to filter records with similar x\'es' do
       # was turned off by default, performance issue
-      @tg.add_layer([], {:perform_parameter_uniq => true})
+      @tg.add_layer([], { :perform_parameter_uniq => true })
       layer = @tg.layers.last
       layer.raw_data.size.should == 0
       layer.processed_data.size.should == 0
@@ -93,7 +90,7 @@ class TestTechnicalGraph < Test::Unit::TestCase
       layer.processed_data.size.should == 2
     end
 
-    should 'has ability to filter bad records' do
+    it 'has ability to filter bad records' do
       @tg.add_layer
       layer = @tg.layers.last
       layer.raw_data.size.should == 0
