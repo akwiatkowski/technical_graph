@@ -1,8 +1,8 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalMultilayer < Test::Unit::TestCase
-  context 'initial options' do
-    should 'draw multilayer graph' do
+describe TechnicalGraph do
+  context 'multiple layers' do
+    it 'draw multilayer graph' do
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.1f",
@@ -85,10 +85,8 @@ class TestTechnicalMultilayer < Test::Unit::TestCase
       @tg.layers.last.processed_data.size.should > 0
       @tg.layers.size.should == 4
 
-      @tg.render
-
-      @tg.image_drawer.save_to_file("samples/tests/test_multilayer.#{@tg.best_output_format}")
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
+      @tg.save_to_file("tmp/test_multilayer.svg")
+      @tg.to_format('svg').class.should == String
 
     end
   end

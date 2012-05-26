@@ -1,9 +1,9 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalNoiseRemoval < Test::Unit::TestCase
-  context 'basic noise (wrong data) removal' do
-
-    should 'do linear dry test' do
+describe DataLayerProcessorNoiseRemoval do
+  # everything depends what is wrogn, and here - I decide :]
+  context 'noise removal' do
+    it 'should do linear dry test' do
       layer_data = Array.new
       size = 100
       (0..size).each do |i|
