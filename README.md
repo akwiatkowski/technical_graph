@@ -86,7 +86,7 @@ Some notes about formats and dependencies
 
 technical_graph uses [rasem](https://github.com/aseldawy/rasem) for SVG and it works wery well.
 For PNG it uses [chunky_png](https://github.com/wvanbergen/chunky_png) with [oily_png](https://github.com/wvanbergen/oily_png)
-if possible, but there is a lot of missing features so if you need PNG I recommend to install
+if possible, but there is a lot of missing features. If you need PNG I recommend to install
 good, old [rmagick](https://github.com/rmagick/rmagick).
 
 
