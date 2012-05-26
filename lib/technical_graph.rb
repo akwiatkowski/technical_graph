@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'logger'
+require 'technical_graph/gem'
 require 'technical_graph/data_layer'
 require 'technical_graph/graph_data_processor'
 require 'technical_graph/graph_image_drawer'
@@ -72,44 +73,46 @@ class TechnicalGraph
     @image_drawer.render_data_legend
   end
 
-  # Render and save graph to a file
-  def save_to_file(filename)
-    ext = File.extname(filename).gsub(/^\./,'')
-
+  def pre_render(ext)
     case ext
       when 'svg', 'svgz' then
         @options[:drawer_class] = :rasem
         render
-        @image_drawer.save_to_file(filename)
 
       when 'png' then
-        @options[:drawer_class] = :chunky_png
+        if gem_available?('rmagick')
+          # rmagick is at the moment the best solution
+          @options[:drawer_class] = :rmagick
+        else
+          @options[:drawer_class] = :chunky_png
+        end
         render
-        @image_drawer.save_to_file(filename)
-        
+
+      when 'jpeg', 'jpg', 'bmp', 'gif' then
+        if rmagick_installed?
+          @options[:drawer_class] = :rmagick
+          render
+        else
+          raise Gem::LoadError
+        end
+
       else
         raise ArgumentError
 
     end
   end
 
+  # Render and save graph to a file
+  def save_to_file(filename)
+    ext = File.extname(filename).gsub(/^\./, '')
+    pre_render(ext)
+    @image_drawer.save_to_file(filename)
+  end
+
   # Render and return graph string
   def to_format(ext)
-    case ext
-      when 'svg', 'svgz' then
-        @options[:drawer_class] = :rasem
-        render
-        @image_drawer.to_format(ext)
-
-      when 'png' then
-        @options[:drawer_class] = :chunky_png
-        render
-        @image_drawer.to_format(ext)
-
-      else
-        raise ArgumentError
-
-    end
+    pre_render(ext)
+    @image_drawer.to_format(ext)
   end
 
 end

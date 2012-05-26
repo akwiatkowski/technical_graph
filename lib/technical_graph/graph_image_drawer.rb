@@ -39,11 +39,6 @@ class GraphImageDrawer
     return GraphImageDrawerRasem
   end
 
-  # Check if rmagick is installed
-  def rmagick_installed?
-    return Gem.source_index.find_name('rmagick').size > 0
-  end
-
   # Best output image format, used for testing
   def best_output_format
     @technical_graph.best_output_format

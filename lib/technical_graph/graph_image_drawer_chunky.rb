@@ -3,10 +3,7 @@
 require 'technical_graph/graph_image_drawer_module'
 require 'rubygems'
 require 'chunky_png'
-
-#if Gem.source_index.find_name('oily_png').size > 0
-#  gem 'oily_png'
-#end
+require 'oily_png' if gem_available? 'oily_png'
 
 class GraphImageDrawerChunky
   include GraphImageDrawerModule
