@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 # run only latest test to create new graphs for documentation
-DO_NOT_RUN_OLD_TESTS = true
+DO_NOT_RUN_OLD_TESTS = false
 README_RENDERED = :rmagick
 README_FORMAT = 'png'
 README_PATH = File.join('tmp', 'readme')
@@ -49,7 +49,7 @@ describe TechnicalGraph do
 
     #
     it 'create simplest graph' do
-      #next if DO_NOT_RUN_OLD_TESTS
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new({ :drawer_class => README_RENDERED })
       @tg.add_layer(@simple_data_array)
 
@@ -174,7 +174,7 @@ describe TechnicalGraph do
         {
           :x_axis_label => 'parameter',
           :y_axis_label => 'value',
-          :axis_label_font_size => 36,
+          :axis_label_font_size => 16,
           :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
@@ -232,7 +232,7 @@ describe TechnicalGraph do
       next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
-          :width => 600,
+          :width => 400,
           :height => 300,
           :drawer_class => README_RENDERED,
         })
@@ -330,7 +330,7 @@ describe TechnicalGraph do
           :y_axis_label => 'value',
           :layers_font_size => 14,
           :axis_font_size => 18,
-          :axis_label_font_size => 48,
+          :axis_label_font_size => 24,
           :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array, { :value_labels => true })
@@ -507,13 +507,13 @@ describe TechnicalGraph do
           :log_level => Logger::DEBUG,
           :drawer_class => README_RENDERED,
           :axis_density_enlarge_image => true,
-          :x_axis_min_distance => 500,
+          :x_axis_min_distance => 200,
           :x_axis_interval => 1.0,
           :x_axis_fixed_interval => true,
-          :width => 400
+          :width => 200
         }
       )
-      max = 250 #2000
+      max = 20 #2000
 
       @layer_data = Array.new
       (0..max).each do |i|

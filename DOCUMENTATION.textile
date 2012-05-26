@@ -1,15 +1,13 @@
 h1. How to use it
 
-p. All this examples are generated in spec/readme/technical_readme_spec.rb . Only difference
-is image filename.
+p. All this examples are generated in spec/readme/technical_readme_spec.rb . There are some differences: filename without path and using rmagick because github had some issues with SVG files.
 
 
 
 
 h2. Default graph size
 
-p. In this documentation I lowered default graph size so it looks nicer here. If you
-would like to do this insert something like this at the beginning of your code:
+p. In this documentation I lowered default graph size so it looks nicer here. If you would like to do this insert something like this at the beginning of your code:
 
 <pre>
 <code>
@@ -112,7 +110,7 @@ file_name = '02_two_layers.png'
 
 h2. Ranges
 
-p. On default ranges are calculated automatically so all points are visible. You can override ranges setting.
+p. By default ranges are calculated automatically so all points are visible. You can override ranges setting.
 
 <pre>
 <code>
@@ -143,7 +141,7 @@ file_name = '03_changed_ranges.png'
 !https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/03_changed_ranges.png((03) changed ranges)!
 
 
-p. Keep in mind that ranges will be changed but any point of graph can enlarge ranges that all points will be visible, unless...
+p. Keep in mind that ranges can be changed while rendering graph, but you can be sure - they can be only enlarged and all points will be visible. Unless...
 
 
 
@@ -193,15 +191,14 @@ file_name = '04_changed_ranges_fixed.png'
 
 
 
-h2. Axis interval - fixed count
+h2. Axis interval - fixed quantity
 
 p. Axis can be calculated using two algorithms:
 
-# fixed interval - axis is every some distance,
+# fixed interval - axis is placed every precise distance,
 # fixed count - there is fixed amount of axis on graph.
 
-p. Keep in mind that where is X (parameter) and Y (value) axis. If you want to set fixed amount you should set
-options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false, like in the example below.
+p. Keep in mind that where is X (parameter) and Y (value) axis. If you want to set fixed amount you should set options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false, like in the example below.
 
 <pre>
 <code>
@@ -241,8 +238,7 @@ p. Axis can be calculated using two algorithms:
 # fixed interval - axis is every some distance,
 # fixed count - there is fixed amount of axis on graph.
 
-p. Keep in mind that where is X (parameter) and Y (value) axis. If you want to set fixed amount you should set
-options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false, like in the example below.
+p. Keep in mind that where is X (parameter) and Y (value) axis. If you want to set fixed interval you should set options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to true, like in the example below.
 
 <pre>
 <code>
@@ -262,10 +258,10 @@ options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false,
     :y_axis_interval => 0.8,
     :x_axis_interval => 0.6,
   })
-  @tg.add_layer(@simple_data_array)
+@tg.add_layer(@simple_data_array)
   
-  file_name = '06_axis_fixed_interval.png'
-  @tg.save_to_file(file_name)
+file_name = '06_axis_fixed_interval.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -278,8 +274,7 @@ options[:x_axis_fixed_interval] and/or options[:y_axis_fixed_interval] to false,
 
 h2. Axis labels
 
-p. You can add label to X and Y axis. using options[:x_axis_label] and options[:y_axis_label], and you can choose font
-size using options[:axis_label_font_size].
+p. You can add label to X and Y axis. using options[:x_axis_label] and options[:y_axis_label], and you can choose font size using options[:axis_label_font_size].
 
 <pre>
 <code>
@@ -296,12 +291,12 @@ size using options[:axis_label_font_size].
   {
     :x_axis_label => 'parameter',
     :y_axis_label => 'value',
-    :axis_label_font_size => 36
+    :axis_label_font_size => 16
   })
-  @@tg.add_layer(@simple_data_array)
+@tg.add_layer(@simple_data_array)
   
-  file_name = '07_axis_label.png'
-  @tg.save_to_file(file_name)
+file_name = '07_axis_label.png'
+@tg.save_to_file(file_name)
 </code>
 </pre>
 
@@ -311,12 +306,9 @@ size using options[:axis_label_font_size].
 
 h2. Float numbers and value labels
 
-p. On default all float number are shown using 2 digits after dot. You can override it using options[:truncate_string]
-like in example below. If you want have values near graph points you can use proper layer options.
+p. By default all float number are shown with 2 digits after dot precision. You can override it using options[:truncate_string] like in example below. If you want to have values near graph points you can use proper layer options.
 
-p. Layers have also options, and it is useful for this example to turn on value labels.
-
-layer_options[:value_labels]
+p. Layers have also options, and it is useful for this example to turn on value labels to true - layer_options[:value_labels] = true .
 
 <pre>
 <code>
@@ -394,7 +386,7 @@ p. It would be very silly if this library had hard coded image size. You can cha
 
 @tg = TechnicalGraph.new(
   {
-    :width => 600,
+    :width => 400,
     :height => 300
   })
 @tg.add_layer(@simple_data_array)
@@ -410,20 +402,19 @@ file_name = '09_image_size.png'
 
 h2. Colours
 
-p. If you think you have better artistic taste feel free to change colours used in graph :) Keep in mind that hatch
-color is not available in rasem renderer which is default now.
+p. If you think you have better artistic taste feel free to change colours used in graph :) Keep in mind that hatch color is available only in rmagick renderer. Some short info about renderers is located in README.
 
 There are 3 color options per graph:
 
-# options[:background_color] - background color of image
+* options[:background_color] - background color of image
 
-# options[:background_hatch_color] - background hatch color, used only in RMagick renderer
+* options[:background_hatch_color] - background hatch color, used only in RMagick renderer
 
-# options[:axis_color] - color of axis, default #000000
+* options[:axis_color] - color of axis, default #000000
 
-Ane 1 layer options
+And one layer options:
 
-# layer_options[:color] - it is color of layer
+* layer_options[:color] - it is color of layer
 
 
 <pre>
@@ -455,59 +446,14 @@ file_name = '10_colors.png'
 
 h2. Image render
 
-p. From version 0.4.0 there are two render classes: Rasem and RMagick. Rasem is better for fast SVG rendering, but
-RMagick is better for bitmaps like PNG. Svg can be converted to bitmap using 'convert' command (ImageMagick). It is
-intended that Rasem will be default renderer, and RMagick renderer will be supported as long as possible.
+p. From version 0.4.0 there were two render classes: Rasem and RMagick. Now it is more complicated.
 
-You can override default setting which is Rasem using:
-
-<pre>
-<code>
-options[:drawer_class] = :rasem
-options[:drawer_class] = :rmagick
-</code>
-</pre>
-
-There is fallback - if you don't have install rmagick gem even if you set RMagick, technical_graph will use Rasem.
-
-<pre>
-<code>
-@simple_data_array = [
-  { :x => 0, :y => 0 },
-  { :x => 1, :y => 1 },
-  { :x => 2, :y => 2 },
-  { :x => 3, :y => 2 },
-  { :x => 4, :y => 1 },
-  { :x => 5, :y => 0 },
-]
-
-@tg = TechnicalGraph.new(
-  {
-    :drawer_class => :rmagick
-  })
-@tg.add_layer(@simple_data_array)
-
-file_name = '11_renderer_rmagick.png'
-@tg.save_to_file(file_name)
-
-@tg = TechnicalGraph.new(
-  {
-    :drawer_class => :rasem
-  })
-@tg.add_layer(@simple_data_array)
-
-file_name = '11_renderer_rasem.png'
-@tg.save_to_file(file_name)
-</code>
-</pre>
-
-!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/11_renderer_rmagick.png((11) RMagick)!
-!https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/11_renderer_rasem.png((11) Rasem)!
+p. If you want SVG file you a very happy man, everything works and SVG looks good. If you want PNG you can use chunky_png but you are missing some important features like texts, dots, ... You can install rmagick and technical_graph will use power of rmagick to create very nice PNG graphs.
 
 
 h2. Anti-aliasing
 
-p. Anti-aliasing is only available using RMagick renderer. On default it is disabled.
+p. Anti-aliasing is only available using RMagick renderer. By default it is disabled.
 
 <pre>
 <code>
@@ -560,13 +506,11 @@ h2. Font size
 
 p. You can set various font sizes.
 
-# options[:layers_font_size] - size of font used for values in graph, keep in mind that layer_options[:value_labels]
-  must be enabled to see any result
+* options[:layers_font_size] - size of font used for values in graph, keep in mind that layer_options[:value_labels] must be enabled to see any result
 
-# options[:axis_font_size] - size of font used in axis
+* options[:axis_font_size] - size of font used in axis
 
-# options[:axis_label_font_size] - size of font used in options[:x_axis_label] and options[:y_axis_label], to see
-  any result at least one of them must be set
+* options[:axis_label_font_size] - size of font used in options[:x_axis_label] and options[:y_axis_label], to see any result at least one of them must be set
 
 
 <pre>
@@ -586,7 +530,7 @@ p. You can set various font sizes.
     :y_axis_label => 'value',
     :layers_font_size => 14,
     :axis_font_size => 18,
-    :axis_label_font_size => 48
+    :axis_label_font_size => 24
   })
 @tg.add_layer(@simple_data_array, {:value_labels => true})
 
@@ -601,17 +545,15 @@ file_name = '13_font_sizes.png'
 
 h2. Legend
 
-p. If you want to use legend you only have to set labels for layers and turn legend enabled by using:
+p. If you want to use legend you only have to set labels for layers and enable it by using:
 
-# options[:legend] - turn on legend, on default auto position mode is enabled
+* options[:legend] - set to true to enable legend, by default auto position mode is enabled
 
-# layer_options[:label] - label used for legend
+* layer_options[:label] - label used for legend
 
-Position of legend is calculated automatic - 8 corner places are checked for distance to all graph points. Point
-which has longest distance is used for legend position.
+p. Position of legend is calculated magically - 8 corner places are checked for distance to all graph points. Point which has longest distance to graph points is used for legend position.
 
-Every layer has own color which can be set by user using code below. If you don't set there is bank of some fixed colors
-and random color generator.
+p. Every layer has own color which can be set by user using code below. If you don't set there is a bank of some fixed colors and random color generator.
 
 <pre>
 <code>
@@ -650,7 +592,8 @@ file_name = '14_simple_legend.png'
 
 !https://github.com/akwiatkowski/technical_graph/raw/master/samples/readme/14_simple_legend.png((14) Legend)!
 
-You can turn off auto position if you like:
+
+p. You can turn off auto position if you like:
 
 <pre>
 <code>
@@ -662,16 +605,15 @@ options[:legend_y] = 100
 
 There are also other useful parameters
 
-# options[:legend_width] - width of longest label in pixels used for setting proper distance while drawing on right border
-  default 100 and is enlarged auto. using font size
+* options[:legend_width] - width of longest label in pixels used for setting proper distance while drawing on right border, default is 100 and it is enlarged auto. using font size
 
-# options[:legend_margin] - graph margin used not to draw legend on border, default 50
+* options[:legend_margin] - graph margin used not to draw legend on border, default 50
 
 
 
 h2. Smoothing
 
-p. Useful when origin of data is a bit noisy. For best results you can add two layers: one raw, and second with smoothing.
+p. Useful when origin of data is a bit noisy. For best results you can add two layers: one raw, and second with smoothing enabled.
 
 <pre>
 <code>
@@ -734,8 +676,7 @@ file_name = '15_smoothing.png'
 
 h2. Noise removal
 
-p. Useful when origin of data is a bit noisy. For best results you can add two layers: one raw, and second with noise removal.
-   Can be used with smoothing.
+p. Useful when origin of data is a bit noisy. For best results you can add two layers: one raw, and second with noise removal. It can be used with smoothing.
 
 <pre>
 <code>
@@ -807,16 +748,14 @@ file_name = '16_noise_removal.png'
 
 h2. Axis interval enlargement
 
-p. In case of large amount of data axis can be squeezed and graph is unreadable. You can set axis enlargement to kick in
-   in these situations. When distance between axis is lower than set in options[:x_axis_min_distance] or
-   options[:y_axis_min_distance] image dimensions are enlarged to maintain proper axis distances.
+p. In case of large amount of data axis can be squeezed and graph is unreadable. You can set axis enlargement to kick in in these situations. When distance between axis is lower than set in options[:x_axis_min_distance] or options[:y_axis_min_distance] image dimensions are enlarged to maintain proper axis distances.
 
 <pre>
 <code>
 @tg = TechnicalGraph.new(
   {
     :axis_density_enlarge_image => true,
-    :x_axis_min_distance => 500,
+    :x_axis_min_distance => 200,
     :x_axis_interval => 1.0,
     :x_axis_fixed_interval => true,
     :width => 400
