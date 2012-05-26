@@ -3,17 +3,15 @@ technical_graph
 
 Purpose of this gem is to create neat, meaningful, linear graphs for large amount of data.
 
-If you want to:
-
-* create big graphs using large amount of data,
-* do it offline,
+When you want to:
+* create big graph using large amount of data,
+* do it offline and speed is not the most important factor,
 * minimize needed code,
 * use only linear graph,
-* speed is not essential,
 * RMagick / ImageMagick is ok for you,
 * tired of forgotten gems/libraries...
 
-then you should try this gem.
+Then you should try this gem.
 
 I created it because there were not available and maintained gems for that I needed. Now I use it to create hourly
 temperature and wind speed graphs for vast period of time (months, years), visualize measurements for [HomeIO](https://github.com/akwiatkowski/HomeIO).
@@ -111,7 +109,7 @@ Up to version 0.5.1 you had to render image before you could save it to file. It
 Documentation
 -------------
 
-Documentation is moved [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile)
+Documentation was moved [here](https://github.com/akwiatkowski/technical_graph/blob/master/DOCUMENTATION.textile)
 
 
 Contributing to technical-graph
@@ -131,6 +129,5 @@ Contributing to technical-graph
 Copyright
 ---------
 
-Copyright (c) 2011-2012 Aleksander Kwiatkowski. See LICENSE.txt for
-further details.
+Copyright (c) 2011-2012 Aleksander Kwiatkowski. See LICENSE.txt for further details.
 
