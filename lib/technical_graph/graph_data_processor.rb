@@ -49,10 +49,12 @@ class GraphDataProcessor
 
     # when set enlarge image so axis are located in sensible distance between themselves
     options[:axis_density_enlarge_image] = false if options[:axis_density_enlarge_image].nil?
+    options[:x_axis_density_enlarge_image] = false if options[:x_axis_density_enlarge_image].nil?
+    options[:y_axis_density_enlarge_image] = false if options[:y_axis_density_enlarge_image].nil?
     # distance in pixels
     options[:x_axis_min_distance] ||= 30
     # distance in pixels
-    options[:y_axis_min_distance] ||= 50
+    options[:y_axis_min_distance] ||= 30
 
     # default truncate string used for rendering numbers
     options[:truncate_string] ||= "%.2f"

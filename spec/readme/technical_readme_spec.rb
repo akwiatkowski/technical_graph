@@ -383,7 +383,7 @@ describe TechnicalGraph do
           :drawer_class => README_RENDERED,
         }
       )
-      max = 100 #2000
+      max = 100
 
       @layer_data = Array.new
       (0..max).each do |i|
@@ -506,11 +506,11 @@ describe TechnicalGraph do
         {
           :log_level => Logger::DEBUG,
           :drawer_class => README_RENDERED,
-          :axis_density_enlarge_image => true,
-          :x_axis_min_distance => 200,
+          :x_axis_density_enlarge_image => true,
+          :x_axis_min_distance => 30,
           :x_axis_interval => 1.0,
           :x_axis_fixed_interval => true,
-          :width => 200
+          :width => 100
         }
       )
       max = 20 #2000

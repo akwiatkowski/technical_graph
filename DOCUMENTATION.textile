@@ -619,14 +619,14 @@ p. Useful when origin of data is a bit noisy. For best results you can add two l
 <code>
 @tg = TechnicalGraph.new(
   {
-    :width => 2000,
-    :height => 1500,
+    :width => 1000,
+    :height => 750,
     :legend => true,
     :x_axis_label => "Parameter",
     :y_axis_label => "Value"
   }
 )
-max = 250 #2000
+max = 100
 
 @layer_data = Array.new
 (0..max).each do |i|
@@ -748,20 +748,32 @@ file_name = '16_noise_removal.png'
 
 h2. Axis interval enlargement
 
-p. In case of large amount of data axis can be squeezed and graph is unreadable. You can set axis enlargement to kick in in these situations. When distance between axis is lower than set in options[:x_axis_min_distance] or options[:y_axis_min_distance] image dimensions are enlarged to maintain proper axis distances.
+p. In case of large amount of data axis can be squeezed and graph is unreadable. You can set axis enlargement to kick in in these situations. When distance between axis is lower than set in options[:x_axis_min_distance] or options[:y_axis_min_distance] image dimensions are enlarged to maintain proper axis distances. There is default distance for X and Y axis of 30 pixels.
+
+p. Possible options:
+
+* options[:axis_density_enlarge_image] - enable both axis (X, Y)
+
+* options[:x_axis_density_enlarge_image] - enable only X axis
+
+* options[:y_axis_density_enlarge_image] - enable only Y axis
+
+* options[:x_axis_min_distance] - minimum distance for X axis
+
+* options[:y_axis_min_distance] - minimum distance for Y axis
 
 <pre>
 <code>
 @tg = TechnicalGraph.new(
   {
-    :axis_density_enlarge_image => true,
-    :x_axis_min_distance => 200,
+    :x_axis_density_enlarge_image => true,
+    :x_axis_min_distance => 30,
     :x_axis_interval => 1.0,
     :x_axis_fixed_interval => true,
-    :width => 400
+    :width => 100
   }
 )
-max = 250
+max = 20
 
 @layer_data = Array.new
 (0..max).each do |i|
