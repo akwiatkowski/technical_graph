@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "technical_graph"
-  s.version = "0.5.1"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aleksander Kwiatkowski"]
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
     "lib/technical_graph/data_layer_processor_noise_removal.rb",
     "lib/technical_graph/data_layer_processor_simple_smoother.rb",
     "lib/technical_graph/data_point.rb",
+    "lib/technical_graph/gem.rb",
     "lib/technical_graph/graph_axis.rb",
     "lib/technical_graph/graph_color_library.rb",
     "lib/technical_graph/graph_data_processor.rb",
@@ -39,20 +40,7 @@ Gem::Specification.new do |s|
     "lib/technical_graph/graph_image_drawer_chunky.rb",
     "lib/technical_graph/graph_image_drawer_module.rb",
     "lib/technical_graph/graph_image_drawer_rasem.rb",
-    "lib/technical_graph/graph_image_drawer_rmagick.rb",
-    "test/helper.rb",
-    "test/test_technical_autocolor.rb",
-    "test/test_technical_axis_enlarge.rb",
-    "test/test_technical_fix1.rb",
-    "test/test_technical_graph.rb",
-    "test/test_technical_graph_axis.rb",
-    "test/test_technical_multilayer.rb",
-    "test/test_technical_noise_removal.rb",
-    "test/test_technical_rasem.rb",
-    "test/test_technical_readme.rb",
-    "test/test_technical_simple_graph.rb",
-    "test/test_technical_smoother.rb",
-    "test/test_technical_smoother_adv.rb"
+    "lib/technical_graph/graph_image_drawer_rmagick.rb"
   ]
   s.homepage = "http://github.com/akwiatkowski/technical_graph"
   s.licenses = ["LGPLv3"]
@@ -66,6 +54,8 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rasem>, [">= 0"])
       s.add_runtime_dependency(%q<chunky_png>, [">= 0"])
+      s.add_runtime_dependency(%q<rmagick>, [">= 0"])
+      s.add_runtime_dependency(%q<oily_png>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
@@ -75,6 +65,8 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<rasem>, [">= 0"])
       s.add_dependency(%q<chunky_png>, [">= 0"])
+      s.add_dependency(%q<rmagick>, [">= 0"])
+      s.add_dependency(%q<oily_png>, [">= 0"])
       s.add_dependency(%q<rdoc>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
@@ -85,6 +77,8 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<rasem>, [">= 0"])
     s.add_dependency(%q<chunky_png>, [">= 0"])
+    s.add_dependency(%q<rmagick>, [">= 0"])
+    s.add_dependency(%q<oily_png>, [">= 0"])
     s.add_dependency(%q<rdoc>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
