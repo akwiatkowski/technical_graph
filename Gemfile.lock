@@ -17,6 +17,7 @@ GEM
     rasem (0.6.1)
     rdoc (3.12)
       json (~> 1.4)
+    rmagick (2.13.1)
     rspec (2.10.0)
       rspec-core (~> 2.10.0)
       rspec-expectations (~> 2.10.0)
@@ -45,6 +46,7 @@ DEPENDENCIES
   oily_png
   rasem
   rdoc
+  rmagick
   rspec
   shoulda
   simplecov

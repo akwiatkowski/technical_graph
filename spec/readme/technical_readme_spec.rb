@@ -1,14 +1,17 @@
-require 'helper'
+#require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
 # run only latest test to create new graphs for documentation
-DO_NOT_RUN_OLD_TESTS = true
+DO_NOT_RUN_OLD_TESTS = false
 README_RENDERED = :rmagick
+README_FORMAT = 'png'
+README_PATH = File.join('tmp', 'readme')
 
-return
+Dir.mkdir(README_PATH) unless File.exists?(README_PATH)
 
-class TestTechnicalReadme < Test::Unit::TestCase
-  context 'generate sample graphs using readme options description' do
-    setup do
+describe TechnicalGraph do
+  context 'images for docs' do
+    before :each do
       @simple_data_array = [
         { :x => 0, :y => 0 },
         { :x => 1, :y => 1 },
@@ -36,37 +39,37 @@ class TestTechnicalReadme < Test::Unit::TestCase
     end
 
     #
-    should 'create simplest graph' do
-      return if DO_NOT_RUN_OLD_TESTS
-      @tg = TechnicalGraph.new({:drawer_class => README_RENDERED})
+    it 'create simplest graph' do
+      next if DO_NOT_RUN_OLD_TESTS
+      @tg = TechnicalGraph.new({ :drawer_class => README_RENDERED })
       @tg.add_layer(@simple_data_array)
-      @tg.render
-      file_name = 'samples/readme/01_simplest.png'
-      @tg.image_drawer.save_to_file(file_name)
+
+      file_name = File.join(README_PATH, '01_simplest.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
     #
-    should 'create 2-layer graph' do
-      return if DO_NOT_RUN_OLD_TESTS
-      @tg = TechnicalGraph.new({:drawer_class => README_RENDERED})
+    it 'create 2-layer graph' do
+      next if DO_NOT_RUN_OLD_TESTS
+      @tg = TechnicalGraph.new({ :drawer_class => README_RENDERED })
       @tg.add_layer(@simple_data_array)
       @tg.add_layer(@simple_data_array_b)
-      @tg.render
-      file_name = 'samples/readme/02_two_layers.png'
-      @tg.image_drawer.save_to_file(file_name)
+
+      file_name = File.join(README_PATH, '02_two_layers.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
     #
-    should 'change ranges' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'change ranges' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_min => -2,
@@ -76,17 +79,17 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
-      file_name = 'samples/readme/03_changed_ranges.png'
-      @tg.image_drawer.save_to_file(file_name)
+
+      file_name = File.join(README_PATH, '03_changed_ranges.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'change ranges (fixed)' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'change ranges (fixed)' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_min => 1,
@@ -97,17 +100,17 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
-      file_name = 'samples/readme/04_changed_ranges_fixed.png'
-      @tg.image_drawer.save_to_file(file_name)
+
+      file_name = File.join(README_PATH, '04_changed_ranges_fixed.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'fixed amount of axis' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'fixed amount of axis' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_axis_fixed_interval => false,
@@ -117,17 +120,17 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :drawer_class => README_RENDERED
         })
       @tg.add_layer(@simple_data_array)
-      @tg.render
-      file_name = 'samples/readme/05_axis_fixed_amount.png'
-      @tg.image_drawer.save_to_file(file_name)
+
+      file_name = File.join(README_PATH, '05_axis_fixed_amount.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'fixed axis interval' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'fixed axis interval' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_axis_fixed_interval => true,
@@ -148,16 +151,16 @@ class TestTechnicalReadme < Test::Unit::TestCase
       # puts axis_y.inspect
 
       @tg.render
-      file_name = 'samples/readme/06_axis_fixed_interval.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '06_axis_fixed_interval.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'let choose axis label' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'let choose axis label' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :x_axis_label => 'parameter',
@@ -167,17 +170,17 @@ class TestTechnicalReadme < Test::Unit::TestCase
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
-      file_name = 'samples/readme/07_axis_label.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '07_axis_label.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
 
-    should 'test truncate string' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test truncate string' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.3f",
@@ -188,16 +191,16 @@ class TestTechnicalReadme < Test::Unit::TestCase
       }
       @tg.add_layer(@float_data_array, @layer_params)
       @tg.render
-      file_name = 'samples/readme/08a_truncate_string.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '08a_truncate_string.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'test truncate string 2' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test truncate string 2' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.1f",
@@ -208,16 +211,16 @@ class TestTechnicalReadme < Test::Unit::TestCase
       }
       @tg.add_layer(@float_data_array, @layer_params)
       @tg.render
-      file_name = 'samples/readme/08b_truncate_string.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '08b_truncate_string.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'test image size' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test image size' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :width => 600,
@@ -226,16 +229,16 @@ class TestTechnicalReadme < Test::Unit::TestCase
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
-      file_name = 'samples/readme/09_image_size.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '09_image_size.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'test colors' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test colors' do
+      next if DO_NOT_RUN_OLD_TESTS
       @tg = TechnicalGraph.new(
         {
           :background_color => '#000000',
@@ -243,18 +246,18 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :axis_color => '#FFFFFF',
           :drawer_class => README_RENDERED,
         })
-      @tg.add_layer(@simple_data_array, {:color => '#0000FF'})
+      @tg.add_layer(@simple_data_array, { :color => '#0000FF' })
       @tg.render
-      file_name = 'samples/readme/10_colors.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '10_colors.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'test renderer' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test renderer' do
+      next if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -262,8 +265,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
-      file_name = 'samples/readme/11_renderer_rmagick.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '11_renderer_rmagick.png')
+      @tg.save_to_file(file_name)
 
       @tg = TechnicalGraph.new(
         {
@@ -271,16 +274,16 @@ class TestTechnicalReadme < Test::Unit::TestCase
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
-      file_name = 'samples/readme/11_renderer_rasem.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '11_renderer_rasem.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    should 'test anti-aliasing' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test anti-aliasing' do
+      next if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -289,8 +292,8 @@ class TestTechnicalReadme < Test::Unit::TestCase
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
-      file_name = 'samples/readme/12_aa_true.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '12_aa_true.png')
+      @tg.save_to_file(file_name)
 
       # only for size comparison
       @tg = TechnicalGraph.new(
@@ -300,17 +303,17 @@ class TestTechnicalReadme < Test::Unit::TestCase
         })
       @tg.add_layer(@simple_data_array)
       @tg.render
-      file_name = 'samples/readme/12_aa_false.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '12_aa_false.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
-    
-    should 'test font sizes' do
-      return if DO_NOT_RUN_OLD_TESTS
+
+    it 'test font sizes' do
+      next if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -321,22 +324,22 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :axis_label_font_size => 48,
           :drawer_class => README_RENDERED
         })
-      @tg.add_layer(@simple_data_array, {:value_labels => true})
+      @tg.add_layer(@simple_data_array, { :value_labels => true })
       @tg.render
-      file_name = 'samples/readme/13_font_sizes.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '13_font_sizes.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
 
-    should 'test layer labels, colors and legend' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test layer labels, colors and legend' do
+      next if DO_NOT_RUN_OLD_TESTS
 
-      @simple_data_array_second = @simple_data_array.collect{|a| {:x => a[:x] + 0.31, :y => a[:y] + 0.21 }}
-      @simple_data_array_third = @simple_data_array.collect{|a| {:x => a[:x] * 0.99 + 0.23, :y => a[:y] * 1.2 - 0.12 }}
+      @simple_data_array_second = @simple_data_array.collect { |a| { :x => a[:x] + 0.31, :y => a[:y] + 0.21 } }
+      @simple_data_array_third = @simple_data_array.collect { |a| { :x => a[:x] * 0.99 + 0.23, :y => a[:y] * 1.2 - 0.12 } }
 
       @tg = TechnicalGraph.new(
         {
@@ -344,22 +347,22 @@ class TestTechnicalReadme < Test::Unit::TestCase
           :legend_font_size => 20,
           :drawer_class => README_RENDERED
         })
-      @tg.add_layer(@simple_data_array, {:label => 'simple', :color => '#FFFF00'})
-      @tg.add_layer(@simple_data_array_second, {:label => 'offset', :color => '#00FFFF'})
-      @tg.add_layer(@simple_data_array_third, {:label => 'scaled', :color => '#FF00FF'})
+      @tg.add_layer(@simple_data_array, { :label => 'simple', :color => '#FFFF00' })
+      @tg.add_layer(@simple_data_array_second, { :label => 'offset', :color => '#00FFFF' })
+      @tg.add_layer(@simple_data_array_third, { :label => 'scaled', :color => '#FF00FF' })
 
       @tg.render
-      file_name = 'samples/readme/14_simple_legend.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '14_simple_legend.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
 
-    should 'test smoothing' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test smoothing' do
+      next if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -410,18 +413,17 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.add_layer(@layer_data.clone, @layer_params_e)
 
       @tg.render
-      file_name = 'samples/readme/15_smoothing.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '15_smoothing.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
 
-
-    should 'test noise filtering' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test noise filtering' do
+      next if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -479,17 +481,17 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.add_layer(@layer_data.clone, @layer_params_e)
 
       @tg.render
-      file_name = 'samples/readme/16_noise_removal.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '16_noise_removal.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
 
-    should 'test axis enlargement' do
-      return if DO_NOT_RUN_OLD_TESTS
+    it 'test axis enlargement' do
+      next if DO_NOT_RUN_OLD_TESTS
 
       @tg = TechnicalGraph.new(
         {
@@ -514,12 +516,12 @@ class TestTechnicalReadme < Test::Unit::TestCase
       @tg.add_layer(@layer_data)
 
       @tg.render
-      file_name = 'samples/readme/17_axis_enlargement.png'
-      @tg.image_drawer.save_to_file(file_name)
+      file_name = File.join(README_PATH, '17_axis_enlargement.png')
+      @tg.save_to_file(file_name)
 
       # test
-      @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
-      File.exist?(file_name).should == true
+      @tg.to_format(README_FORMAT).class.should == String
+      File.exist?(file_name).should
     end
 
 
