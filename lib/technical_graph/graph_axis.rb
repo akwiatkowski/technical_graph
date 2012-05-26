@@ -143,9 +143,9 @@ class GraphAxis
     return if a.size < 2
 
     ax = a[0]
-    ax = image.calc_bitmap_y(ax).round
+    ax = image.calc_bitmap_x(ax).round
     bx = a[1]
-    bx = image.calc_bitmap_y(bx).round
+    bx = image.calc_bitmap_x(bx).round
 
     axis_distance = (bx - ax).abs
 
@@ -153,7 +153,8 @@ class GraphAxis
     if axis_distance < options[:x_axis_min_distance]
       # enlarging image
       options[:old_width] = options[:width]
-      options[:width] *= (options[:x_axis_min_distance] / axis_distance).ceil
+      options[:width] *= (options[:x_axis_min_distance].to_f / axis_distance.to_f).ceil
+      puts options[:width]
       logger.debug "axis enlarged - width modified to #{options[:width]}"
     end
   end
@@ -176,7 +177,7 @@ class GraphAxis
     if axis_distance < options[:y_axis_min_distance]
       # enlarging image
       options[:old_height] = options[:height]
-      options[:height] *= (options[:y_axis_min_distance] / axis_distance).ceil
+      options[:height] *= (options[:y_axis_min_distance].to_f / axis_distance.to_f).ceil
       logger.debug "axis enlarged - height modified from #{options[:old_height]} to #{options[:height]}"
     end
   end
