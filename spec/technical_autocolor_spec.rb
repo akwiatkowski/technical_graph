@@ -1,8 +1,8 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestTechnicalAutocolor < Test::Unit::TestCase
+describe TechnicalGraph do
   context 'initial options' do
-    should 'draw multilayer graph' do
+    it 'should draw multilayer graph' do
       @tg = TechnicalGraph.new(
         {
           :truncate_string => "%.1f",
@@ -83,7 +83,7 @@ class TestTechnicalAutocolor < Test::Unit::TestCase
 
       @tg.render
 
-      @tg.image_drawer.save_to_file("samples/tests/test_autocolor.#{@tg.best_output_format}")
+      @tg.image_drawer.save_to_file("tmp/test_autocolor.#{@tg.best_output_format}")
       @tg.image_drawer.to_format(@tg.best_output_format).class.should == String
 
     end

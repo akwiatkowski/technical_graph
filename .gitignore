@@ -55,3 +55,4 @@ lib/technical_graph/del/
 .idea/*
 
 bundle
+tmp

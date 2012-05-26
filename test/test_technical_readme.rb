@@ -4,6 +4,8 @@ require 'helper'
 DO_NOT_RUN_OLD_TESTS = true
 README_RENDERED = :rmagick
 
+return
+
 class TestTechnicalReadme < Test::Unit::TestCase
   context 'generate sample graphs using readme options description' do
     setup do
