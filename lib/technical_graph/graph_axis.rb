@@ -6,6 +6,9 @@ class GraphAxis
 
   attr_reader :technical_graph
 
+  # some issues with float precision and rounding
+  SAFE_ENL_COEFF = 1.1
+
   # Accessor for options Hash
   def options
     @technical_graph.options
@@ -125,10 +128,10 @@ class GraphAxis
 
   # Enlarge image to maintain proper axis density
   def axis_distance_image_enlarge
-    if options[:axis_density_enlarge_image]
+    if options[:axis_density_enlarge_image] or options[:x_axis_density_enlarge_image] or options[:y_axis_density_enlarge_image]
       t = Time.now
-      x_axis_distance_image_enlarge
-      y_axis_distance_image_enlarge
+      x_axis_distance_image_enlarge if options[:axis_density_enlarge_image] or options[:x_axis_density_enlarge_image]
+      y_axis_distance_image_enlarge if options[:axis_density_enlarge_image] or options[:y_axis_density_enlarge_image]
 
       logger.debug "axis enlarged"
       logger.debug " TIME COST #{Time.now - t}"
@@ -153,7 +156,9 @@ class GraphAxis
     if axis_distance < options[:x_axis_min_distance]
       # enlarging image
       options[:old_width] = options[:width]
-      options[:width] *= (options[:x_axis_min_distance].to_f / axis_distance.to_f).ceil
+      options[:width] = options[:width].to_f * (options[:x_axis_min_distance].to_f / axis_distance.to_f)
+      options[:width] *= SAFE_ENL_COEFF
+      options[:width] = options[:width].ceil
       puts options[:width]
       logger.debug "axis enlarged - width modified to #{options[:width]}"
     end
@@ -177,7 +182,9 @@ class GraphAxis
     if axis_distance < options[:y_axis_min_distance]
       # enlarging image
       options[:old_height] = options[:height]
-      options[:height] *= (options[:y_axis_min_distance].to_f / axis_distance.to_f).ceil
+      options[:height] = options[:height].to_f * (options[:y_axis_min_distance].to_f / axis_distance.to_f)
+      options[:height] *= SAFE_ENL_COEFF
+      options[:height] = options[:height].ceil
       logger.debug "axis enlarged - height modified from #{options[:old_height]} to #{options[:height]}"
     end
   end
